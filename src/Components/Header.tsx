@@ -44,7 +44,6 @@ export const Header: React.FC<HeaderProps> = () => {
             </Typography>
             <Button color="inherit">SignUp</Button>
             <Button color="inherit">Login</Button>
-            <Button color="inherit">GuestLogin</Button>
           </Toolbar>
         </AppBar>
       </ThemeProvider>
