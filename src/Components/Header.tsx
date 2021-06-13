@@ -11,12 +11,30 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      position: "fixed",
+      width: "100%",
     },
+
     menuButton: {
       marginRight: theme.spacing(2),
     },
+
     title: {
       flexGrow: 1,
+      fontWeight: "bold",
+    },
+
+    title_link: {
+      textDecoration: "none",
+      color: "#ffffff",
+    },
+
+    headerLink: {
+      textDecoration: "none",
+      color: "#ffffff",
+      '&:hover': {
+        background: "#A9A9A9",
+      },
     },
   }),
 );
@@ -41,15 +59,17 @@ export const Header: React.FC<HeaderProps> = () => {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Exercise Habit
+              <Link to="/" className={classes.title_link}>
+                Exercise Habit
+              </Link>
             </Typography>
-            <Link to = '/'>
+            <Link to = '/' className={classes.headerLink}>
               <Button color="inherit">Home</Button>
             </Link>
-            <Link to = '/sign_up'>
+            <Link to = '/sign_up' className={classes.headerLink} style={{textDecoration: 'none', color: "white"}}>
               <Button color="inherit">SignUp</Button>
             </Link>
-            <Link to = '/sign_in'>
+            <Link to = '/sign_in' className={classes.headerLink}>
               <Button color="inherit">Login</Button>
             </Link>
           </Toolbar>

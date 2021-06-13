@@ -7,7 +7,8 @@ import { RegistrationForm } from './RegistrationForm';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
-      backgroundColor: '#F5F5F5'
+      paddingTop: 60,
+      backgroundColor: '#F5F5F5',
     },
   }),
 );
