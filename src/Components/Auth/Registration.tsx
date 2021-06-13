@@ -20,6 +20,9 @@ interface RegistrationProps {
 
 export const Registration: React.FC<RegistrationProps> = () => {
   const classes = useStyles();
+  const connectRegistrationApi = () => {
+    connectPost("a", {a:"a"});
+  }
 
   return (
     <div className={classes.main}>

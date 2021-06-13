@@ -45,18 +45,29 @@ interface RegistrationFormProps {
 export const RegistrationForm: React.FC<RegistrationFormProps> = () => {
   const classes = useStyles();
 
+  type RegistrationData = {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }
+
+  const handleOnSubmit = ():void => {
+    console.log();
+  }
+
   return (
     <Card className={classes.root}>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         新規登録
       </Typography>
       <CardContent>
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField className={classes.authForm} id="name" label="お名前" variant="outlined" /><br/>
-          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" /><br/>
-          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" /><br/>
-          <TextField className={classes.authForm} id="password_comfirmation" label="パスワード(確認用)" variant="outlined" /><br/>
-          <Button className={classes.authButton} variant="contained">登録</Button>
+        <form className={classes.root} noValidate autoComplete="off" onSubmit={handleOnSubmit}>
+          <TextField className={classes.authForm} id="name" label="お名前" variant="outlined" type="text" name="name"/><br/>
+          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" type="email" name="email"/><br/>
+          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" type="password" name="password"/><br/>
+          <TextField className={classes.authForm} id="password_comfirmation" label="パスワード(確認用)" variant="outlined" type="password" name="password_confirmation"/><br/>
+          <Button className={classes.authButton} variant="contained" type="submit">登録</Button>
           <p className={classes.repletion}>すでにアカウントをお持ちの方は<Link to="/sign_in">こちら</Link></p>
         </form>
       </CardContent>
