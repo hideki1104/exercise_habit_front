@@ -20,15 +20,24 @@ interface RegistrationProps {
 
 export const Registration: React.FC<RegistrationProps> = () => {
   const classes = useStyles();
-  const connectRegistrationApi = () => {
-    connectPost("a", {a:"a"});
+  type RequestData = {
+    name: string,
+    email: string,
+    password: string,
+    password_confirmation: string,
+  }
+
+  const connectRegistrationApi = (requestData: RequestData) => {
+    console.log(requestData);
+    const responseData = connectPost("http://localhost:3000/api/v1/user/auth", requestData);
+    console.log(responseData);
   }
 
   return (
     <div className={classes.main}>
       <Grid container alignItems="center" justify="center">
         <Grid item xs={8}>
-          <RegistrationForm/>
+          <RegistrationForm connectRegistrationApi={connectRegistrationApi}/>
         </Grid>
       </Grid>
     </div>
