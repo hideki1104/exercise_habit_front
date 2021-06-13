@@ -4,6 +4,7 @@ import { Header } from './Components/Header';
 import { Footer } from './Components/Footer';
 import { Home } from './Components/Home';
 import { Registration } from './Components/Auth/Registration';
+import { Login } from './Components/Auth/Login';
 
 function App() {
   return(
@@ -21,6 +22,12 @@ function App() {
             exact path={"/sign_up"}
             render={props => (
               <Registration/>
+            )}
+          />
+          <Route
+            exact path={"/sign_in"}
+            render={props => (
+              <Login/>
             )}
           />
         </Switch>
