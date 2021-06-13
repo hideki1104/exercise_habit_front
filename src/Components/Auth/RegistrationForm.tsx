@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,8 +53,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = () => {
     password_confirmation: string;
   }
 
-  const handleOnSubmit = ():void => {
-    console.log();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<RegistrationData>()
+
+  const handleOnSubmit: SubmitHandler<RegistrationData> = (data): void => {
+    console.log(data);
   }
 
   return (
@@ -62,12 +65,17 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = () => {
         新規登録
       </Typography>
       <CardContent>
-        <form className={classes.root} noValidate autoComplete="off" onSubmit={handleOnSubmit}>
-          <TextField className={classes.authForm} id="name" label="お名前" variant="outlined" type="text" name="name"/><br/>
-          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" type="email" name="email"/><br/>
-          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" type="password" name="password"/><br/>
-          <TextField className={classes.authForm} id="password_comfirmation" label="パスワード(確認用)" variant="outlined" type="password" name="password_confirmation"/><br/>
+        <form className={classes.root} onSubmit={handleSubmit(handleOnSubmit)}>
+          <TextField className={classes.authForm} id="name" label="お名前" variant="outlined" type="text" {...register("name", { required: true, maxLength: 50 })}/><br/>
+
+          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" type="email" {...register("email", { required: true })}/><br/>
+
+          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" type="password" {...register("password", { required: true })}/><br/>
+
+          <TextField className={classes.authForm} id="password_comfirmation" label="パスワード(確認用)" variant="outlined" type="password" {...register("password_confirmation", { required: true })}/><br/>
+
           <Button className={classes.authButton} variant="contained" type="submit">登録</Button>
+
           <p className={classes.repletion}>すでにアカウントをお持ちの方は<Link to="/sign_in">こちら</Link></p>
         </form>
       </CardContent>
