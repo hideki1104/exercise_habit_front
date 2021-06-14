@@ -16,23 +16,24 @@ export const connectGet = (url:string):any => {
 };
 
 interface connectPostType {
+  isSuccess: boolean,
+  data: object,
+  headers: object,
+  error: string|null,
 }
 
-export const connectPost = (url:string, params: object):any => {
-  axios
-    .post(url,
-      params,
-    {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    }}
-    ).then((results) => {
-        console.log(results);
-        return results;
-    })
-    .catch((error) => {
-        console.log('通信失敗:', error);
-    });
-  return 
+export const connectPost = async (url:string, params: object) => {
+    try {
+      const response = await axios.post(url, params,
+        {headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }}
+      );
+      console.log('通信成功', response);
+      return { isSuccess: true, data: response.data.data, headers: response.headers, error: null };
+    } catch(error) {
+      console.log(error);
+      return { isSuccess: false, data: {}, headers: {}, error: error };
+    }
 };

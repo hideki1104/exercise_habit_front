@@ -28,7 +28,6 @@ export const Registration: React.FC<RegistrationProps> = () => {
   }
 
   const connectRegistrationApi = (requestData: RequestData) => {
-    console.log(requestData);
     const responseData = connectPost("http://localhost:3000/api/v1/user/auth", requestData);
     console.log(responseData);
   }
