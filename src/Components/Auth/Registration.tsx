@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -20,6 +20,7 @@ interface RegistrationProps {
 }
 
 export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const classes = useStyles();
   type RequestData = {
     name: string,
@@ -33,21 +34,25 @@ export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
   const connectRegistrationApi = async (requestData: RequestData) => {
     const responseData = await connectPost("http://localhost:3000/api/v1/user/auth", requestData);
 
+    // 通信に失敗した場合
     if (!responseData.isSuccess) {
       // エラー処理
+      setErrorMessage("ユーザーの登録に失敗しました")
+      history.push('/sign_up');
+      return
     }
 
     handleLogin(responseData.data.name, responseData.headers)
 
     // サインイン後の画面へ遷移
-    history.push('/');
+    history.push('/user/' + responseData.data.id);
   }
 
   return (
     <div className={classes.main}>
       <Grid container alignItems="center" justify="center">
         <Grid item xs={8}>
-          <RegistrationForm connectRegistrationApi={connectRegistrationApi}/>
+          <RegistrationForm connectRegistrationApi={connectRegistrationApi} errorMessage={errorMessage}/>
         </Grid>
       </Grid>
     </div>

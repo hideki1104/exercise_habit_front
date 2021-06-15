@@ -5,6 +5,7 @@ import { Footer } from './Components/Footer';
 import { Home } from './Components/Home';
 import { Registration } from './Components/Auth/Registration';
 import { Login } from './Components/Auth/Login';
+import { Detail } from './Components/User/Detail';
 
 function App() {
   type ResponseHeader = {
@@ -40,6 +41,12 @@ function App() {
             exact path={"/sign_in"}
             render={props => (
               <Login/>
+            )}
+          />
+          <Route
+            exact path={"/user/:id"}
+            render={props => (
+              <Detail/>
             )}
           />
         </Switch>
