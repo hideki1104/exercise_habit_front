@@ -7,6 +7,18 @@ import { Registration } from './Components/Auth/Registration';
 import { Login } from './Components/Auth/Login';
 
 function App() {
+  type ResponseHeader = {
+    'access-token': string
+    'cache-control': string
+    'client': string
+    'content-type': string
+    'uid': string
+  }
+
+  const handleLogin = (userName: string, responseHeader:ResponseHeader):void => {
+    localStorage.setItem("headers", JSON.stringify(responseHeader));
+    localStorage.setItem("userName", userName);
+  }
   return(
     <>
       <BrowserRouter>
@@ -21,7 +33,7 @@ function App() {
           <Route
             exact path={"/sign_up"}
             render={props => (
-              <Registration/>
+              <Registration handleLogin={handleLogin}/>
             )}
           />
           <Route

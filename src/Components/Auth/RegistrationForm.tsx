@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface RegistrationFormProps {
-  connectRegistrationApi: Function;
+  connectRegistrationApi: Function
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({ connectRegistrationApi }) => {

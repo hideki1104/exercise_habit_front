@@ -17,12 +17,12 @@ export const connectGet = (url:string):any => {
 
 interface connectPostType {
   isSuccess: boolean,
-  data: object,
-  headers: object,
+  data: any,
+  headers: any,
   error: string|null,
 }
 
-export const connectPost = async (url:string, params: object) => {
+export const connectPost = async (url:string, params: object):Promise<connectPostType> => {
     try {
       const response = await axios.post(url, params,
         {headers: {

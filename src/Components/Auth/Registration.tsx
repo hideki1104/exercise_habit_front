@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { RegistrationForm } from './RegistrationForm';
@@ -15,10 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface RegistrationProps {
-
+  handleLogin: Function
 }
 
-export const Registration: React.FC<RegistrationProps> = () => {
+export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
   const classes = useStyles();
   type RequestData = {
     name: string,
@@ -27,9 +28,19 @@ export const Registration: React.FC<RegistrationProps> = () => {
     password_confirmation: string,
   }
 
-  const connectRegistrationApi = (requestData: RequestData) => {
-    const responseData = connectPost("http://localhost:3000/api/v1/user/auth", requestData);
-    console.log(responseData);
+  const history = useHistory();
+
+  const connectRegistrationApi = async (requestData: RequestData) => {
+    const responseData = await connectPost("http://localhost:3000/api/v1/user/auth", requestData);
+
+    if (!responseData.isSuccess) {
+      // エラー処理
+    }
+
+    handleLogin(responseData.data.name, responseData.headers)
+
+    // サインイン後の画面へ遷移
+    history.push('/');
   }
 
   return (
