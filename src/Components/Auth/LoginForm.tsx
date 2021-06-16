@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useForm, SubmitHandler } from "react-hook-form";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -32,18 +33,35 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 50,
       marginTop: 30,
     },
+
     repletion: {
       color: "rgba(0, 0, 0, 0.54)",
+    },
+
+    errorMessage: {
+      height: 10,
+      color: "red",
+      fontSize: 12,
     },
   }),
 );
 
 interface LoginFormProps {
-
+  connectLoginApi: Function
 }
 
-export const LoginForm: React.FC<LoginFormProps> = () => {
+export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi }) => {
+  type LoginData = {
+    email: string
+    password: string
+  }
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<LoginData>()
   const classes = useStyles();
+
+  const handleOnSubmit: SubmitHandler<LoginData> = (requestData: LoginData): void => {
+    connectLoginApi(requestData);
+  }
 
   return (
     <Card className={classes.root}>
@@ -51,10 +69,22 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
         ログイン
       </Typography>
       <CardContent>
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" /><br/>
-          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" /><br/>
-          <Button className={classes.authButton} id="login_button" variant="contained">ログイン</Button><br/>
+        <form className={classes.root} onSubmit={handleSubmit(handleOnSubmit)}>
+          <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" type="email" {...register("email", { required: true,
+          pattern: {
+          value: /\S+@\S+\.\S+/,
+          message: "メールアドレスの形式が違います" }})}/><br/>
+          <span className={classes.errorMessage}>
+            {errors.email && errors.email.type === "required" && "メールアドレスを入力してください"}
+            {errors.email && errors.email.type === "pattern" && "メールアドレスの形式が違います"}
+          </span><br/>
+
+          <TextField className={classes.authForm} id="password" label="パスワード" variant="outlined" type="password" {...register("password", { required: true, minLength: 6 })}/><br/>
+          <span className={classes.errorMessage}>
+            {errors.password && errors.password.type === "required" && "パスワードを入力してください"}
+            {errors.password && errors.password.type === "minLength" && "パスワードは6文字以上で入力してください"}
+          </span><br/>
+          <Button className={classes.authButton} id="login_button" variant="contained" type="submit">ログイン</Button><br/>
           <Button className={classes.authButton} id="guest_login_button" variant="contained" color="primary">ゲストログイン</Button>
           <p className={classes.repletion}>新規登録の方は<Link to="/sign_up">こちら</Link></p>
         </form>

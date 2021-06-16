@@ -40,7 +40,7 @@ function App() {
           <Route
             exact path={"/sign_in"}
             render={props => (
-              <Login/>
+              <Login handleLogin={handleLogin}/>
             )}
           />
           <Route

@@ -62,8 +62,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ connectRegis
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<RegistrationData>()
 
-  const handleOnSubmit: SubmitHandler<RegistrationData> = (data): void => {
-    connectRegistrationApi(data)
+  const handleOnSubmit: SubmitHandler<RegistrationData> = (requestData: RegistrationData): void => {
+    connectRegistrationApi(requestData)
   }
 
   return (

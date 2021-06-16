@@ -21,15 +21,15 @@ interface RegistrationProps {
 
 export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const history = useHistory();
   const classes = useStyles();
+
   type RequestData = {
     name: string,
     email: string,
     password: string,
     password_confirmation: string,
   }
-
-  const history = useHistory();
 
   const connectRegistrationApi = async (requestData: RequestData) => {
     const responseData = await connectPost("http://localhost:3000/api/v1/user/auth", requestData);
@@ -45,7 +45,7 @@ export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
     handleLogin(responseData.data.name, responseData.headers)
 
     // サインイン後の画面へ遷移
-    history.push('/user/' + responseData.data.id);
+    history.push(`/user/${responseData.data.id}`);
   }
 
   return (

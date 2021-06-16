@@ -1,8 +1,9 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { LoginForm } from './LoginForm';
-
+import { connectPost } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,17 +15,33 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface LoginProps {
-
+  handleLogin: Function
 }
 
-export const Login: React.FC<LoginProps> = () => {
+export const Login: React.FC<LoginProps> = ({ handleLogin }) => {
+  const history = useHistory();
+  type RequestData = {
+    email: string
+    password: string
+  }
+  const connectLoginApi = async (requestData: RequestData) => {
+    const responseData = await connectPost("http://localhost:3000/api/v1/user/auth/sign_in", requestData);
+
+    if (!responseData.isSuccess) {
+      // エラー処理
+      return
+    }
+
+    handleLogin(responseData.data.name, responseData.headers)
+    history.push(`/user/${responseData.data.id}`);
+  }
   const classes = useStyles();
 
   return (
     <div className={classes.main}>
       <Grid container alignItems="center" justify="center">
         <Grid item xs={8}>
-          <LoginForm/>
+          <LoginForm connectLoginApi={connectLoginApi}/>
         </Grid>
       </Grid>
     </div>
