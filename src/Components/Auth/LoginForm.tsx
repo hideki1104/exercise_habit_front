@@ -48,9 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface LoginFormProps {
   connectLoginApi: Function
+  errorMessage: string
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi, errorMessage }) => {
   type LoginData = {
     email: string
     password: string
@@ -70,6 +71,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi }) => {
       </Typography>
       <CardContent>
         <form className={classes.root} onSubmit={handleSubmit(handleOnSubmit)}>
+          <span className={classes.errorMessage}>{errorMessage}</span><br/>
           <TextField className={classes.authForm} id="email" label="メールアドレス" variant="outlined" type="email" {...register("email", { required: true,
           pattern: {
           value: /\S+@\S+\.\S+/,

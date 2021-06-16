@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -19,7 +19,9 @@ interface LoginProps {
 }
 
 export const Login: React.FC<LoginProps> = ({ handleLogin }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+
   type RequestData = {
     email: string
     password: string
@@ -29,6 +31,8 @@ export const Login: React.FC<LoginProps> = ({ handleLogin }) => {
 
     if (!responseData.isSuccess) {
       // エラー処理
+      setErrorMessage("ログイン認証に失敗しました")
+      history.push('/sign_in');
       return
     }
 
@@ -41,7 +45,7 @@ export const Login: React.FC<LoginProps> = ({ handleLogin }) => {
     <div className={classes.main}>
       <Grid container alignItems="center" justify="center">
         <Grid item xs={8}>
-          <LoginForm connectLoginApi={connectLoginApi}/>
+          <LoginForm connectLoginApi={connectLoginApi} errorMessage={errorMessage}/>
         </Grid>
       </Grid>
     </div>
