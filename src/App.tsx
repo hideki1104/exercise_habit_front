@@ -1,66 +1,19 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { Header } from './Components/Header';
-import { Footer } from './Components/Footer';
-import { Home } from './Components/Home';
-import { Registration } from './Components/Auth/Registration';
-import { Login } from './Components/Auth/Login';
-import { AdminLogin } from './Components/Auth/AdminLogin';
-import { Detail } from './Components/User/Detail';
+import React, { useState, useEffect } from 'react';
+import { UserMain } from './Components/UserMain';
+import { AdminMain } from './Components/AdminMain';
 
 function App() {
+  const [ isAdmin, setIsAdmin ] = useState(false);
 
-  type ResponseHeader = {
-    'access-token': string
-    'cache-control': string
-    'client': string
-    'content-type': string
-    'uid': string
-  }
-
-  const handleLogin = (userName: string, responseHeader:ResponseHeader):void => {
-    localStorage.setItem("headers", JSON.stringify(responseHeader));
-    localStorage.setItem("userName", userName);
-  }
+  useEffect(() => {
+    if (window.location.href.match("/admin") != null) {
+      setIsAdmin(true);
+    }
+  })
 
   return(
     <>
-      <BrowserRouter>
-        <Header/>
-        <Switch>
-          <Route
-            exact path={"/"}
-            render={props => (
-              <Home/>
-            )}
-          />
-          <Route
-            exact path={"/sign_up"}
-            render={props => (
-              <Registration handleLogin={handleLogin}/>
-            )}
-          />
-          <Route
-            exact path={"/sign_in"}
-            render={props => (
-              <Login handleLogin={handleLogin}/>
-            )}
-          />
-          <Route
-            exact path={"/admin/sign_in"}
-            render={props => (
-              <AdminLogin handleLogin={handleLogin}/>
-            )}
-          />
-          <Route
-            exact path={"/user/:id"}
-            render={props => (
-              <Detail/>
-            )}
-          />
-        </Switch>
-        <Footer/>
-      </BrowserRouter>
+      {isAdmin ? (<AdminMain/>) : (<UserMain/>)}
     </>
   );
 }
