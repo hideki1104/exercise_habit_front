@@ -30,7 +30,7 @@ export const UserMain: React.FC<UserMainProps> = () => {
   return(
     <>
       <BrowserRouter>
-        <Header/>
+        <Header isAdmin={false}/>
         <Switch>
           <Route
             exact path={"/"}

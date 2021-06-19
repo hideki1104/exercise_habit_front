@@ -25,7 +25,7 @@ export const AdminMain: React.FC<AdminMainProps> = () => {
   return(
     <>
       <BrowserRouter>
-        <Header/>
+        <Header isAdmin={true}/>
         <Switch>
           <Route
             exact path={"/admin/sign_in"}

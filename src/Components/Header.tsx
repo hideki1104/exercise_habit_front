@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { JsxElement } from 'typescript';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,30 +49,47 @@ const myTheme = createMuiTheme({
 });
 
 interface HeaderProps {
+  isAdmin: boolean
 }
 
-export const Header: React.FC<HeaderProps> = () => {
+export const Header: React.FC<HeaderProps> = ( {isAdmin} ) => {
   const classes = useStyles();
+
+  const UserNav: JSX.Element = (
+    <>
+      <Typography variant="h6" className={classes.title}>
+        <Link to="/" className={classes.title_link}>
+          Exercise Habit
+        </Link>
+      </Typography>
+      <Link to = '/' className={classes.headerLink}>
+        <Button color="inherit">Home</Button>
+      </Link>
+      <Link to = '/sign_up' className={classes.headerLink}>
+        <Button color="inherit">SignUp</Button>
+      </Link>
+      <Link to = '/sign_in' className={classes.headerLink}>
+        <Button color="inherit">Login</Button>
+      </Link>
+    </>
+  )
+
+  const AdminNav: JSX.Element = (
+    <>
+      <Typography variant="h6" className={classes.title}>
+        <Link to="/admin/sign_in" className={classes.title_link}>
+          Exercise Habit
+        </Link>
+      </Typography>
+    </>
+  )
 
   return (
     <div className={classes.root}>
       <ThemeProvider theme={myTheme}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              <Link to="/" className={classes.title_link}>
-                Exercise Habit
-              </Link>
-            </Typography>
-            <Link to = '/' className={classes.headerLink}>
-              <Button color="inherit">Home</Button>
-            </Link>
-            <Link to = '/sign_up' className={classes.headerLink} style={{textDecoration: 'none', color: "white"}}>
-              <Button color="inherit">SignUp</Button>
-            </Link>
-            <Link to = '/sign_in' className={classes.headerLink}>
-              <Button color="inherit">Login</Button>
-            </Link>
+            {isAdmin ? AdminNav : UserNav}
           </Toolbar>
         </AppBar>
       </ThemeProvider>
