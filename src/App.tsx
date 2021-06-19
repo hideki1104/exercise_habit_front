@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Header } from './Components/Header';
 import { Footer } from './Components/Footer';
 import { Home } from './Components/Home';
 import { Registration } from './Components/Auth/Registration';
 import { Login } from './Components/Auth/Login';
+import { AdminLogin } from './Components/Auth/AdminLogin';
 import { Detail } from './Components/User/Detail';
 
 function App() {
+
   type ResponseHeader = {
     'access-token': string
     'cache-control': string
@@ -20,6 +22,7 @@ function App() {
     localStorage.setItem("headers", JSON.stringify(responseHeader));
     localStorage.setItem("userName", userName);
   }
+
   return(
     <>
       <BrowserRouter>
@@ -41,6 +44,12 @@ function App() {
             exact path={"/sign_in"}
             render={props => (
               <Login handleLogin={handleLogin}/>
+            )}
+          />
+          <Route
+            exact path={"/admin/sign_in"}
+            render={props => (
+              <AdminLogin handleLogin={handleLogin}/>
             )}
           />
           <Route

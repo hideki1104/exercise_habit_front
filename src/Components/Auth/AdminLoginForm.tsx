@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -46,12 +45,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface LoginFormProps {
+interface AdminLoginFormProps {
   connectLoginApi: Function
   errorMessage: string
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi, errorMessage }) => {
+export const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ connectLoginApi, errorMessage }) => {
   type LoginData = {
     email: string
     password: string
@@ -64,14 +63,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi, errorMess
     connectLoginApi(requestData);
   }
 
-  const handleGuestSubmit = (): void => {
-    connectLoginApi({email: "test@example.com", password: "example"});
-  }
-
   return (
     <Card className={classes.root}>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
-        ログイン
+        管理者ログイン
       </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
@@ -92,8 +87,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi, errorMess
           </span><br/>
           <Button className={classes.authButton} id="login_button" variant="contained" type="submit">ログイン</Button><br/>
         </form>
-        <Button className={classes.authButton} id="guest_login_button" variant="contained" color="primary" onClick={handleGuestSubmit}>ゲストログイン</Button>
-        <p className={classes.repletion}>新規登録の方は<Link to="/sign_up">こちら</Link></p>
       </CardContent>
     </Card>
   );
