@@ -36,7 +36,7 @@ export const Login: React.FC<LoginProps> = ({ handleLogin }) => {
       return
     }
 
-    handleLogin(responseData.data.name, responseData.headers)
+    handleLogin(responseData.data, responseData.headers)
     history.push('/user/top');
   }
   const classes = useStyles();

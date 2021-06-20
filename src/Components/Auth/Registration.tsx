@@ -42,7 +42,7 @@ export const Registration: React.FC<RegistrationProps> = ({ handleLogin }) => {
       return
     }
 
-    handleLogin(responseData.data.name, responseData.headers)
+    handleLogin(responseData.data, responseData.headers)
 
     // サインイン後の画面へ遷移
     history.push('/user/top');

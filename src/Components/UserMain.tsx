@@ -29,9 +29,21 @@ export const UserMain: React.FC<UserMainProps> = () => {
     'uid': string
   }
 
-  const handleLogin = (userName: string, responseHeader:ResponseHeader):void => {
+  type UserData = {
+    allow_password_change: boolean
+    email: string
+    id: number
+    image: string | null
+    name: string
+    nickname: string | null
+    provider: string
+    uid: string
+  }
+
+  const handleLogin = (userData:UserData, responseHeader:ResponseHeader):void => {
+    console.log(userData);
     localStorage.setItem("headers", JSON.stringify(responseHeader));
-    localStorage.setItem("userName", userName);
+    localStorage.setItem("userData", JSON.stringify(userData));
     setIsLogin(true);
   }
 

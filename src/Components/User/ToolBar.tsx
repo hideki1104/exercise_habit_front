@@ -54,6 +54,9 @@ interface ToolBarProps {
 
 export const ToolBar: React.FC<ToolBarProps> = () => {
   const classes = useStyles();
+  const userDataText: any = localStorage.getItem("userData");
+  const userData: any = JSON.parse(userDataText);
+
   return (
     <Card className={classes.toolbar}>
       <CardContent>
@@ -79,8 +82,8 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
             <MoreVertIcon />
           </IconButton>
         }
-        title="テスト太郎"
-        subheader="test@example.com"
+        title={userData ? userData.name : ""}
+        subheader={userData ? userData['email'] : ""}
       />
     </Card>
   );
