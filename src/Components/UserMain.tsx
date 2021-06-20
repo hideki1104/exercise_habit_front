@@ -5,7 +5,7 @@ import { Footer } from './Footer';
 import { Home } from './Home';
 import { Registration } from './Auth/Registration';
 import { Login } from './Auth/Login';
-import { Detail } from './User/Detail';
+import { Top } from './User/Top';
 
 interface UserMainProps {
 
@@ -64,9 +64,9 @@ export const UserMain: React.FC<UserMainProps> = () => {
             )}
           />
           <Route
-            exact path={"/user/:id"}
+            exact path={"/user/top"}
             render={props => (
-              <Detail/>
+              <Top/>
             )}
           />
         </Switch>

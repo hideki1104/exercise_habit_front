@@ -9,15 +9,15 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface DetailProps {
+interface TopProps {
 
 }
 
-export const Detail: React.FC<DetailProps> = () => {
+export const Top: React.FC<TopProps> = () => {
   const classes = useStyles();
   return (
     <div className={classes.main}>
-      <h2>ユーザー詳細</h2>
+      <h2>ログイン後ページ</h2>
     </div>
   );
 }
