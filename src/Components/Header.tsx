@@ -62,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
       {isLogin ?
         <>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/user/detail" className={classes.title_link}>
+            <Link to="/user/top" className={classes.title_link}>
               Exercise Habit
             </Link>
           </Typography>
