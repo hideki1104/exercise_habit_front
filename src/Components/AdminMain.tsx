@@ -22,10 +22,14 @@ export const AdminMain: React.FC<AdminMainProps> = () => {
     localStorage.setItem("userName", userName);
   }
 
+  const handleLogout = () => {
+    localStorage.clear();
+  }
+
   return(
     <>
       <BrowserRouter>
-        <Header isAdmin={true}/>
+        <Header isAdmin={true} isLogin={true} handleLogout={handleLogout}/>
         <Switch>
           <Route
             exact path={"/admin/sign_in"}

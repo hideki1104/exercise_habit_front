@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { JsxElement } from 'typescript';
+import { Logout } from './Auth/Logout';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,27 +50,45 @@ const myTheme = createMuiTheme({
 
 interface HeaderProps {
   isAdmin: boolean
+  isLogin: boolean
+  handleLogout: Function
 }
 
-export const Header: React.FC<HeaderProps> = ( {isAdmin} ) => {
+export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} ) => {
   const classes = useStyles();
 
   const UserNav: JSX.Element = (
     <>
-      <Typography variant="h6" className={classes.title}>
-        <Link to="/" className={classes.title_link}>
-          Exercise Habit
-        </Link>
-      </Typography>
-      <Link to = '/' className={classes.headerLink}>
-        <Button color="inherit">Home</Button>
-      </Link>
-      <Link to = '/sign_up' className={classes.headerLink}>
-        <Button color="inherit">SignUp</Button>
-      </Link>
-      <Link to = '/sign_in' className={classes.headerLink}>
-        <Button color="inherit">Login</Button>
-      </Link>
+      {isLogin ?
+        <>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/user/detail" className={classes.title_link}>
+              Exercise Habit
+            </Link>
+          </Typography>
+          <Link to = '/user/detail' className={classes.headerLink}>
+            <Button color="inherit">USER</Button>
+          </Link>
+          <><Logout handleLogout={handleLogout}/></>
+        </>
+        :
+        <>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/" className={classes.title_link}>
+              Exercise Habit
+            </Link>
+          </Typography>
+          <Link to = '/' className={classes.headerLink}>
+            <Button color="inherit">Home</Button>
+          </Link>
+          <Link to = '/sign_up' className={classes.headerLink}>
+            <Button color="inherit">SignUp</Button>
+          </Link>
+          <Link to = '/sign_in' className={classes.headerLink}>
+            <Button color="inherit">Login</Button>
+          </Link>
+        </>
+      }
     </>
   )
 

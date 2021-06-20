@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Home } from './Home';
 import { Registration } from './Auth/Registration';
 import { Login } from './Auth/Login';
-import { AdminLogin } from './Auth/AdminLogin';
 import { Detail } from './User/Detail';
 
 interface UserMainProps {
@@ -13,6 +12,14 @@ interface UserMainProps {
 }
 
 export const UserMain: React.FC<UserMainProps> = () => {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("headers") != null) {
+      setIsLogin(true)
+    }
+  })
+  console.log(isLogin);
 
   type ResponseHeader = {
     'access-token': string
@@ -25,12 +32,18 @@ export const UserMain: React.FC<UserMainProps> = () => {
   const handleLogin = (userName: string, responseHeader:ResponseHeader):void => {
     localStorage.setItem("headers", JSON.stringify(responseHeader));
     localStorage.setItem("userName", userName);
+    setIsLogin(true);
+  }
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLogin(false);
   }
 
   return(
     <>
       <BrowserRouter>
-        <Header isAdmin={false}/>
+        <Header isAdmin={false} isLogin={isLogin} handleLogout={handleLogout}/>
         <Switch>
           <Route
             exact path={"/"}
