@@ -21,19 +21,20 @@ const useStyles = makeStyles(() =>
 )
 
 interface LogoutProps {
-  handleLogout:Function
+  handleLogout: Function
+  isAdmin: boolean
 }
 
-export const Logout: React.FC<LogoutProps> = ({ handleLogout }) => {
+export const Logout: React.FC<LogoutProps> = ({ handleLogout, isAdmin }) => {
   const history = useHistory();
   const classes = useStyles();
 
   const connectLogout = async() => {
-    const responseData = await connectDelete("http://localhost:3000/api/v1/user/auth/sign_out");
-    console.log(responseData);
+    const url: string = isAdmin ? "http://localhost:3000/api/v1/admin/auth/sign_out" : "http://localhost:3000/api/v1/user/auth/sign_out";
+    const responseData = await connectDelete(url);
     if (responseData.isSuccess) {
       handleLogout();
-      history.push("/");
+      isAdmin ? history.push("/admin/sign_in") : history.push("/");
     }
   }
 

@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
           <Link to = '/user/detail' className={classes.headerLink}>
             <Button color="inherit">USER</Button>
           </Link>
-          <><Logout handleLogout={handleLogout}/></>
+          <><Logout handleLogout={handleLogout} isAdmin={isAdmin}/></>
         </>
         :
         <>
@@ -94,11 +94,22 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
 
   const AdminNav: JSX.Element = (
     <>
-      <Typography variant="h6" className={classes.title}>
-        <Link to="/admin/sign_in" className={classes.title_link}>
-          Exercise Habit
-        </Link>
-      </Typography>
+      {isLogin ?
+        <>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/admin/sign_in" className={classes.title_link}>
+              Exercise Habit
+            </Link>
+          </Typography>
+          <><Logout handleLogout={handleLogout} isAdmin={isAdmin}/></>
+        </>
+        :
+        <Typography variant="h6" className={classes.title}>
+          <Link to="/admin/sign_in" className={classes.title_link}>
+            Exercise Habit
+          </Link>
+        </Typography>
+      }
     </>
   )
 
