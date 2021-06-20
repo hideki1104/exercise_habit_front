@@ -67,7 +67,7 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
           <li className={classes.item}><span className={classes.itemIcon}><EqualizerIcon/></span>体重管理</li>
           <li className={classes.item}><span className={classes.itemIcon}><GroupIcon/></span>交流場</li>
           <li className={classes.item}><span className={classes.itemIcon}><NotificationsIcon/></span>通知</li>
-          <li className={classes.item}><span className={classes.itemIcon}><PersonIcon/></span>プロフィール</li>
+          <li className={classes.item}><Link to={`/user/${userData['id']}`} className={classes.linkItem}><span className={classes.itemIcon}><PersonIcon/></span>プロフィール</Link></li>
         </ul>
       </CardContent>
       <CardHeader
