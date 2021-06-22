@@ -6,20 +6,21 @@ import { Home } from './Home';
 import { Registration } from './Auth/Registration';
 import { Login } from './Auth/Login';
 import { Top } from './User/Top';
+import { Detail } from './User/Detail';
 
 interface UserMainProps {
 
 }
 
 export const UserMain: React.FC<UserMainProps> = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin]   = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("headers") != null) {
       setIsLogin(true)
     }
   })
-  console.log(isLogin);
 
   type ResponseHeader = {
     'access-token': string
@@ -40,11 +41,13 @@ export const UserMain: React.FC<UserMainProps> = () => {
     uid: string
   }
 
-  const handleLogin = (userData:UserData, responseHeader:ResponseHeader):void => {
-    console.log(userData);
+  const handleLogin = (userData:UserData, responseHeader:ResponseHeader, isSignUp:boolean = false):void => {
     localStorage.setItem("headers", JSON.stringify(responseHeader));
     localStorage.setItem("userData", JSON.stringify(userData));
     setIsLogin(true);
+    if (isSignUp) {
+      setIsSignUp(true);
+    }
   }
 
   const handleLogout = () => {
@@ -78,7 +81,13 @@ export const UserMain: React.FC<UserMainProps> = () => {
           <Route
             exact path={"/user/top"}
             render={props => (
-              <Top/>
+              <Top isSignUp={isSignUp}/>
+            )}
+          />
+          <Route
+            exact path={"/user/:id"}
+            render={props => (
+              <Detail/>
             )}
           />
         </Switch>
