@@ -62,7 +62,8 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">ユーザー情報入力</h2>
+      <h2>ユーザー情報入力</h2>
+      <button onClick={handleClose}>後で登録</button>
     </div>
   )
 
@@ -80,7 +81,6 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
             </button>
             <Modal
               open={open}
-              onClose={handleClose}
             >
               {body}
             </Modal>
