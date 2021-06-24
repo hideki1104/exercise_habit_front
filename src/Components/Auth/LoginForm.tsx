@@ -90,6 +90,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ connectLoginApi, errorMess
             {errors.password && errors.password.type === "required" && "パスワードを入力してください"}
             {errors.password && errors.password.type === "minLength" && "パスワードは6文字以上で入力してください"}
           </span><br/>
+
           <Button className={classes.authButton} id="login_button" variant="contained" type="submit">ログイン</Button><br/>
         </form>
         <Button className={classes.authButton} id="guest_login_button" variant="contained" color="primary" onClick={handleGuestSubmit}>ゲストログイン</Button>

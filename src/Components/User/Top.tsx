@@ -3,25 +3,33 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
 import { ToolBar } from './ToolBar';
+import { UserForm } from './UserForm';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
       backgroundColor: "#F5F5F5"
     },
+
     root: {
       marginTop: 80,
       marginLeft: 100,
       height: 600,
     },
+
     paper: {
       position: 'absolute',
       width: 800,
-      height: 500,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      textAlign: "center",
+    },
+
+    afterRegisterButton: {
+
     },
   }),
 );
@@ -62,8 +70,8 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2>ユーザー情報入力</h2>
-      <button onClick={handleClose}>後で登録</button>
+      <UserForm/>
+      <Button className={classes.afterRegisterButton} variant="outlined" color="primary" onClick={handleClose}>後で登録</Button>
     </div>
   )
 
