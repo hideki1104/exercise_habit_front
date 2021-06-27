@@ -78,6 +78,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   }
 
   const handleUserInfoRegistration = async (requestData:UserData) => {
+    console.log(requestData);
     const userDataText: any = localStorage.getItem("userData");
     const userData: any = JSON.parse(userDataText);
     console.log(userData['id']);
