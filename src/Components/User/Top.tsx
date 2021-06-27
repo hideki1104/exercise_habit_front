@@ -79,8 +79,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const handleUserInfoRegistration = async (userData:UserData, weight:number|null) => {
     const userInfoText: any = localStorage.getItem("userData");
     const userInfoData: any = JSON.parse(userInfoText);
-    const responseData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, userData);
-    console.log(responseData);
+    const responseUserData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, userData);
   }
 
   const body = (
