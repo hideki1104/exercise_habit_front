@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -6,6 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import { ToolBar } from './ToolBar';
 import { UserForm } from './UserForm';
+import { TrainingTypeForm } from './TrainingTypeForm';
 import { connectPost, connectPatch } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,7 +55,9 @@ interface TopProps {
 export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isProceed, setIsProceed] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     if (isSignUp) {
@@ -84,6 +88,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
     if (!responseUserData.isSuccess) {
       // エラー処理
+      setErrorMessage("ユーザー情報の登録に失敗しました");
       return;
     }
 
@@ -91,15 +96,24 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
     if (!reaponseWeightData.isSuccess) {
       // エラー処理
+      setErrorMessage("ユーザー情報の登録に失敗しました");
       return;
     }
+    setErrorMessage("");
+    setIsProceed(true);
   }
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <UserForm handleUserInfoRegistration={handleUserInfoRegistration}/>
+    !isProceed ?
+    (<div style={modalStyle} className={classes.paper}>
+      <UserForm handleUserInfoRegistration={handleUserInfoRegistration} errorMessage={errorMessage}/>
       <Button className={classes.afterRegisterButton} variant="outlined" color="primary" onClick={handleClose}>後で登録</Button>
-    </div>
+    </div>)
+    :
+    (<div style={modalStyle} className={classes.paper}>
+      <TrainingTypeForm handleUserInfoRegistration={handleUserInfoRegistration} errorMessage={errorMessage}/>
+      <Button className={classes.afterRegisterButton} variant="outlined" color="primary" onClick={handleClose}>後で登録</Button>
+    </div>)
   )
 
   return (

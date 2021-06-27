@@ -83,12 +83,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface UserFormProps {
+interface TrainingTypeFormProps {
   handleUserInfoRegistration: Function
   errorMessage: string
 }
 
-export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, errorMessage}) => {
+export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleUserInfoRegistration, errorMessage}) => {
   type UserData = {
     height: number|null
     weight?: number|null
@@ -113,31 +113,14 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, e
   return (
     <>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
-        ユーザー情報登録
+        トレーニングの目的を教えてください
       </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <span className={classes.errorMessage}>{errorMessage}</span><br/>
-          <TextField className={classes.userForm} id="height" label="身長(cm)" variant="outlined" type="text" {...register("height", { required: true ,
-          pattern: {
-            value: /[0-9]/,
-            message: "半角数字で入力してください" }})}/><br/>
-          <span className={classes.errorMessage}>
-            {errors.height && errors.height.type === "required" && "身長を入力してください"}
-            {errors.height && errors.height.type === "pattern" && "半角数字で入力してください"}
-          </span><br/>
-
-          <TextField className={classes.userForm} id="height" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
-          pattern: {
-            value: /[0-9]/,
-            message: "半角数字で入力してください" } })}/><br/>
-          <span className={classes.errorMessage}>
-            {errors.weight && errors.weight.type === "required" && "体重を入力してください"}
-            {errors.weight && errors.weight.type === "pattern" && "半角数字で入力してください"}
-          </span><br/>
 
           <FormControl component="fieldset" className={classes.userForm}>
-          <FormLabel className={classes.formTitile}>性別</FormLabel>
+          <FormLabel className={classes.formTitile}></FormLabel>
             <RadioGroup defaultValue="0" aria-label="sex" {...register("sex")}>
               <Grid container>
                 <Grid item>
@@ -145,8 +128,8 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, e
                   className={classes.radio}
                   disableRipple
                   color="default"
-                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>男性</span>}
-                  icon={<span className={classes.icon}>男性</span>}
+                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>痩せたい</span>}
+                  icon={<span className={classes.icon}>痩せたい</span>}
                   value="0"
                 />
                 </Grid>
@@ -155,8 +138,8 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, e
                   className={classes.radio}
                   disableRipple
                   color="default"
-                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>女性</span>}
-                  icon={<span className={classes.icon}>女性</span>}
+                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>筋肉をつけたい</span>}
+                  icon={<span className={classes.icon}>筋肉をつけたい</span>}
                   value="1"
                 />
                 </Grid>
@@ -164,23 +147,7 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, e
             </RadioGroup>
           </FormControl><br/>
 
-          <FormControl component="fieldset" className={classes.userForm}>
-            <FormLabel className={classes.formTitile}>生年月日</FormLabel>
-            <TextField
-              defaultValue="1990-01-01"
-              id="date"
-              type="date"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register("birthday", { required: true })}
-            />
-          </FormControl><br/>
-          <span className={classes.errorMessage}>
-            {errors.birthday && errors.birthday.type === "required" && "生年月日を選択してください"}
-          </span><br/>
-
-          <Button className={classes.registrationButton} id="login_button" variant="contained" type="submit">次へ進む</Button><br/>
+          <Button className={classes.registrationButton} id="login_button" variant="contained" type="submit">登録する</Button><br/>
         </form>
       </CardContent>
     </>
