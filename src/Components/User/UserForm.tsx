@@ -84,14 +84,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface UserFormProps {
+  handleUserInfoRegistration: Function
 }
 
-export const UserForm: React.FC<UserFormProps> = () => {
+export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) => {
   type UserData = {
-    height: number
-    weight: number
-    birthday: string
-    sex: number
+    height: number|null
+    weight: number|null
+    birthday: string|null
+    sex: number|null
     training_type: number|null
   }
 
@@ -99,7 +100,7 @@ export const UserForm: React.FC<UserFormProps> = () => {
   const classes = useStyles();
 
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
-    console.log(requestData);
+    handleUserInfoRegistration(requestData);
   }
 
   return (
@@ -148,9 +149,9 @@ export const UserForm: React.FC<UserFormProps> = () => {
           <FormControl component="fieldset" className={classes.userForm}>
             <FormLabel className={classes.formTitile}>生年月日</FormLabel>
             <TextField
+              defaultValue="1990-01-01"
               id="date"
               type="date"
-              defaultValue="1990-01-01"
               InputLabelProps={{
                 shrink: true,
               }}

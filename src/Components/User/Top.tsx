@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import { ToolBar } from './ToolBar';
 import { UserForm } from './UserForm';
+import { connectPatch } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,9 +69,24 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     setOpen(false);
   };
 
+  type UserData = {
+    height: number|null
+    weight: number|null
+    birthday: string|null
+    sex: number|null
+    training_type: number|null
+  }
+
+  const handleUserInfoRegistration = async (requestData:UserData) => {
+    const userDataText: any = localStorage.getItem("userData");
+    const userData: any = JSON.parse(userDataText);
+    console.log(userData['id']);
+    const responseData = await connectPatch(`http://localhost:3000/api/v1/users/${userData['id']}`, requestData);
+  }
+
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <UserForm/>
+      <UserForm handleUserInfoRegistration={handleUserInfoRegistration}/>
       <Button className={classes.afterRegisterButton} variant="outlined" color="primary" onClick={handleClose}>後で登録</Button>
     </div>
   )
