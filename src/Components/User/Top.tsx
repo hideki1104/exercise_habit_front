@@ -81,7 +81,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     const userDataText: any = localStorage.getItem("userData");
     const userData: any = JSON.parse(userDataText);
     console.log(userData['id']);
-    const responseData = await connectPatch(`http://localhost:3000/api/v1/users/${userData['id']}`, requestData);
+    const responseData = await connectPatch(`http://localhost:3000/users/${userData['id']}`, requestData);
   }
 
   const body = (
