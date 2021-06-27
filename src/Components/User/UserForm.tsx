@@ -110,12 +110,14 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) 
       </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
-          <TextField className={classes.userForm} id="height" label="身長" variant="outlined" type="text" {...register("height")}/><br/>
+          <TextField className={classes.userForm} id="height" label="身長" variant="outlined" type="text" {...register("height", { required: true })}/><br/>
           <span className={classes.errorMessage}>
+            {errors.height && errors.height.type === "required" && "身長を入力してください"}
           </span><br/>
 
-          <TextField className={classes.userForm} id="height" label="体重" variant="outlined" type="text" {...register("weight")}/><br/>
+          <TextField className={classes.userForm} id="height" label="体重" variant="outlined" type="text" {...register("weight", { required: true })}/><br/>
           <span className={classes.errorMessage}>
+            {errors.weight && errors.weight.type === "required" && "体重を入力してください"}
           </span><br/>
 
           <FormControl component="fieldset" className={classes.userForm}>
@@ -155,9 +157,12 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) 
               InputLabelProps={{
                 shrink: true,
               }}
-              {...register("birthday")}
+              {...register("birthday", { required: true })}
             />
           </FormControl><br/>
+          <span className={classes.errorMessage}>
+            {errors.birthday && errors.birthday.type === "required" && "生年月日を選択してください"}
+          </span><br/>
 
           <Button className={classes.registrationButton} id="login_button" variant="contained" type="submit">次へ進む</Button><br/>
         </form>
