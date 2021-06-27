@@ -79,7 +79,20 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const handleUserInfoRegistration = async (userData:UserData, weight:number|null) => {
     const userInfoText: any = localStorage.getItem("userData");
     const userInfoData: any = JSON.parse(userInfoText);
+
     const responseUserData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, userData);
+
+    if (!responseUserData.isSuccess) {
+      // エラー処理
+      return;
+    }
+
+    const reaponseWeightData = await connectPost('http://localhost:3000/weights', {'weight': weight, 'user_id':userInfoData['id']});
+
+    if (!reaponseWeightData.isSuccess) {
+      // エラー処理
+      return;
+    }
   }
 
   const body = (
