@@ -110,14 +110,22 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) 
       </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
-          <TextField className={classes.userForm} id="height" label="身長" variant="outlined" type="text" {...register("height", { required: true })}/><br/>
+          <TextField className={classes.userForm} id="height" label="身長(cm)" variant="outlined" type="text" {...register("height", { required: true ,
+          pattern: {
+            value: /[0-9]/,
+            message: "半角数字で入力してください" }})}/><br/>
           <span className={classes.errorMessage}>
             {errors.height && errors.height.type === "required" && "身長を入力してください"}
+            {errors.height && errors.height.type === "pattern" && "半角数字で入力してください"}
           </span><br/>
 
-          <TextField className={classes.userForm} id="height" label="体重" variant="outlined" type="text" {...register("weight", { required: true })}/><br/>
+          <TextField className={classes.userForm} id="height" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
+          pattern: {
+            value: /[0-9]/,
+            message: "半角数字で入力してください" } })}/><br/>
           <span className={classes.errorMessage}>
             {errors.weight && errors.weight.type === "required" && "体重を入力してください"}
+            {errors.weight && errors.weight.type === "pattern" && "半角数字で入力してください"}
           </span><br/>
 
           <FormControl component="fieldset" className={classes.userForm}>
