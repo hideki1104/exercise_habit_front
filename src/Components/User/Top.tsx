@@ -6,7 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import { ToolBar } from './ToolBar';
 import { UserForm } from './UserForm';
-import { connectPatch } from '../Api/ConnectApi';
+import { connectPost, connectPatch } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,18 +71,16 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
   type UserData = {
     height: number|null
-    weight: number|null
     birthday: string|null
     sex: number|null
     training_type: number|null
   }
 
-  const handleUserInfoRegistration = async (requestData:UserData) => {
-    console.log(requestData);
-    const userDataText: any = localStorage.getItem("userData");
-    const userData: any = JSON.parse(userDataText);
-    console.log(userData['id']);
-    const responseData = await connectPatch(`http://localhost:3000/users/${userData['id']}`, requestData);
+  const handleUserInfoRegistration = async (userData:UserData, weight:number|null) => {
+    const userInfoText: any = localStorage.getItem("userData");
+    const userInfoData: any = JSON.parse(userInfoText);
+    const responseData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, userData);
+    console.log(responseData);
   }
 
   const body = (

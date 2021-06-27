@@ -90,7 +90,7 @@ interface UserFormProps {
 export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) => {
   type UserData = {
     height: number|null
-    weight: number|null
+    weight?: number|null
     birthday: string|null
     sex: number|null
     training_type: number|null
@@ -100,7 +100,13 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration}) 
   const classes = useStyles();
 
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
-    handleUserInfoRegistration(requestData);
+    let weight:number|null = null;
+    if (requestData.weight != null) {
+      weight = requestData.weight;
+      delete requestData.weight;
+    }
+
+    handleUserInfoRegistration(requestData, weight);
   }
 
   return (
