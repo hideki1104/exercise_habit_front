@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     userForm: {
-      width: 300,
+      width: 500,
       marginTop: 30,
     },
 
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       borderRadius: '3%',
       fontSize: 16,
-      width: 130,
+      width: 200,
       paddingTop: 10,
       paddingBottom: 10,
       boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
@@ -84,30 +83,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface TrainingTypeFormProps {
-  handleUserInfoRegistration: Function
+  handleTrainingTypeRegistration: Function
   errorMessage: string
 }
 
-export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleUserInfoRegistration, errorMessage}) => {
-  type UserData = {
-    height: number|null
-    weight?: number|null
-    birthday: string|null
-    sex: number|null
-    training_type: number|null
-  }
+export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleTrainingTypeRegistration, errorMessage}) => {
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<UserData>()
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<userData>()
   const classes = useStyles();
 
-  const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
-    let weight:number|null = null;
-    if (requestData.weight != null) {
-      weight = requestData.weight;
-      delete requestData.weight;
-    }
+  type userData = {
+    trainingType: number
+  }
 
-    handleUserInfoRegistration(requestData, weight);
+  const handleOnSubmit: SubmitHandler<userData> = (requestData: userData): void => {
+    console.log(requestData.trainingType);
+
+    handleTrainingTypeRegistration(requestData.trainingType);
   }
 
   return (
@@ -121,27 +113,50 @@ export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleUserInf
 
           <FormControl component="fieldset" className={classes.userForm}>
           <FormLabel className={classes.formTitile}></FormLabel>
-            <RadioGroup defaultValue="0" aria-label="sex" {...register("sex")}>
+            <RadioGroup defaultValue="0" aria-label="trainingType" {...register("trainingType")}>
               <Grid container>
                 <Grid item>
-                <Radio
-                  className={classes.radio}
-                  disableRipple
-                  color="default"
-                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>痩せたい</span>}
-                  icon={<span className={classes.icon}>痩せたい</span>}
-                  value="0"
-                />
+                  <Radio
+                    className={classes.radio}
+                    disableRipple
+                    color="default"
+                    checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>健康維持</span>}
+                    icon={<span className={classes.icon}>健康維持</span>}
+                    value="2"
+                  />
                 </Grid>
+
                 <Grid item>
-                <Radio
-                  className={classes.radio}
-                  disableRipple
-                  color="default"
-                  checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>筋肉をつけたい</span>}
-                  icon={<span className={classes.icon}>筋肉をつけたい</span>}
-                  value="1"
-                />
+                  <Radio
+                    className={classes.radio}
+                    disableRipple
+                    color="default"
+                    checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>痩せたい</span>}
+                    icon={<span className={classes.icon}>痩せたい</span>}
+                    value="0"
+                  />
+                </Grid>
+
+                <Grid item>
+                  <Radio
+                    className={classes.radio}
+                    disableRipple
+                    color="default"
+                    checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>筋肉をつけたい</span>}
+                    icon={<span className={classes.icon}>筋肉をつけたい</span>}
+                    value="1"
+                  />
+                </Grid>
+
+                <Grid item>
+                  <Radio
+                    className={classes.radio}
+                    disableRipple
+                    color="default"
+                    checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>気分転換</span>}
+                    icon={<span className={classes.icon}>気分転換</span>}
+                    value="3"
+                  />
                 </Grid>
               </Grid>
             </RadioGroup>

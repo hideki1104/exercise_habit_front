@@ -54,6 +54,7 @@ interface TopProps {
 
 export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const classes = useStyles();
+  const history = useHistory();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState<boolean>(false);
   const [isProceed, setIsProceed] = useState<boolean>(false);
@@ -74,13 +75,13 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   };
 
   type UserData = {
-    height: number|null
-    birthday: string|null
-    sex: number|null
-    training_type: number|null
+    height: number
+    birthday: string
+    sex: number
+    training_type: number
   }
 
-  const handleUserInfoRegistration = async (userData:UserData, weight:number|null) => {
+  const handleUserInfoRegistration = async (userData:UserData, weight:number) => {
     const userInfoText: any = localStorage.getItem("userData");
     const userInfoData: any = JSON.parse(userInfoText);
 
@@ -103,6 +104,23 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     setIsProceed(true);
   }
 
+  const handleTrainingTypeRegistration = async (trainingType:number) => {
+    const userInfoText: any = localStorage.getItem("userData");
+    const userInfoData: any = JSON.parse(userInfoText);
+
+    const responseData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, {'training_type': trainingType});
+
+    if (!responseData.isSuccess) {
+      // エラー処理
+      setErrorMessage("ユーザー情報の登録に失敗しました");
+      return;
+    }
+
+    setOpen(false);
+    setIsProceed(false);
+    history.push('/user/top');
+  }
+
   const body = (
     !isProceed ?
     (<div style={modalStyle} className={classes.paper}>
@@ -111,8 +129,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     </div>)
     :
     (<div style={modalStyle} className={classes.paper}>
-      <TrainingTypeForm handleUserInfoRegistration={handleUserInfoRegistration} errorMessage={errorMessage}/>
-      <Button className={classes.afterRegisterButton} variant="outlined" color="primary" onClick={handleClose}>後で登録</Button>
+      <TrainingTypeForm handleTrainingTypeRegistration={handleTrainingTypeRegistration} errorMessage={errorMessage}/>
     </div>)
   )
 
