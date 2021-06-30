@@ -1,18 +1,32 @@
 import axios from 'axios';
 
 interface connectGetType {
+  isSuccess: boolean,
+  data: any,
+  headers: any,
+  error: string|null,
 }
 
-export const connectGet = (url:string):any => {
-  axios
-    .get(url)
-    .then((results) => {
-        console.log(results.data);
-    })
-    .catch((error) => {
-        console.log('通信失敗');
-        console.log(error.status);
-    });
+export const connectGet = async (url:string):Promise<connectGetType> => {
+  try {
+    const headers: any    = localStorage.getItem("headers");
+    const headerData: any = JSON.parse(headers);
+
+    const response = await axios.get(url,
+      {headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'access-token': headerData["access-token"],
+        'client': headerData["client"],
+        'uid': headerData["uid"],
+      }}
+    );
+    console.log('通信成功', response);
+    return { isSuccess: true, data: response.data.data, headers: response.headers, error: null };
+  } catch(error) {
+    console.log(error);
+    return { isSuccess: false, data: {}, headers: {}, error: error };
+  }
 };
 
 interface connectPostType {
@@ -75,7 +89,6 @@ export const connectDelete = async (url:string):Promise<connectDeleteType> => {
   try {
     const headers: any    = localStorage.getItem("headers");
     const headerData: any = JSON.parse(headers);
-    console.log(headerData);
     const response = await axios.delete(url,
       {
         headers: {

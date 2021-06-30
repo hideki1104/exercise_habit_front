@@ -7,6 +7,7 @@ import { Registration } from './Auth/Registration';
 import { Login } from './Auth/Login';
 import { Top } from './User/Top';
 import { Detail } from './User/Detail';
+import { UserEdit } from './User/UserEdit';
 
 interface UserMainProps {
 
@@ -88,6 +89,12 @@ export const UserMain: React.FC<UserMainProps> = () => {
             exact path={"/user/:id"}
             render={props => (
               <Detail/>
+            )}
+          />
+          <Route
+            exact path={"/user/edit/:id"}
+            render={props => (
+              <UserEdit/>
             )}
           />
         </Switch>
