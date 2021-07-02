@@ -84,12 +84,12 @@ export const Detail: React.FC<DetailProps> = () => {
   })
 
   const connectGetUserInfo = async () => {
-    const responseUserData = await connectGet(`http://localhost:3000/api/v1/user/${userData.id}`);
+    const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
     if (!responseUserData.isSuccess ) {
       // エラー処理
     }
 
-    const responseWeightData = await connectGet(`http://localhost:3000/api/v1/weight/${userData.id}`);
+    const responseWeightData = await connectGet(`http://localhost:3000/weights/${userData.id}`);
     if (!responseWeightData.isSuccess ) {
       // エラー処理
     }
