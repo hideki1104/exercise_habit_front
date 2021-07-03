@@ -78,23 +78,33 @@ export const Detail: React.FC<DetailProps> = () => {
   const classes = useStyles();
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
+  const [userInfoData, setUserInfoData] = useState(userData);
+  const [userWeightData, setUserWeightData] = useState(userData);
 
   useEffect(() => {
+    const connectGetUserInfo = async () => {
+      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
+      if (!responseUserData.isSuccess ) {
+        // エラー処理
+        return;
+      }
+
+      setUserInfoData(responseUserData.data);
+    }
+
+    const connectGetWeightInfo = async () => {
+      const responseWeightData = await connectGet(`http://localhost:3000/weights/${userData.id}`);
+      if (!responseWeightData.isSuccess ) {
+        // エラー処理
+        return;
+      }
+
+      setUserWeightData(responseWeightData.data[0]);
+    }
+
     connectGetUserInfo();
-  })
-
-  const connectGetUserInfo = async () => {
-    const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
-    if (!responseUserData.isSuccess ) {
-      // エラー処理
-    }
-
-    const responseWeightData = await connectGet(`http://localhost:3000/weights/${userData.id}`);
-    if (!responseWeightData.isSuccess ) {
-      // エラー処理
-    }
-
-  }
+    connectGetWeightInfo();
+  }, [])
 
   return (
     <>
@@ -108,8 +118,8 @@ export const Detail: React.FC<DetailProps> = () => {
               <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avatar}>
               </Avatar>
               <div className={classes.cardTitle}>
-                <p className={classes.cardName}>{userData.name}</p>
-                <p className={classes.cardEmail}>{userData.email}</p>
+                <p className={classes.cardName}>{userInfoData.name}</p>
+                <p className={classes.cardEmail}>{userInfoData.email}</p>
               </div>
             </CardContent>
             <CardContent className={classes.editButton}>
@@ -119,19 +129,19 @@ export const Detail: React.FC<DetailProps> = () => {
               <tbody>
                 <tr className={classes.tableRow}>
                   <th className={classes.tableTitle}>身長</th>
-                  <td className={classes.tableValue}>170<span>cm</span></td>
+                  <td className={classes.tableValue}>{userInfoData.height}<span>cm</span></td>
                 </tr>
                 <tr className={classes.tableRow}>
                   <th className={classes.tableTitle}>体重</th>
-                  <td className={classes.tableValue}>55<span>kg</span></td>
+                  <td className={classes.tableValue}>{userWeightData.weight}<span>kg</span></td>
                 </tr>
                 <tr className={classes.tableRow}>
                   <th className={classes.tableTitle}>性別</th>
-                  <td className={classes.tableValue}>女性</td>
+                  <td className={classes.tableValue}>{userInfoData.sex ? "女性" : "男性"}</td>
                 </tr>
                 <tr className={classes.tableRow}>
                   <th className={classes.tableTitle}>生年月日</th>
-                  <td className={classes.tableValue}>1993年11月04日</td>
+                  <td className={classes.tableValue}>{userInfoData.birthday}</td>
                 </tr>
               </tbody>
             </table>
