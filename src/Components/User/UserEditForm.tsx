@@ -91,7 +91,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = () => {
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
   const [userInfoData, setUserInfoData] = useState(userData);
-  const [userWeight, setUserWeight] = useState();
+  const [userWeightData, setUserWeightData] = useState(userData);
 
   useEffect(() => {
     const connectGetUserInfo = async () => {
@@ -109,7 +109,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = () => {
         // エラー処理
         return;
       }
-      setUserWeight(responseWeightData.data[0].weight);
+      setUserWeightData(responseWeightData.data[0]);
     }
 
     connectGetUserInfo();
@@ -125,12 +125,18 @@ export const UserEditForm: React.FC<UserEditFormProps> = () => {
     sex: number
   }
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<UserData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UserData>({
   })
   const classes = useStyles();
 
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
-    console.log(requestData);
+    let updateData:any = {};
+    Object.entries(requestData).map(([key, value]) => {
+      if (value != undefined) {
+        updateData[key] = value;
+      }
+    })
+    console.log(updateData);
   }
 
   return (
@@ -172,7 +178,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = () => {
           </span><br/>
 
           <TextField className={classes.userForm} id="weight" label="体重(kg)" variant="outlined"
-          defaultValue={userWeight}
+          defaultValue={userWeightData.weight}
           type="text" {...register("weight", {
           pattern: {
             value: /[0-9]/,

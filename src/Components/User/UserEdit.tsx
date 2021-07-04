@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import { ToolBar } from './ToolBar';
 import { UserEditForm } from './UserEditForm';
+import { connectPatch } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,6 +40,20 @@ interface UserEditProps {
 
 export const UserEdit: React.FC<UserEditProps> = () => {
   const classes = useStyles();
+  const userDataText: any = localStorage.getItem("userData");
+  const userData: any = JSON.parse(userDataText);
+
+  type UpdateData = {
+    name:string|null
+    email:string|null
+    height:number|null
+    weight:number|null
+    sex:number|null
+    birthDay:string|null
+  }
+  const connectUpdateUserInfo = async (updateData:UpdateData) => {
+    await connectPatch(`http://localhost:3000/users/${userData.id}`, updateData);
+  }
 
   return (
     <>

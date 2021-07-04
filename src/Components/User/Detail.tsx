@@ -66,6 +66,9 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 'bold',
       paddingTop: 15,
       paddingBottom: 15,
+    },
+    linkButton: {
+      textDecoration: "none",
     }
   }),
 );
@@ -123,7 +126,7 @@ export const Detail: React.FC<DetailProps> = () => {
               </div>
             </CardContent>
             <CardContent className={classes.editButton}>
-              <Link to={`/user/edit/${userData.id}`}><Button variant="outlined">プロフィールの編集</Button></Link>
+              <Link to={`/user/edit/${userData.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
             </CardContent>
             <table className={classes.table}>
               <tbody>
