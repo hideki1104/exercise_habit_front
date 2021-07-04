@@ -11,7 +11,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import clsx from 'clsx';
-import { connectGet } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,36 +84,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface UserEditFormProps {
+  connectUpdateUserInfo:Function
+  userInfoData:any
+  userWeightData:any
 }
 
-export const UserEditForm: React.FC<UserEditFormProps> = () => {
+export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo, userInfoData, userWeightData}) => {
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
-  const [userInfoData, setUserInfoData] = useState(userData);
-  const [userWeightData, setUserWeightData] = useState(userData);
-
-  useEffect(() => {
-    const connectGetUserInfo = async () => {
-      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
-      if (!responseUserData.isSuccess ) {
-        // エラー処理
-        return;
-      }
-      setUserInfoData(responseUserData.data);
-    }
-
-    const connectGetWeightInfo = async () => {
-      const responseWeightData = await connectGet(`http://localhost:3000/weights/${userData.id}`);
-      if (!responseWeightData.isSuccess ) {
-        // エラー処理
-        return;
-      }
-      setUserWeightData(responseWeightData.data[0]);
-    }
-
-    connectGetUserInfo();
-    connectGetWeightInfo();
-  }, [])
 
   type UserData = {
     name: string
@@ -130,13 +107,23 @@ export const UserEditForm: React.FC<UserEditFormProps> = () => {
   const classes = useStyles();
 
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
+
+    let weight = null;
+    if (requestData.weight) {
+      weight = requestData.weight;
+      delete requestData.weight;
+    }
+
     let updateData:any = {};
     Object.entries(requestData).map(([key, value]) => {
       if (value != undefined) {
         updateData[key] = value;
       }
     })
-    console.log(updateData);
+
+    if (Object.keys(updateData).length || weight != null) {
+      connectUpdateUserInfo(updateData, weight);
+    }
   }
 
   return (

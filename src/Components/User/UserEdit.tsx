@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import { ToolBar } from './ToolBar';
 import { UserEditForm } from './UserEditForm';
-import { connectPatch } from '../Api/ConnectApi';
+import { connectGet, connectPatch } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,6 +42,31 @@ export const UserEdit: React.FC<UserEditProps> = () => {
   const classes = useStyles();
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
+  const [userInfoData, setUserInfoData] = useState(userData);
+  const [userWeightData, setUserWeightData] = useState(userData);
+
+  useEffect(() => {
+    const connectGetUserInfo = async () => {
+      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
+      if (!responseUserData.isSuccess ) {
+        // エラー処理
+        return;
+      }
+      setUserInfoData(responseUserData.data);
+    }
+
+    const connectGetWeightInfo = async () => {
+      const responseWeightData = await connectGet(`http://localhost:3000/weights/${userWeightData.id}`);
+      if (!responseWeightData.isSuccess ) {
+        // エラー処理
+        return;
+      }
+      setUserWeightData(responseWeightData.data[0]);
+    }
+
+    connectGetUserInfo();
+    connectGetWeightInfo();
+  }, [])
 
   type UpdateData = {
     name:string|null
@@ -51,8 +76,10 @@ export const UserEdit: React.FC<UserEditProps> = () => {
     sex:number|null
     birthDay:string|null
   }
-  const connectUpdateUserInfo = async (updateData:UpdateData) => {
+  const connectUpdateUserInfo = async (updateData:UpdateData, weight:number) => {
     await connectPatch(`http://localhost:3000/users/${userData.id}`, updateData);
+    console.log(userWeightData.id);
+    await connectPatch(`http://localhost:3000/weights/${userWeightData.id}`, {'weight':weight});
   }
 
   return (
@@ -63,7 +90,7 @@ export const UserEdit: React.FC<UserEditProps> = () => {
         </Grid>
         <Grid item xs={8}>
           <Card className={classes.root}>
-            <UserEditForm/>
+            <UserEditForm connectUpdateUserInfo={connectUpdateUserInfo} userInfoData={userInfoData} userWeightData={userWeightData}/>
           </Card>
         </Grid>
       </Grid>

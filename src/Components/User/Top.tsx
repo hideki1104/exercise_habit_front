@@ -100,6 +100,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
       setErrorMessage("ユーザー情報の登録に失敗しました");
       return;
     }
+
     setErrorMessage("");
     setIsProceed(true);
   }

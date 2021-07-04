@@ -96,7 +96,7 @@ export const Detail: React.FC<DetailProps> = () => {
     }
 
     const connectGetWeightInfo = async () => {
-      const responseWeightData = await connectGet(`http://localhost:3000/weights/${userData.id}`);
+      const responseWeightData = await connectGet(`http://localhost:3000/weights/${userWeightData.id}`);
       if (!responseWeightData.isSuccess ) {
         // エラー処理
         return;

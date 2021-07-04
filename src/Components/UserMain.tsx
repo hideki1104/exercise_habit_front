@@ -52,8 +52,8 @@ export const UserMain: React.FC<UserMainProps> = () => {
   }
 
   const handleLogout = () => {
-    localStorage.clear();
     setIsLogin(false);
+    localStorage.clear();
   }
 
   return(
