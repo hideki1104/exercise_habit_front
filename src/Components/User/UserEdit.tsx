@@ -72,14 +72,18 @@ export const UserEdit: React.FC<UserEditProps> = () => {
     name:string|null
     email:string|null
     height:number|null
-    weight:number|null
     sex:number|null
     birthDay:string|null
   }
-  const connectUpdateUserInfo = async (updateData:UpdateData, weight:number) => {
-    await connectPatch(`http://localhost:3000/users/${userData.id}`, updateData);
-    console.log(userWeightData.id);
-    await connectPatch(`http://localhost:3000/weights/${userWeightData.id}`, {'weight':weight});
+
+  const connectUpdateUserInfo = async (updateData:UpdateData, weight:number|null) => {
+    if (Object.keys(updateData).length) {
+      await connectPatch(`http://localhost:3000/users/${userData.id}`, updateData);
+    }
+
+    if (weight) {
+      await connectPatch(`http://localhost:3000/weights/${userWeightData.id}`, {'weight':weight});
+    }
   }
 
   return (
