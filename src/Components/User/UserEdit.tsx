@@ -43,7 +43,7 @@ export const UserEdit: React.FC<UserEditProps> = () => {
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
   const [userInfoData, setUserInfoData] = useState(userData);
-  const [userWeightData, setUserWeightData] = useState(userData);
+  const [userWeightData, setUserWeightData] = useState<any>("");
 
   useEffect(() => {
     const connectGetUserInfo = async () => {

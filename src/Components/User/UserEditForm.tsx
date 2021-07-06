@@ -91,7 +91,7 @@ interface UserEditFormProps {
 
 export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo, userInfoData, userWeightData}) => {
   const userDataText: any = localStorage.getItem("userData");
-  const userData: any = JSON.parse(userDataText);
+  const userData: any     = JSON.parse(userDataText);
 
   type UserData = {
     name: string
@@ -111,17 +111,17 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
     let weight = null;
     if (requestData.weight) {
       weight = requestData.weight;
-      delete requestData.weight;
     }
+    delete requestData.weight;
 
     let updateData:any = {};
     Object.entries(requestData).map(([key, value]) => {
-      if (value != undefined) {
+      if (value) {
         updateData[key] = value;
       }
     })
 
-    if (Object.keys(updateData).length || weight != null) {
+    if (Object.values(updateData).length || weight) {
       connectUpdateUserInfo(updateData, weight);
     }
   }
