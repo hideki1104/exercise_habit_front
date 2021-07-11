@@ -3,7 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 import { ToolBar } from '../User/ToolBar';
+import { WeightGraph } from './WeightGraph';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,7 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       marginTop: 80,
       marginLeft: 100,
-      height: 600,
+      textAlign: 'center',
+    },
+
+    title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      paddingTop: 30,
     },
 
     paper: {
@@ -45,7 +53,10 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
       </Grid>
       <Grid item xs={8}>
         <Card className={classes.root}>
-          <h1>体重管理</h1>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            体重管理
+          </Typography>
+          <WeightGraph/>
         </Card>
       </Grid>
     </Grid>
