@@ -8,6 +8,7 @@ import { Login } from './Auth/Login';
 import { Top } from './User/Top';
 import { Detail } from './User/Detail';
 import { UserEdit } from './User/UserEdit';
+import { WeightManagement } from './Weight/WeightManagement';
 
 interface UserMainProps {
 
@@ -95,6 +96,12 @@ export const UserMain: React.FC<UserMainProps> = () => {
             exact path={"/user/edit/:id"}
             render={props => (
               <UserEdit/>
+            )}
+          />
+          <Route
+            exact path={"/weight_management"}
+            render={props => (
+              <WeightManagement/>
             )}
           />
         </Switch>
