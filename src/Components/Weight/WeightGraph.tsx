@@ -35,7 +35,7 @@ interface WeightGraphProps {
 
 export const WeightGraph: React.FC<WeightGraphProps> = () => {
   const classes = useStyles();
-  const [userWeightData, setUserWeightData] = useState();
+  const [userWeightData, setUserWeightData] = useState([]);
   useEffect(() => {
     const connectGetWeightInfo = async () => {
       const responseWeightData = await connectGet(`http://localhost:3000/weights`);
@@ -51,14 +51,24 @@ export const WeightGraph: React.FC<WeightGraphProps> = () => {
     connectGetWeightInfo();
   }, [])
 
+  userWeightData.map((weight) => {
+    console.log(weight['weight']);
+  });
+
+  const convertJst = (date:Date) => {
+    const createdAt = new Date(date)
+    createdAt.setTime(createdAt.getTime() + 9)
+    return createdAt.toLocaleString('ja-JP').slice(0,-3);
+  }
+
   const data = {
     // x 軸のラベル
-    labels: ['1 月', '2 月', '3 月', '4 月', '5 月', '6 月', '7 月'],
+    labels: userWeightData.map(weight => convertJst(weight['created_at'])),
     datasets: [
       {
         label: '体重',
         // データの値
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: userWeightData.map(weight => weight['weight']),
         // グラフの背景色
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
