@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Line } from 'react-chartjs-2';
-import { connectGet } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,30 +29,21 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface WeightGraphProps {
+type UserWeightData = {
+  id:number
+  weight:number
+  user_id:number
+  created_at:Date
+  updated_at:Date
 }
 
-export const WeightGraph: React.FC<WeightGraphProps> = () => {
+interface WeightGraphProps {
+  userWeightData:UserWeightData[]
+  selectedMonthText:string|null
+}
+
+export const WeightGraph: React.FC<WeightGraphProps> = ({ userWeightData, selectedMonthText }) => {
   const classes = useStyles();
-  const [userWeightData, setUserWeightData] = useState([]);
-  useEffect(() => {
-    const connectGetWeightInfo = async () => {
-      const responseWeightData = await connectGet(`http://localhost:3000/weights`);
-      console.log(responseWeightData);
-      if (!responseWeightData.isSuccess ) {
-        // エラー処理
-        return;
-      }
-
-      setUserWeightData(responseWeightData.data);
-    }
-
-    connectGetWeightInfo();
-  }, [])
-
-  userWeightData.map((weight) => {
-    console.log(weight['weight']);
-  });
 
   const convertJst = (date:Date) => {
     const createdAt = new Date(date)
@@ -84,6 +74,8 @@ export const WeightGraph: React.FC<WeightGraphProps> = () => {
   };
 
   return (
-    <Line type="line" data={data}/>
+    <>
+      {userWeightData.length ? <Line type="line" data={data}/> : <p>{selectedMonthText}の体重記録がありません</p>}
+    </>
   );
 }
