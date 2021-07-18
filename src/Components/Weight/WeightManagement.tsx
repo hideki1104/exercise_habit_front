@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -40,13 +40,13 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       width: 800,
       backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       textAlign: "center",
     },
-    monthlyTabs: {
-      textAlign: 'left',
-    }
+
+    tab: {
+      backgroundColor: '#ffffff',
+    },
   }),
 );
 
@@ -76,6 +76,37 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
+
+interface StyledTabsProps {
+  value: number;
+  onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
+}
+
+const StyledTabs = withStyles({
+  indicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    '& > span': {
+      maxWidth: 100,
+      width: '100%',
+      backgroundColor: '#111111',
+    },
+  },
+})((props: StyledTabsProps) => <Tabs {...props} variant="fullWidth" TabIndicatorProps={{ children: <span /> }} />);
+
+interface MonthlyTabs {
+  value: string;
+  onChange: (event: React.ChangeEvent<{}>, newValue: string) => void;
+}
+
+const MonthlyTabs = withStyles({
+  indicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: '#111111',
+  },
+})((props: MonthlyTabs) => <Tabs {...props} variant="scrollable" scrollButtons="auto"/>);
 
 function a11yProps(index: any) {
   return {
@@ -149,23 +180,18 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
 
   const monthlyTab: JSX.Element = (
     <>
-      <Tabs
-        className={classes.monthlyTabs}
+      <MonthlyTabs
         value={selectedMonth}
         onChange={handleMonthChange}
-        variant="scrollable"
-        scrollButtons="auto"
-        indicatorColor="primary"
-        textColor="primary"
       >
         {formatMonthlyArray().map((month, index) => {
           const newMonth  = month.slice(4);
           const monthText = `${nowYear}年${newMonth}月`
           return (
-            <Tab label={monthText} value={month} {...a11yProps(index)}/>
+            <Tab label={monthText} className={classes.tab} value={month} {...a11yProps(index)}/>
           )
         })}
-      </Tabs>
+      </MonthlyTabs>
     </>
   )
 
@@ -178,18 +204,13 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
         <Card className={classes.root}>
           <div className={classes.tabRoot}>
             <AppBar position="static" color="default">
-              <Tabs
+              <StyledTabs
                 value={selected}
                 onChange={handleChange}
-                scrollButtons="auto"
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                aria-label="full width tabs example"
               >
-                <Tab label="全体表示"/>
-                <Tab label="月表示" onClick={() => connectGetMonthlyWeightData(selectedMonth)}/>
-              </Tabs>
+                <Tab label="全体表示" className={classes.tab}/>
+                <Tab label="月表示" className={classes.tab} onClick={() => connectGetMonthlyWeightData(selectedMonth)}/>
+              </StyledTabs>
             </AppBar>
             <AppBar position="static" color="default">
               {selected !== 0 ? monthlyTab : ""}

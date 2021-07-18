@@ -61,11 +61,11 @@ export const WeightGraph: React.FC<WeightGraphProps> = ({ userWeightData, select
         data: userWeightData.map(weight => weight['weight']),
         // グラフの背景色
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
+          '#4682B4',
         ],
         // グラフの枠線の色
         borderColor: [
-          'rgb(255, 99, 132)',
+          '#4682B4',
         ],
         // グラフの枠線の太さ
         borderWidth: 3,
