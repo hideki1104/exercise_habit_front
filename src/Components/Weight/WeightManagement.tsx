@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles, withStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -10,6 +10,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import { connectGet } from '../Api/ConnectApi';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,6 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
     tab: {
       backgroundColor: '#ffffff',
     },
+
+    weightRegistrationButton: {
+      textAlign: 'right',
+    }
   }),
 );
 
@@ -215,6 +220,9 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
             <AppBar position="static" color="default">
               {selected !== 0 ? monthlyTab : ""}
             </AppBar>
+            <div className={classes.weightRegistrationButton}>
+              <Link to='/weight_management/new'><Button>体重登録へ {'＞＞'}</Button></Link>
+            </div>
             <Typography className={classes.title} color="textSecondary" gutterBottom>
               体重管理
             </Typography>

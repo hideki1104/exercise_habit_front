@@ -9,6 +9,7 @@ import { Top } from './User/Top';
 import { Detail } from './User/Detail';
 import { UserEdit } from './User/UserEdit';
 import { WeightManagement } from './Weight/WeightManagement';
+import { WeightRegistration } from './Weight/WeightRegistration';
 
 interface UserMainProps {
 
@@ -102,6 +103,12 @@ export const UserMain: React.FC<UserMainProps> = () => {
             exact path={"/weight_management"}
             render={props => (
               <WeightManagement/>
+            )}
+          />
+          <Route
+            exact path={"/weight_management/new"}
+            render={props => (
+              <WeightRegistration/>
             )}
           />
         </Switch>
