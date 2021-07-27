@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -68,6 +69,16 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 120,
       marginTop: 40,
       marginBottom: 40,
+    },
+    heightField: {
+      fontSize: 18,
+      marginBottom: 40,
+      marginLeft: 340,
+      marginRight: 340,
+      padding: 20,
+      fontWeight: 'bold',
+      backgroundColor: '#F5F5F5',
+      borderRadius: '5%',
     }
   }),
 );
@@ -77,6 +88,7 @@ interface WeighRegistrationProps {
 
 export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
   const classes = useStyles();
+  const history = useHistory();
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
   const [bmi, setBmi] = useState<number|null>(null);
@@ -89,6 +101,7 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
 
   const connectCreateOrUpdateWeight = async (requestData: WeightData) => {
       await connectPost(`http://localhost:3000/weights`, requestData);
+      history.push('/weight_management');
   }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -151,10 +164,11 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
       <Grid item xs={8}>
         <Card className={classes.root}>
           <div className={classes.weightManagementButton}>
-            <Link to='/weight_management'><Button>{'＜＜'}体重登録へ</Button></Link>
+            <Link to='/weight_management'><Button>{'＜＜'}体重管理へ</Button></Link>
           </div>
           <Typography className={classes.title} color="textSecondary" gutterBottom>体重登録</Typography>
           <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <div className={classes.heightField}>身長 175<span className={classes.unit}>cm</span></div>
             <TextField id="height" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
             pattern: {
               value: /[0-9]/,
