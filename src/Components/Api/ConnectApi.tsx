@@ -44,9 +44,6 @@ export const connectPost = async (url:string, params: object):Promise<connectPos
         {headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'access-token': headerData['access-token'] != null ? headerData["access-token"] : '',
-          'client': headerData["client"] != null ? headerData["client"] : '',
-          'uid': headerData["uid"] != null ? headerData["uid"] : '',
         }}
       );
       console.log('通信成功', response);

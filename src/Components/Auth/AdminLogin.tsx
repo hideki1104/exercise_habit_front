@@ -37,7 +37,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ handleLogin }) => {
     }
 
     handleLogin(responseData.data.name, responseData.headers)
-    history.push('/admin/');
+    history.push('/admin/top');
   }
   const classes = useStyles();
 

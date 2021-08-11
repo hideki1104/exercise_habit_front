@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { AdminLogin } from './Auth/AdminLogin';
+import { Top } from './Admin/Top';
 
 interface AdminMainProps {
 
@@ -45,6 +46,12 @@ export const AdminMain: React.FC<AdminMainProps> = () => {
             exact path={"/admin/sign_in"}
             render={props => (
               <AdminLogin handleLogin={handleLogin}/>
+            )}
+          />
+          <Route
+            exact path={"/admin/top"}
+            render={props => (
+              <Top/>
             )}
           />
         </Switch>
