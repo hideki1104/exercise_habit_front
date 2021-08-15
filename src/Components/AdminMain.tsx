@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { AdminLogin } from './Auth/AdminLogin';
 import { Top } from './Admin/Top';
+import { TrainingForm } from './Training/TrainingForm';
 
 interface AdminMainProps {
 
@@ -52,6 +53,12 @@ export const AdminMain: React.FC<AdminMainProps> = () => {
             exact path={"/admin/top"}
             render={props => (
               <Top/>
+            )}
+          />
+          <Route
+            exact path={"/admin/training/new"}
+            render={props => (
+              <TrainingForm/>
             )}
           />
         </Switch>
