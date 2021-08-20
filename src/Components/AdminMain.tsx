@@ -62,12 +62,6 @@ export const AdminMain: React.FC<AdminMainProps> = () => {
               <TrainingForm/>
             )}
           />
-          <Route
-            exact path={"/admin/genre/new"}
-            render={props => (
-              <GenreForm/>
-            )}
-          />
         </Switch>
         <Footer/>
       </BrowserRouter>

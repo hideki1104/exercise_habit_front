@@ -105,9 +105,6 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
           <Link to='/admin/training/new' className={classes.headerLink}>
             <Button color="inherit">トレーニング登録</Button>
           </Link>
-          <Link to='/admin/genre/new' className={classes.headerLink}>
-            <Button color="inherit">ジャンル登録</Button>
-          </Link>
           <><Logout handleLogout={handleLogout} isAdmin={isAdmin}/></>
         </>
         :
