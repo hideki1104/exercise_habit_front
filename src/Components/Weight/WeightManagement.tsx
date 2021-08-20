@@ -150,9 +150,7 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
   }, [])
 
   const connectGetMonthlyWeightData = async (month:string) => {
-    console.log(month);
     const responseWeightData = await connectGet(`http://localhost:3000/weights/${month}/edit`);
-    console.log(responseWeightData);
 
     if (!responseWeightData.isSuccess ) {
       // エラー処理

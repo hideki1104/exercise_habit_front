@@ -122,7 +122,7 @@ export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleTrainin
                     color="default"
                     checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>健康維持</span>}
                     icon={<span className={classes.icon}>健康維持</span>}
-                    value="2"
+                    value="0"
                   />
                 </Grid>
 
@@ -133,7 +133,7 @@ export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleTrainin
                     color="default"
                     checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>痩せたい</span>}
                     icon={<span className={classes.icon}>痩せたい</span>}
-                    value="0"
+                    value="1"
                   />
                 </Grid>
 
@@ -144,7 +144,7 @@ export const TrainingTypeForm: React.FC<TrainingTypeFormProps> = ({handleTrainin
                     color="default"
                     checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>筋肉をつけたい</span>}
                     icon={<span className={classes.icon}>筋肉をつけたい</span>}
-                    value="1"
+                    value="2"
                   />
                 </Grid>
 

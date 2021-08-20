@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { connectPost } from '../Api/ConnectApi';
-import Grid from '@material-ui/core/Grid';
+import { connectGet } from '../Api/ConnectApi';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     root: {
       textAlign: 'center',
-      marginTop: 30,
     },
     title: {
       fontSize: 30,
@@ -41,6 +40,15 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 50,
       marginTop: 30,
     },
+    itemList: {
+      listStyleType: "none",
+    },
+    item: {
+      fontSize: 20,
+      fontWeight: "bold",
+      paddingTop: 5,
+      textAlign: "left",
+    },
   }),
 );
 
@@ -49,13 +57,27 @@ interface GenreFormProps {
 
 export const GenreForm: React.FC<GenreFormProps> = () => {
   type GenreData = {
-    name: number
+    id: number
+    name: string
   }
 
-  const [errorMessage, setErrorMessege] = useState<string>("");
-  const history = useHistory();
+  const [errorMessage, setErrorMessege]                          = useState<string>("");
+  const history                                                  = useHistory();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<GenreData>();
-  const classes = useStyles();
+  const classes                                                  = useStyles();
+  const [genreList, setGenreList]                                = useState<GenreData[]>([]);
+
+  useEffect(() => {
+    const connectGetGenreList = async () => {
+      const responseGenreList = await connectGet(`http://localhost:3000/genres`);
+      if (!responseGenreList.isSuccess ) {
+        // エラー処理
+        return;
+      }
+      setGenreList(responseGenreList.data);
+    }
+    connectGetGenreList();
+  }, [])
 
   const handleOnSubmit: SubmitHandler<GenreData> = async (requestData: GenreData) => {
     const responseData = await connectPost("http://localhost:3000/genres", requestData);
@@ -69,26 +91,27 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
   }
 
   return (
-    <div className={classes.main}>
-      <Grid container alignItems="center" justify="center">
-        <Grid item xs={8}>
-          <Card className={classes.root}>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-              ジャンル登録
-            </Typography>
-            <CardContent>
-              <form onSubmit={handleSubmit(handleOnSubmit)}>
-                <span className={classes.errorMessage}>{errorMessage}</span><br/>
-                <TextField className={classes.genreForm} id="genre" label="ジャンル名" variant="outlined" type="text" {...register("name", { required: true})}/><br/>
-                <span className={classes.errorMessage}>
-                  {errors.name && errors.name.type === "required" && "ジャンル名を入力してください"}
-                </span><br/>
-                <Button className={classes.registrationButton} id="login_button" variant="contained" type="submit">登録</Button>
-              </form>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </div>
+    <Card className={classes.root}>
+      <Typography className={classes.title} color="textSecondary" gutterBottom>
+        ジャンル登録
+      </Typography>
+      <CardContent>
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <span className={classes.errorMessage}>{errorMessage}</span><br/>
+          <TextField className={classes.genreForm} id="genre" label="ジャンル名" variant="outlined" type="text" {...register("name", { required: true})}/><br/>
+          <span className={classes.errorMessage}>
+            {errors.name && errors.name.type === "required" && "ジャンル名を入力してください"}
+          </span><br/>
+          <Button className={classes.registrationButton} id="login_button" variant="contained" type="submit">登録</Button>
+        </form>
+      </CardContent>
+      <CardContent>
+        <ul className={classes.itemList}>
+          {genreList.map((genre) => (
+            <p className={classes.item}>{genre.name}</p>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
   );
 }
