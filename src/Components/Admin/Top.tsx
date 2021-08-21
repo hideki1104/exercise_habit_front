@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import { GenreForm } from '../Genre/GenreForm';
 import { connectGet } from '../Api/ConnectApi';
+import YouTube from 'react-youtube';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
     difficulyType: {
       fontSize: 12,
       color: "#808080",
+    },
+    yt_thumnail: {
+      height: 180,
+      width: "100%",
     }
   }),
 );
@@ -78,6 +83,11 @@ export const Top: React.FC<TopProps> = () => {
     </Card>
   );
 
+  const opts = {
+    height: '180',
+    width: '100%',
+  };
+
   useEffect(() => {
     const connectGetTrainingList = async () => {
       const responseTrainingList = await connectGet(`http://localhost:3000/trainings`);
@@ -111,14 +121,7 @@ export const Top: React.FC<TopProps> = () => {
                 <Grid item xs={4}>
                   <div className={classes.movieContainer} onClick={handleOpen}>
                     <div className={classes.movie}>
-                      <iframe
-                        id="ytplayer"
-                        type="ytplayer"
-                        width="480"
-                        height="270"
-                        src={`https://www.youtube.com/watch?v=mQv_qJWXNxI`}
-                        frameBorder="0"
-                      />
+                      <img id="img" className={classes.yt_thumnail} alt="" width="9999" src="https://i.ytimg.com/vi/SORD03t7nlo/hq720_live.jpg?…AFwAcABBg==&rs=AOn4CLDTFMx_5ysg_8urWBBDpeg8GGGZAA"></img>
                     </div>
                     <span>{training.name}</span><br/>
                     <span className={classes.difficulyType}>難易度：初心者向け</span>
