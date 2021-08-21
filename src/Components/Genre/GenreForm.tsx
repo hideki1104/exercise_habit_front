@@ -13,7 +13,6 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
-      height: 900,
       paddingTop: 60,
       backgroundColor: '#F5F5F5',
     },
@@ -42,11 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     itemList: {
       listStyleType: "none",
+      backgroundColor: '#F5F5F5',
+      borderRadius: "5%",
     },
     item: {
-      fontSize: 20,
-      fontWeight: "bold",
-      paddingTop: 5,
+      fontSize: 16,
       textAlign: "left",
     },
   }),
