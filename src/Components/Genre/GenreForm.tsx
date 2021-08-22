@@ -12,11 +12,9 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    main: {
-      paddingTop: 60,
-      backgroundColor: '#F5F5F5',
-    },
-    root: {
+    genreContainer: {
+      marginTop: 80,
+      height: 900,
       textAlign: 'center',
     },
     title: {
@@ -90,7 +88,7 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.genreContainer}>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
         ジャンル登録
       </Typography>

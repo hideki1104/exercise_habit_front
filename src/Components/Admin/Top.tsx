@@ -7,12 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import { GenreForm } from '../Genre/GenreForm';
 import { connectGet } from '../Api/ConnectApi';
-import YouTube from 'react-youtube';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
-      paddingTop: 60,
       backgroundColor: '#F5F5F5',
     },
     root: {
@@ -46,7 +44,15 @@ const useStyles = makeStyles((theme: Theme) =>
     yt_thumnail: {
       height: 180,
       width: "100%",
-    }
+    },
+    paper: {
+      position: 'absolute',
+      width: 800,
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      textAlign: "center",
+    },
   }),
 );
 
@@ -69,17 +75,28 @@ export const Top: React.FC<TopProps> = () => {
     id: number
     name: string
     url: string
-    difficulyType: number
+    difficuly_type: number
+    thumbnail_id: number
   }
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [trainingList, setTrainingList] = useState<Training[]>([]);
+  const [targetTrainingData, setTargetTrainingData] = useState<Training>();
 
   const [modalStyle] = useState(getModalStyle);
-  const handleOpen   = () => setIsOpen(true);
-  const handleClose  = () => setIsOpen(true);
+  const handleOpen   = (index:number) => {
+    setIsOpen(true);
+    setTargetTrainingData(trainingList[index]);
+  }
+  const handleClose  = () => setIsOpen(false);
   const body = (
-    <Card style={modalStyle} className={classes.TrainingDetail} onClick={handleClose}>
+    <Card style={modalStyle} className={classes.paper}>
+      <Typography className={classes.title} color="textSecondary" gutterBottom>
+        トレーニング詳細
+      </Typography>
+      <p>
+        {targetTrainingData ? targetTrainingData.name : ""}
+      </p>
     </Card>
   );
 
@@ -110,6 +127,7 @@ export const Top: React.FC<TopProps> = () => {
           <Card className={classes.root}>
             <Modal
               open={isOpen}
+              onClose={handleClose}
             >
               {body}
             </Modal>
@@ -117,11 +135,11 @@ export const Top: React.FC<TopProps> = () => {
               トレーニング一覧
             </Typography>
             <Grid container alignItems="center" justify="flex-start">
-              {trainingList.map((training) => (
+              {trainingList.map((training, index) => (
                 <Grid item xs={4}>
-                  <div className={classes.movieContainer} onClick={handleOpen}>
+                  <div className={classes.movieContainer} onClick={() => handleOpen(index)}>
                     <div className={classes.movie}>
-                      <img id="img" className={classes.yt_thumnail} alt="" width="9999" src="https://i.ytimg.com/vi/SORD03t7nlo/hq720_live.jpg?…AFwAcABBg==&rs=AOn4CLDTFMx_5ysg_8urWBBDpeg8GGGZAA"></img>
+                      <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
                     </div>
                     <span>{training.name}</span><br/>
                     <span className={classes.difficulyType}>難易度：初心者向け</span>

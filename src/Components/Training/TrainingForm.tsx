@@ -100,11 +100,12 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
   const history                                                  = useHistory();
 
   type TrainingData = {
-    trainingName: string
+    name: string
     url: string
-    trainingType: number
-    difficulyType: number
-    genreId: number
+    thumbnail_id: string
+    training_type: number
+    difficuly_type: number
+    genre_id: number
   }
 
   type GenreData = {
@@ -127,6 +128,7 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
 
   const handleOnSubmit: SubmitHandler<TrainingData> = async (requestData: TrainingData) => {
     const responseData = await connectPost("http://localhost:3000/trainings", requestData);
+    console.log(responseData)
     // エラーの場合
     if (!responseData.isSuccess) {
       // エラー処理
@@ -147,9 +149,9 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
             <CardContent>
               <form onSubmit={handleSubmit(handleOnSubmit)}>
                 <span className={classes.errorMessage}>{errorMessage}</span><br/>
-                <TextField className={classes.genreForm} label="トレーニング名" variant="outlined" type="text" {...register("trainingName", { required: true })}/><br/>
+                <TextField className={classes.genreForm} label="トレーニング名" variant="outlined" type="text" {...register("name", { required: true })}/><br/>
                 <span className={classes.errorMessage}>
-                  {errors.trainingName && errors.trainingName.type === "required" && "トレーニング名を入力してください"}
+                  {errors.name && errors.name.type === "required" && "トレーニング名を入力してください"}
                 </span><br/>
                 <span className={classes.url}>https://www.youtube.com/watch?v=</span><br/>
 
@@ -158,10 +160,15 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
                   {errors.url && errors.url.type === "required" && "URLを入力してください"}
                 </span><br/>
 
+                <TextField className={classes.trainingForm} id="thumbnail_id" label="サムネイルID" variant="outlined" type="text" {...register("thumbnail_id", { required: true })}/><br/>
+                <span className={classes.errorMessage}>
+                  {errors.thumbnail_id && errors.thumbnail_id.type === "required" && "サムネイルIDを入力してください"}
+                </span><br/>
+
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>ジャンル</InputLabel>
                   <Select
-                    {...register("genreId")}
+                    {...register("genre_id")}
                     input={<OutlinedInput label="Name" />}
                   >
                     {genreList.map((genre) => (
@@ -175,13 +182,13 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
                   </Select>
                 </FormControl><br/>
                 <span className={classes.errorMessage}>
-                  {errors.genreId && errors.genreId.type === "required" && "ジャンルを選択してください"}
+                  {errors.genre_id && errors.genre_id.type === "required" && "ジャンルを選択してください"}
                 </span><br/>
 
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>トレーニングタイプ</InputLabel>
                   <Select
-                    {...register("trainingType", { required: true })}
+                    {...register("training_type", { required: true })}
                     input={<OutlinedInput label="Name" />}
                   >
                     {trainingTypes.map((trainingType, index) => (
@@ -196,12 +203,12 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
                 </FormControl><br/>
 
                 <span className={classes.errorMessage}>
-                  {errors.trainingType && errors.trainingType.type === "required" && "トレーニングタイプを選択してください"}
+                  {errors.training_type && errors.training_type.type === "required" && "トレーニングタイプを選択してください"}
                 </span><br/>
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>難易度</InputLabel>
                   <Select
-                    {...register("difficulyType", { required: true })}
+                    {...register("difficuly_type", { required: true })}
                     input={<OutlinedInput label="Name" />}
                   >
                     {difficulyTypes.map((difficulyType, index) => (
@@ -216,7 +223,7 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
                 </FormControl><br/>
 
                 <span className={classes.errorMessage}>
-                  {errors.difficulyType && errors.difficulyType.type === "required" && "難易度を選択してください"}
+                  {errors.difficuly_type && errors.difficuly_type.type === "required" && "難易度を選択してください"}
                 </span><br/>
                 <Button className={classes.registrationButton} variant="contained" type="submit">登録</Button>
               </form>
