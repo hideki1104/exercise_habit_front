@@ -29,15 +29,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     movieContainer: {
       margin: 20,
+      '&:hover': {
+        opacity: 0.6,
+      }
     },
     movie: {
       height: 180,
       width: "100%",
       backgroundColor: "#F5F5F5",
-    },
-    TrainingDetail: {
-      width: 1200,
-      height: 800,
     },
     difficulyType: {
       fontSize: 12,
