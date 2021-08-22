@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import { GenreForm } from '../Genre/GenreForm';
 import { connectGet } from '../Api/ConnectApi';
+import YouTube from 'react-youtube';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,8 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: "#F5F5F5",
     },
     TrainingDetail: {
-      width: 800,
-      height: 600,
+      width: 1200,
+      height: 800,
     },
     difficulyType: {
       fontSize: 12,
@@ -47,11 +49,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       position: 'absolute',
-      width: 800,
+      width: 1100,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      textAlign: "center",
+      textAlign: "left",
     },
   }),
 );
@@ -89,21 +91,30 @@ export const Top: React.FC<TopProps> = () => {
     setTargetTrainingData(trainingList[index]);
   }
   const handleClose  = () => setIsOpen(false);
+
+  const opts = {
+    width: '800',
+    height: '500',
+  };
+
   const body = (
     <Card style={modalStyle} className={classes.paper}>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
-        トレーニング詳細
-      </Typography>
-      <p>
         {targetTrainingData ? targetTrainingData.name : ""}
-      </p>
+        <span className={classes.difficulyType}>難易度：初心者向け</span>
+      </Typography>
+      <Grid container>
+        <Grid item xs={9}>
+          <YouTube videoId={targetTrainingData ? targetTrainingData.url : ""} opts={opts} />
+        </Grid>
+        <Grid item xs={3}>
+          <p>説明</p><br/>
+          <span>説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、</span><br/>
+          <Button>編集する</Button>
+        </Grid>
+      </Grid>
     </Card>
   );
-
-  const opts = {
-    height: '180',
-    width: '100%',
-  };
 
   useEffect(() => {
     const connectGetTrainingList = async () => {
