@@ -88,17 +88,19 @@ function getStyles(name:string, personName:any, theme:Theme) {
   };
 }
 
-interface TrainingFormProps {
+interface TrainingEditProps {
 
 }
 
-export const TrainingForm: React.FC<TrainingFormProps> = () => {
+export const TrainingEdit: React.FC<TrainingEditProps> = () => {
   const [genreList, setGenreList]                                = useState<GenreData[]>([]);
   const [errorMessage, setErrorMessege]                          = useState<string>("");
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TrainingData>();
   const classes                                                  = useStyles();
-  const theme                                                    = useTheme();
   const history                                                  = useHistory();
+  const pathNameList = history.location.pathname.split("/");
+  const trainingId   = Number(pathNameList[4]);
+  console.log(trainingId);
 
   type TrainingData = {
     name: string
@@ -122,7 +124,6 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
         // エラー処理
         return;
       }
-
       setGenreList(responseGenreList.data);
     }
     connectGetGenreList();
@@ -147,7 +148,7 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
         <Grid item xs={8}>
           <Card className={classes.root}>
             <Typography className={classes.title} color="textSecondary" gutterBottom>
-              トレーニング登録
+              トレーニング編集
             </Typography>
             <CardContent>
               <form onSubmit={handleSubmit(handleOnSubmit)}>

@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import { GenreForm } from '../Genre/GenreForm';
 import { connectGet } from '../Api/ConnectApi';
-import YouTube from 'react-youtube';
+import { connectDelete } from '../Api/ConnectApi';
+import { TrainingDetail } from '../Training/TrainingDetail';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -16,11 +17,12 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: '#F5F5F5',
     },
     root: {
-      height: 900,
+      height: "100%",
       textAlign: 'center',
       marginTop: 86,
       marginbottom: 80,
       marginLeft: 50,
+      paddingBottom: 80,
     },
     title: {
       fontSize: 30,
@@ -54,6 +56,10 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "left",
     },
+    edit_link: {
+      textDecoration: "none",
+      color: "#ffffff",
+    },
   }),
 );
 
@@ -68,6 +74,12 @@ function getModalStyle() {
   };
 }
 
+const difficulyTypeList = [
+  '初心者向け',
+  '中級者向け',
+  '上級者向け',
+];
+
 interface TopProps {
 }
 
@@ -78,18 +90,30 @@ export const Top: React.FC<TopProps> = () => {
     url: string
     difficuly_type: number
     thumbnail_id: number
+    description: string
   }
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [trainingList, setTrainingList] = useState<Training[]>([]);
   const [targetTrainingData, setTargetTrainingData] = useState<Training>();
 
-  const [modalStyle] = useState(getModalStyle);
   const handleOpen   = (index:number) => {
     setIsOpen(true);
     setTargetTrainingData(trainingList[index]);
   }
-  const handleClose  = () => setIsOpen(false);
+  const handleClose = () => setIsOpen(false);
+
+  const connectDeleteTraining = async (index: number) => {
+    const result:boolean = window.confirm("トレーニングを削除しますか？");
+    if (!result) {
+      return;
+    }
+    const trainigId = trainingList[index].id;
+    const responseTraining = await connectDelete(`http://localhost:3000/trainings/${trainigId}`);
+    if (!responseTraining.isSuccess) {
+      return
+    }
+  }
 
   const opts = {
     width: '800',
@@ -97,22 +121,7 @@ export const Top: React.FC<TopProps> = () => {
   };
 
   const body = (
-    <Card style={modalStyle} className={classes.paper}>
-      <Typography className={classes.title} color="textSecondary" gutterBottom>
-        {targetTrainingData ? targetTrainingData.name : ""}
-        <span className={classes.difficulyType}>難易度：初心者向け</span>
-      </Typography>
-      <Grid container>
-        <Grid item xs={9}>
-          <YouTube videoId={targetTrainingData ? targetTrainingData.url : ""} opts={opts} />
-        </Grid>
-        <Grid item xs={3}>
-          <p>説明</p><br/>
-          <span>説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、説明、</span><br/>
-          <Button>編集する</Button>
-        </Grid>
-      </Grid>
-    </Card>
+    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} />
   );
 
   useEffect(() => {
@@ -125,6 +134,7 @@ export const Top: React.FC<TopProps> = () => {
       setTrainingList(responseTrainingList.data);
     }
     connectGetTrainingList();
+    console.log("useEffect!!");
   }, [])
 
   return (
@@ -152,8 +162,10 @@ export const Top: React.FC<TopProps> = () => {
                       <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
                     </div>
                     <span>{training.name}</span><br/>
-                    <span className={classes.difficulyType}>難易度：初心者向け</span>
+                    <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
                   </div>
+                  <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
+                  <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
                 </Grid>
               ))}
             </Grid>
