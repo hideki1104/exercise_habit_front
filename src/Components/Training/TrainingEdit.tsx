@@ -94,13 +94,13 @@ interface TrainingEditProps {
 
 export const TrainingEdit: React.FC<TrainingEditProps> = () => {
   const [genreList, setGenreList]                                = useState<GenreData[]>([]);
+  const [training, setTraining]                                = useState<TrainingData>({name:"", url:"",thumbnail_id:"", training_type:0, difficuly_type:0, genre_id:0, description:""});
   const [errorMessage, setErrorMessege]                          = useState<string>("");
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TrainingData>();
   const classes                                                  = useStyles();
   const history                                                  = useHistory();
   const pathNameList = history.location.pathname.split("/");
   const trainingId   = Number(pathNameList[4]);
-  console.log(trainingId);
 
   type TrainingData = {
     name: string
@@ -126,13 +126,20 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
       }
       setGenreList(responseGenreList.data);
     }
+    const connectGetTraining = async () => {
+      const responseTraining = await connectGet(`http://localhost:3000/trainings/${trainingId}`);
+      if (!responseTraining.isSuccess ) {
+        // エラー処理
+        return;
+      }
+      setTraining(responseTraining.data);
+    }
     connectGetGenreList();
+    connectGetTraining();
   }, [])
 
   const handleOnSubmit: SubmitHandler<TrainingData> = async (requestData: TrainingData) => {
-    console.log(requestData);
     const responseData = await connectPost("http://localhost:3000/trainings", requestData);
-    console.log(responseData)
     // エラーの場合
     if (!responseData.isSuccess) {
       // エラー処理
@@ -153,17 +160,17 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
             <CardContent>
               <form onSubmit={handleSubmit(handleOnSubmit)}>
                 <span className={classes.errorMessage}>{errorMessage}</span><br/>
-                <TextField className={classes.genreForm} label="トレーニング名" variant="outlined" type="text" {...register("name", { required: true })}/><br/>
+                <TextField className={classes.genreForm} label="トレーニング名" variant="outlined" type="text" value={training.name} {...register("name", { required: true })}/><br/>
                 <span className={classes.errorMessage}>
                   {errors.name && errors.name.type === "required" && "トレーニング名を入力してください"}
                 </span><br/>
 
-                <TextField className={classes.trainingForm} id="url" label="URL(下11桁)" variant="outlined" type="text" {...register("url", { required: true })}/><br/>
+                <TextField className={classes.trainingForm} id="url" label="URL(下11桁)" variant="outlined" type="text" value={training.url} {...register("url", { required: true })}/><br/>
                 <span className={classes.errorMessage}>
                   {errors.url && errors.url.type === "required" && "URLを入力してください"}
                 </span><br/>
 
-                <TextField className={classes.trainingForm} id="thumbnail_id" label="サムネイルID" variant="outlined" type="text" {...register("thumbnail_id", { required: true })}/><br/>
+                <TextField className={classes.trainingForm} id="thumbnail_id" label="サムネイルID" variant="outlined" type="text" value={training.thumbnail_id} {...register("thumbnail_id", { required: true })}/><br/>
                 <span className={classes.errorMessage}>
                   {errors.thumbnail_id && errors.thumbnail_id.type === "required" && "サムネイルIDを入力してください"}
                 </span><br/>
@@ -171,6 +178,7 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>ジャンル</InputLabel>
                   <Select
+                    value={training.genre_id}
                     {...register("genre_id")}
                     input={<OutlinedInput label="Name" />}
                   >
@@ -191,6 +199,7 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>トレーニングタイプ</InputLabel>
                   <Select
+                    value={training.training_type}
                     {...register("training_type", { required: true })}
                     input={<OutlinedInput label="Name" />}
                   >
@@ -211,6 +220,7 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
                 <FormControl className={classes.selectForm}>
                   <InputLabel className={classes.selectFormLabelName}>難易度</InputLabel>
                   <Select
+                    value={training.difficuly_type}
                     {...register("difficuly_type", { required: true })}
                     input={<OutlinedInput label="Name" />}
                   >
@@ -232,6 +242,7 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
                   id="description"
                   className={classes.trainingForm}
                   label="トレーニング説明"
+                  value={training.description}
                   multiline
                   rows={6}
                   variant="outlined"

@@ -63,17 +63,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function getModalStyle() {
-  const top  = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
 const difficulyTypeList = [
   '初心者向け',
   '中級者向け',
