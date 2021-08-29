@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { connectPost } from '../Api/ConnectApi';
+import { connectPatch, connectPost } from '../Api/ConnectApi';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -139,7 +139,7 @@ export const TrainingEdit: React.FC<TrainingEditProps> = () => {
   }, [])
 
   const handleOnSubmit: SubmitHandler<TrainingData> = async (requestData: TrainingData) => {
-    const responseData = await connectPost("http://localhost:3000/trainings", requestData);
+    const responseData = await connectPatch("http://localhost:3000/trainings", requestData);
     // エラーの場合
     if (!responseData.isSuccess) {
       // エラー処理
