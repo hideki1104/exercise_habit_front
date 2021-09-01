@@ -47,7 +47,7 @@ export const connectPost = async (url:string, params: object):Promise<connectPos
         }}
       );
       console.log('通信成功', response);
-      return { isSuccess: true, data: response.data.data, headers: response.headers, error: null };
+      return { isSuccess: true, data: response.data, headers: response.headers, error: null };
     } catch(error) {
       console.log(error);
       return { isSuccess: false, data: {}, headers: {}, error: error };

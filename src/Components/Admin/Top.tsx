@@ -5,11 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
 import { GenreForm } from '../Genre/GenreForm';
 import { connectGet } from '../Api/ConnectApi';
 import { connectDelete } from '../Api/ConnectApi';
 import { TrainingDetail } from '../Training/TrainingDetail';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,6 +80,7 @@ export const Top: React.FC<TopProps> = () => {
     difficuly_type: number
     thumbnail_id: number
     description: string
+    genre_id: number
   }
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -123,14 +124,17 @@ export const Top: React.FC<TopProps> = () => {
       setTrainingList(responseTrainingList.data);
     }
     connectGetTrainingList();
-    console.log("useEffect!!");
   }, [])
+
+  const setGenreSearch = (searchGenreId: number) => {
+    trainingList.filter(training => training.genre_id == searchGenreId)
+  }
 
   return (
     <div className={classes.main}>
       <Grid container alignItems="center" justify="center">
         <Grid item xs={3}>
-          <GenreForm/>
+          <GenreForm setGenreSearch={setGenreSearch}/>
         </Grid>
         <Grid item xs={8}>
           <Card className={classes.root}>

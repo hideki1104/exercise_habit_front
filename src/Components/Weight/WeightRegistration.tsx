@@ -169,7 +169,7 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
           <Typography className={classes.title} color="textSecondary" gutterBottom>体重登録</Typography>
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className={classes.heightField}>身長 175<span className={classes.unit}>cm</span></div>
-            <TextField id="height" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
+            <TextField id="weight" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
             pattern: {
               value: /[0-9]/,
               message: "半角数字で入力してください" } })} onBlur={e => {onBlur(e.target.value)}}/><br/>

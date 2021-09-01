@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { connectPost } from '../Api/ConnectApi';
-import { connectGet } from '../Api/ConnectApi';
+import { connectGet, connectPost, connectDelete } from '../Api/ConnectApi';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -46,13 +45,19 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: 16,
       textAlign: "left",
     },
+    button: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    }
   }),
 );
 
 interface GenreFormProps {
+  setGenreSearch: Function
 }
 
-export const GenreForm: React.FC<GenreFormProps> = () => {
+export const GenreForm: React.FC<GenreFormProps> = ({setGenreSearch}) => {
   type GenreData = {
     id: number
     name: string
@@ -60,7 +65,7 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
 
   const [errorMessage, setErrorMessege]                          = useState<string>("");
   const history                                                  = useHistory();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<GenreData>();
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<GenreData>();
   const classes                                                  = useStyles();
   const [genreList, setGenreList]                                = useState<GenreData[]>([]);
 
@@ -84,7 +89,26 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
       setErrorMessege("ジャンルの登録に失敗しました。");
       return;
     }
-    history.push("/admin/top");
+    genreList.push(responseData.data);
+    setGenreList(genreList);
+  }
+
+  const handleClick = (id: number) => {
+    setGenreSearch(id);
+  }
+
+  const connectDeleteGenre = async (index:number) => {
+    const responseData = await connectDelete(`http://localhost:3000/genres/${genreList[index].id}`);
+    // エラーの場合
+    if (!responseData.isSuccess) {
+      // エラー処理
+      setErrorMessege("ジャンルの削除に失敗しました。");
+      return;
+    }
+    const newGenreList = [...genreList];
+    console.log(newGenreList);
+    newGenreList.splice(index, 1);
+    setGenreList(newGenreList);
   }
 
   return (
@@ -104,8 +128,8 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
       </CardContent>
       <CardContent>
         <ul className={classes.itemList}>
-          {genreList.map((genre) => (
-            <p className={classes.item}>{genre.name}</p>
+          {genreList.map((genre, index) => (
+            <p className={classes.item} onClick={() => handleClick(genre.id)}>{genre.name}<Button variant="outlined" color="secondary" size="small" href="#text-buttons" onClick={() => connectDeleteGenre(index)}>削除</Button></p>
           ))}
         </ul>
       </CardContent>
