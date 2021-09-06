@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
     item: {
       fontSize: 16,
       textAlign: "left",
+      marginLeft: 15,
     },
     button: {
       '& > *': {
@@ -54,10 +55,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface GenreFormProps {
-  setGenreSearch: Function
 }
 
-export const GenreForm: React.FC<GenreFormProps> = ({setGenreSearch}) => {
+export const GenreForm: React.FC<GenreFormProps> = () => {
   type GenreData = {
     id: number
     name: string
@@ -94,7 +94,6 @@ export const GenreForm: React.FC<GenreFormProps> = ({setGenreSearch}) => {
   }
 
   const handleClick = (id: number) => {
-    setGenreSearch(id);
   }
 
   const connectDeleteGenre = async (index:number) => {

@@ -6,6 +6,7 @@ import { AdminLogin } from './Auth/AdminLogin';
 import { Top } from './Admin/Top';
 import { TrainingForm } from './Training/TrainingForm';
 import { TrainingEdit } from './Training/TrainingEdit';
+import { AdminContainer } from './templates/AdminContainer';
 
 interface AdminMainProps {
 
