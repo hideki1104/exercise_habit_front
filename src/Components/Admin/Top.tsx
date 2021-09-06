@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrainingIndex } from '../Training/TrainingIndex';
+import { TrainingList } from '../Training/TrainingList';
 import { AdminContainer } from '../templates/AdminContainer';
 
 interface TopProps {
@@ -8,7 +8,7 @@ interface TopProps {
 export const Top: React.FC<TopProps> = () => {
   return (
     <>
-      <AdminContainer title={"トレーニング一覧"} body={<TrainingIndex/>}/>
+      <AdminContainer title={"トレーニング一覧"} body={<TrainingList isAdmin={true}/>}/>
     </>
   );
 }

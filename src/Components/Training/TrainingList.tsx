@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { connectGet, connectDelete } from '../Api/ConnectApi';
-import { TrainingDetail } from '../Training/TrainingDetail';
+import { TrainingDetail } from './TrainingDetail';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
       textDecoration: "none",
       color: "#ffffff",
     },
+    genreSearch: {
+      width: 200,
+    }
   }),
 );
 
@@ -49,10 +57,11 @@ const difficulyTypeList = [
   '上級者向け',
 ];
 
-interface TrainingIndexProps {
+interface TrainingListProps {
+  isAdmin: boolean
 }
 
-export const TrainingIndex: React.FC<TrainingIndexProps> = () => {
+export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) => {
   type Training = {
     id: number
     name: string
@@ -111,6 +120,16 @@ export const TrainingIndex: React.FC<TrainingIndexProps> = () => {
 
   return (
     <>
+      <FormControl className={classes.genreSearch}>
+        <InputLabel>ジャンル</InputLabel>
+        <Select
+          input={<OutlinedInput label="Name" />}
+        >
+          
+          <MenuItem>
+          </MenuItem>
+        </Select>
+      </FormControl><br/>
       <Grid container alignItems="center" justify="flex-start">
         {trainingList.map((training, index) => (
           <Grid item xs={4}>
@@ -121,8 +140,14 @@ export const TrainingIndex: React.FC<TrainingIndexProps> = () => {
               <span>{training.name}</span><br/>
               <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
             </div>
-            <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
-            <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
+            {isAdmin ?
+            <>
+              <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
+              <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
+            </>
+            :
+            <></>
+            }
           </Grid>
         ))}
       </Grid>
