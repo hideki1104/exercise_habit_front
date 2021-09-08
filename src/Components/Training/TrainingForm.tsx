@@ -79,15 +79,6 @@ const difficulyTypes = [
   '3.上級者向け',
 ];
 
-function getStyles(name:string, personName:any, theme:Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 interface TrainingFormProps {
 
 }
@@ -97,7 +88,6 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
   const [errorMessage, setErrorMessege]                          = useState<string>("");
   const { register, handleSubmit, formState: { errors }, reset } = useForm<TrainingData>();
   const classes                                                  = useStyles();
-  const theme                                                    = useTheme();
   const history                                                  = useHistory();
 
   type TrainingData = {

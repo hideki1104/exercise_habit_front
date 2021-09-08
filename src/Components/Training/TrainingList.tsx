@@ -71,10 +71,17 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
     description: string
     genre_id: number
   }
+  type GenreData = {
+    id: number
+    name: string
+  }
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isGenreSeached, setIsGenreSearched] = useState<boolean>(false);
   const [trainingList, setTrainingList] = useState<Training[]>([]);
+  const [genreSearchedTrainingList, setGenreSearchedTrainingList] = useState<Training[]>([]);
   const [targetTrainingData, setTargetTrainingData] = useState<Training>();
+  const [genreList, setGenreList] = useState<GenreData[]>([]);
 
   const handleOpen   = (index:number) => {
     setIsOpen(true);
@@ -97,10 +104,11 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
     setTrainingList(newTrainingList);
   }
 
-  const opts = {
-    width: '800',
-    height: '500',
-  };
+  const handleGenreSearch = (e:any) => {
+    const genreSearchedTrainingList = trainingList.filter(training => training.genre_id == e.target.value);
+    setGenreSearchedTrainingList(genreSearchedTrainingList);
+    setIsGenreSearched(true);
+  }
 
   useEffect(() => {
     const connectGetTrainingList = async () => {
@@ -111,7 +119,19 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
       }
       setTrainingList(responseTrainingList.data);
     }
+
+    const connectGetGenreList = async () => {
+      const responseGenreList = await connectGet(`http://localhost:3000/genres`);
+      if (!responseGenreList.isSuccess ) {
+        // エラー処理
+        return;
+      }
+
+      setGenreList(responseGenreList.data);
+    }
+
     connectGetTrainingList();
+    connectGetGenreList();
   }, [])
 
   const modalBody = (
@@ -123,33 +143,65 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
       <FormControl className={classes.genreSearch}>
         <InputLabel>ジャンル</InputLabel>
         <Select
+          onChange={(e) => handleGenreSearch(e)}
           input={<OutlinedInput label="Name" />}
         >
-          
-          <MenuItem>
-          </MenuItem>
+          {genreList.map((genre) => (
+            <MenuItem
+            key={genre.id}
+            value={genre.id}
+            >
+              {genre.name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl><br/>
       <Grid container alignItems="center" justify="flex-start">
-        {trainingList.map((training, index) => (
-          <Grid item xs={4}>
-            <div className={classes.movieContainer} onClick={() => handleOpen(index)}>
-              <div className={classes.movie}>
-                <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
-              </div>
-              <span>{training.name}</span><br/>
-              <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
-            </div>
-            {isAdmin ?
-            <>
-              <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
-              <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
-            </>
-            :
-            <></>
-            }
-          </Grid>
-        ))}
+        {isGenreSeached ?
+          <>
+            {genreSearchedTrainingList.map((training, index) => (
+              <Grid item xs={4}>
+                <div className={classes.movieContainer} onClick={() => handleOpen(index)}>
+                  <div className={classes.movie}>
+                    <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+                  </div>
+                  <span>{training.name}</span><br/>
+                  <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
+                </div>
+                {isAdmin ?
+                <>
+                  <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
+                  <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
+                </>
+                :
+                <></>
+                }
+              </Grid>
+            ))}
+          </>
+          :
+          <>
+            {trainingList.map((training, index) => (
+              <Grid item xs={4}>
+                <div className={classes.movieContainer} onClick={() => handleOpen(index)}>
+                  <div className={classes.movie}>
+                    <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+                  </div>
+                  <span>{training.name}</span><br/>
+                  <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
+                </div>
+                {isAdmin ?
+                <>
+                  <Button variant="contained" color="primary"><Link className={classes.edit_link} to={`/admin/training/edit/${training.id}`}>編集</Link></Button>
+                  <Button variant="contained" color="secondary" onClick={() => connectDeleteTraining(index)}>削除</Button>
+                </>
+                :
+                <></>
+                }
+              </Grid>
+            ))}
+          </>
+        }
       </Grid>
       <Modal
         open={isOpen}
