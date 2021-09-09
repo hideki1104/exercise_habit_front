@@ -12,6 +12,7 @@ import { WeightManagement } from './Weight/WeightManagement';
 import { WeightRegistration } from './Weight/WeightRegistration';
 import { Index } from './SocialNetwork/index';
 import { TrainingIndex } from './pages/user/TrainingIndex';
+import { TrainingHistory } from './pages/user/TrainingHistory';
 
 interface UserMainProps {
 
@@ -123,6 +124,12 @@ export const UserMain: React.FC<UserMainProps> = () => {
             exact path={"/trainings"}
             render={props => (
               <TrainingIndex/>
+            )}
+          />
+          <Route
+            exact path={"/historys"}
+            render={props => (
+              <TrainingHistory/>
             )}
           />
         </Switch>
