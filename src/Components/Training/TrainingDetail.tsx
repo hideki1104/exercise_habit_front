@@ -114,6 +114,9 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   const handleOnSubmit: SubmitHandler<HistoryData> = async (requestHistoryData:HistoryData) => {
     requestHistoryData.training_id = targetTrainingData ? targetTrainingData.id : 0;
     const responseData = await connectPost("http://localhost:3000/histories", requestHistoryData);
+    if (!responseData.isSuccess) {
+      return;
+    }
   }
 
   return (

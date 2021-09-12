@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connectGet } from '../Api/ConnectApi';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,6 +45,15 @@ interface HistoryListProps {
 }
 
 export const HistoryList: React.FC<HistoryListProps> = () => {
+
+  useEffect(() => {
+    const connectGetHistoryList = async () => {
+      const responseData = await connectGet(`http://localhost:3000/histories`);
+      console.log(responseData);
+    }
+
+    connectGetHistoryList();
+  }, [])
 
   return (
     <>
