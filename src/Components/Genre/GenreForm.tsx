@@ -65,7 +65,7 @@ export const GenreForm: React.FC<GenreFormProps> = () => {
 
   const [errorMessage, setErrorMessege]                          = useState<string>("");
   const history                                                  = useHistory();
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<GenreData>();
+  const { register, handleSubmit, formState: { errors } }        = useForm<GenreData>();
   const classes                                                  = useStyles();
   const [genreList, setGenreList]                                = useState<GenreData[]>([]);
 

@@ -121,7 +121,6 @@ export const TrainingForm: React.FC<TrainingFormProps> = () => {
   const handleOnSubmit: SubmitHandler<TrainingData> = async (requestData: TrainingData) => {
     console.log(requestData);
     const responseData = await connectPost("http://localhost:3000/trainings", requestData);
-    console.log(responseData)
     // エラーの場合
     if (!responseData.isSuccess) {
       // エラー処理

@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { connectPost } from '../Api/ConnectApi';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import YouTube from 'react-youtube';
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +58,11 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "left",
     },
+    setCount: {
+      width: 100,
+      height: 50,
+      marginBottom: 30,
+    }
   }),
 );
 
@@ -86,11 +99,22 @@ interface TrainingDetailProps {
 export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingData}) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const opts = {
     width: '800',
     height: '500',
   };
+
+  type HistoryData = {
+    training_id: number
+    set_count: number
+  }
+
+  const handleOnSubmit: SubmitHandler<HistoryData> = async (requestHistoryData:HistoryData) => {
+    requestHistoryData.training_id = targetTrainingData ? targetTrainingData.id : 0;
+    const responseData = await connectPost("http://localhost:3000/histories", requestHistoryData);
+  }
 
   return (
     <Card style={modalStyle} className={classes.paper}>
@@ -105,6 +129,26 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
         <Grid item xs={3}>
           <p>説明</p><br/>
           <span>{targetTrainingData ? targetTrainingData.description : ""}</span><br/>
+          <form onSubmit={handleSubmit(handleOnSubmit)}>
+            <FormControl>
+              <InputLabel>セット数</InputLabel>
+              <Select
+                className={classes.setCount}
+                input={<OutlinedInput label="Name" />}
+                {...register("set_count")}
+              >
+                {[1,2,3,4,5,6,7,8,9,10].map((i) => (
+                  <MenuItem
+                    value={i}
+                    key={i}
+                  >
+                    {i}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl><br/>
+            <Button variant="contained" type="submit" color="primary">トレーニング登録</Button>
+          </form>
         </Grid>
       </Grid>
     </Card>
