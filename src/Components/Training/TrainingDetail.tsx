@@ -62,7 +62,12 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 100,
       height: 50,
       marginBottom: 30,
-    }
+    },
+    errorMessage: {
+      height: 10,
+      color: "red",
+      fontSize: 12,
+    },
   }),
 );
 
@@ -94,9 +99,10 @@ type TrainingDetail = {
 
 interface TrainingDetailProps {
   targetTrainingData: TrainingDetail|null
+  setIsOpen: Function
 }
 
-export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingData}) => {
+export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingData, setIsOpen}) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -112,11 +118,16 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   }
 
   const handleOnSubmit: SubmitHandler<HistoryData> = async (requestHistoryData:HistoryData) => {
+    const result:boolean = window.confirm("トレーニング履歴を登録しますか？");
+    if (!result) {
+      return;
+    }
     requestHistoryData.training_id = targetTrainingData ? targetTrainingData.id : 0;
     const responseData = await connectPost("http://localhost:3000/histories", requestHistoryData);
     if (!responseData.isSuccess) {
       return;
     }
+    setIsOpen(false);
   }
 
   return (
@@ -138,8 +149,8 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
               <Select
                 className={classes.setCount}
                 input={<OutlinedInput label="Name" />}
-                {...register("set_count")}
-              >
+                {...register("set_count", { required: true })}
+              ><br/>
                 {[1,2,3,4,5,6,7,8,9,10].map((i) => (
                   <MenuItem
                     value={i}
@@ -149,6 +160,9 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
                   </MenuItem>
                 ))}
               </Select>
+              <span className={classes.errorMessage}>
+                {errors.set_count && errors.set_count.type === "required" && "セット数を選択してください"}
+              </span><br/>
             </FormControl><br/>
             <Button variant="contained" type="submit" color="primary">トレーニング登録</Button>
           </form>

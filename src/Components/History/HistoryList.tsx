@@ -5,8 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,7 +16,19 @@ const useStyles = makeStyles((theme: Theme) =>
     history_img: {
       width: 50,
       height: 50,
-    }
+    },
+    history_paging: {
+      '& > *': {
+        marginTop: theme.spacing(2),
+      }
+    },
+    totalHistoriesTitle: {
+      color: "#808080",
+    },
+    totalHistoriesNum: {
+      fontSize: 24,
+      fontWeight: "bold",
+    },
   }),
 );
 
@@ -42,7 +53,12 @@ export const HistoryList: React.FC<HistoryListProps> = () => {
     created_at: string
   }
 
+  const [page, setPage] = useState(1);
   const [historiesList, setHistoriesList] = useState<HistoryData[]>([]);
+  const [displayedItems, setDisplayedItems] = useState<HistoryData[]>([]);
+  const [pageCount, setPageCount] = useState<number>(1);
+  const [totalHistoriesNum, setTotalHistoriesNum] = useState<number>(0);
+  const displayNum = 5;
 
   useEffect(() => {
     const connectGetHistoryList = async () => {
@@ -51,15 +67,30 @@ export const HistoryList: React.FC<HistoryListProps> = () => {
         return;
       }
       setHistoriesList(responseData.data);
+      setTotalHistoriesNum(responseData.data.length);
+      setPageCount(Math.ceil(responseData.data.length / displayNum));
+      // 履歴情報一覧を降順にソート
+      const responseHistories = responseData.data.sort((a:HistoryData, b:HistoryData) => {
+        if (a.created_at > b.created_at) return -1;
+        if (a.created_at < b.created_at) return 1;
+        return 0;
+      });
+      console.log(responseHistories);
+      setDisplayedItems(responseHistories.slice(((page - 1) * displayNum), page * displayNum));
     }
-
     connectGetHistoryList();
   }, [])
 
+  const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+    setDisplayedItems(historiesList.slice(((page - 1) * displayNum), page * displayNum));
+  }
+
   return (
     <>
+      <p className={classes.totalHistoriesTitle}>合計アクティビティ数</p><span className={classes.totalHistoriesNum}>{totalHistoriesNum}</span>
       <List className={classes.root}>
-        {historiesList.map((history) => (
+        {displayedItems.map((history) => (
           <ListItem>
             <ListItemAvatar>
               <img className={classes.history_img} id="img" alt="" src={`https://i.ytimg.com/vi/${history ? history.url : ""}/${history ? history.thumbnail_id : ""}`}></img>
@@ -67,6 +98,9 @@ export const HistoryList: React.FC<HistoryListProps> = () => {
             <ListItemText primary={`${history ? history.name : ""} × ${history ? history.set_count : ""}セット`} secondary={`${history ? convertJst(history.created_at) : ""}`} />
           </ListItem>
         ))}
+        <div className={classes.history_paging}>
+          <Pagination count={pageCount} page={page} onChange={handleChange}/>
+        </div>
       </List>
     </>
   );

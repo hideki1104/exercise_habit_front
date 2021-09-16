@@ -135,7 +135,7 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
   }, [])
 
   const modalBody = (
-    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} />
+    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} setIsOpen={setIsOpen}/>
   );
 
   return (
