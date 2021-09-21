@@ -100,9 +100,10 @@ type TrainingDetail = {
 interface TrainingDetailProps {
   targetTrainingData: TrainingDetail|null
   setIsOpen: Function
+  setIsPostModalOpen: Function
 }
 
-export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingData, setIsOpen}) => {
+export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingData, setIsOpen, setIsPostModalOpen}) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -128,6 +129,11 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
       return;
     }
     setIsOpen(false);
+  }
+
+  const handlePostModalOpen = () => {
+    console.log("click!!");
+    setIsPostModalOpen(true);
   }
 
   return (
@@ -166,6 +172,7 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
             </FormControl><br/>
             <Button variant="contained" type="submit" color="primary">トレーニング登録</Button>
           </form>
+          <Button variant="contained" type="submit" color="primary" onClick={handlePostModalOpen}>トレーニングを共有する</Button>
         </Grid>
       </Grid>
     </Card>

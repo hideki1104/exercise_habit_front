@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { connectGet, connectDelete } from '../Api/ConnectApi';
+import { PostForm } from '../Post/PostForm';
 import { TrainingDetail } from './TrainingDetail';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
@@ -77,6 +78,7 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
   }
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPostModalOpen, setIsPostModalOpen] = useState<boolean>(false);
   const [isGenreSeached, setIsGenreSearched] = useState<boolean>(false);
   const [trainingList, setTrainingList] = useState<Training[]>([]);
   const [genreSearchedTrainingList, setGenreSearchedTrainingList] = useState<Training[]>([]);
@@ -88,6 +90,7 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
     setTargetTrainingData(trainingList[index]);
   }
   const handleClose = () => setIsOpen(false);
+  const handlePostModalClose = () => setIsPostModalOpen(false);
 
   const connectDeleteTraining = async (index: number) => {
     const result:boolean = window.confirm("トレーニングを削除しますか？");
@@ -135,7 +138,11 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
   }, [])
 
   const modalBody = (
-    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} setIsOpen={setIsOpen}/>
+    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} setIsOpen={setIsOpen} setIsPostModalOpen={setIsPostModalOpen}/>
+  );
+
+  const postModalBody = (
+    <PostForm/>
   );
 
   return (
@@ -208,6 +215,12 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
         onClose={handleClose}
       >
         {modalBody}
+      </Modal>
+      <Modal
+        open={isPostModalOpen}
+        onClose={handlePostModalClose}
+      >
+        {postModalBody}
       </Modal>
     </>
   );
