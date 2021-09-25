@@ -132,7 +132,6 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   }
 
   const handlePostModalOpen = () => {
-    console.log("click!!");
     setIsPostModalOpen(true);
   }
 

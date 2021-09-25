@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Logout } from './Auth/Logout';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const myTheme = createMuiTheme({
+const myTheme = createTheme({
   palette: {
     primary: {
       main: "#000000",

@@ -142,7 +142,7 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
   );
 
   const postModalBody = (
-    <PostForm/>
+    <PostForm targetTrainingData={targetTrainingData ? targetTrainingData : null}/>
   );
 
   return (
