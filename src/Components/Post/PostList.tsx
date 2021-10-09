@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import InfiniteScroll  from "react-infinite-scroller"
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { connectGet } from '../Api/ConnectApi';
+import { connectGet, connectPost } from '../Api/ConnectApi';
 import { PostDetail } from './PostDetail';
 import { PostModal } from './PostModal';
 import Modal from '@material-ui/core/Modal';
+import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +21,7 @@ export const PostList: React.FC<PostListProps> = () => {
   type Post = {
     id: number
     text: string
+    user_id: number
     user_name: string
     training_name: string
     url: string
@@ -48,11 +50,15 @@ export const PostList: React.FC<PostListProps> = () => {
   }, [])
 
   const loadMore = (page:number) => {
-    console.log(page);
   }
 
-  const handleFavoriteClick = () => {
-    console.log(document.getElementById("favorite_icon"));
+  const connectLike = async (post_id:number, user_id:number) => {
+    const responseLikes = await connectPost(`http://localhost:3000/posts/${post_id}/likes`, {'post_id':post_id, 'user_id':user_id});
+  }
+
+  const handleFavoriteClick = (post_id:number, user_id:number, ref:any) => {
+    ref.current.setAttribute("color", "secondory");
+    // connectLike(post_id, user_id);
   }
 
   const loader = <div className="loader" key={0}>Loading ...</div>;
@@ -67,7 +73,7 @@ export const PostList: React.FC<PostListProps> = () => {
         hasMore={true}
         loader={loader}>
           {postList.map((post:Post) => (
-            <PostDetail postData={post} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen} />
+            <PostDetail postData={post} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen} isModalDisplay={false}/>
           ))}
       </InfiniteScroll>
       <Modal

@@ -1,16 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { connectPost } from '../Api/ConnectApi';
-import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import YouTube from 'react-youtube';
-import { useForm, SubmitHandler } from "react-hook-form";
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -47,6 +37,7 @@ type PostDetail = {
 type Post = {
   id: number
   text: string
+  user_id: number
   user_name: string
   training_name: string
   url: string
@@ -58,16 +49,48 @@ interface PostDetailProps {
   postData: Post|null
   handleFavoriteClick: Function
   handlePostOpen: Function
+  isModalDisplay:boolean
 }
 
-export const PostDetail: React.FC<PostDetailProps> = ({postData, handleFavoriteClick, handlePostOpen}) => {
+export const PostDetail: React.FC<PostDetailProps> = ({postData, handleFavoriteClick, handlePostOpen, isModalDisplay = false}) => {
   const classes = useStyles();
-
+  const ref = useRef(null);
   const convertJst = (date:Date) => {
     const createdAt = new Date(date)
     createdAt.setTime(createdAt.getTime() + 9)
     return createdAt.toLocaleString('ja-JP').slice(0,-3);
   }
+  const [isLike, setIsLike] = useState<boolean>(false)
+  const [color, setColor] = useState("")
+
+  useEffect(() => {
+    setIsLike(isLike ? true : false)
+  }, [])
+
+  const handleClick = () => {
+    setIsLike(!isLike ? true : false);
+    setColor(color ? "secondary" : "");
+    // handleFavoriteClick(postData!.id, postData!.user_id);
+  }
+
+  const iconContainer: JSX.Element = (
+    <>
+      {isModalDisplay ?
+        <></>
+        :
+        <>
+          <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon id="favorite_icon" onClick={() => handleClick()}/>
+            </IconButton>
+            <IconButton aria-label="share">
+              <CommentIcon />
+            </IconButton>
+          </CardActions>
+        </>
+      }
+    </>
+  )
 
   return (
     <Card className={classes.postCard}>
@@ -103,14 +126,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handleFavoriteC
           </Typography>
         </CardContent>
       </div>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon id="favorite_icon" onClick={() => handleFavoriteClick()}/>
-        </IconButton>
-        <IconButton aria-label="share">
-          <CommentIcon />
-        </IconButton>
-      </CardActions>
+      {iconContainer}
     </Card>
   );
 }

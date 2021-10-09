@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { connectPost } from '../Api/ConnectApi';
-import Grid from '@material-ui/core/Grid';
+import { connectCreateComment, connectGetComment } from '../Api/ConnectCommentApi';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import YouTube from 'react-youtube';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { PostDetail } from './PostDetail';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,12 +17,16 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "left",
     },
+    commentForm: {
+      width: 600,
+    }
   }),
 );
 
 type Post = {
   id: number
   text: string
+  user_id: number
   user_name: string
   training_name: string
   url: string
@@ -59,10 +56,47 @@ export const PostModal: React.FC<PostModalProps> = ({targetPostData, handleFavor
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [modalStyle] = useState(getModalStyle);
 
+  type CommentData = {
+    text: string
+    user_id: number
+    post_id: number
+  }
+
+  useEffect(() => {
+    const responseData = connectGetComment(targetPostData!.id);
+
+    console.log(responseData);
+  }, [])
+
+  const handleOnSubmit: SubmitHandler<CommentData> = async (requestData: CommentData) => {
+    const result:boolean = window.confirm("コメントを行いますか？");
+    if (!result) {
+      return;
+    }
+    requestData.user_id = targetPostData!.user_id;
+    requestData.post_id = targetPostData!.id;
+
+    const responseData = connectCreateComment(requestData, targetPostData!.id);
+
+    if (!responseData) {
+      return;
+    }
+  }
+
   return (
     <>
       <Card className={classes.paper} style={modalStyle}>
-        <PostDetail postData={targetPostData ? targetPostData : null} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen}/>
+        <PostDetail postData={targetPostData ? targetPostData : null} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen} isModalDisplay={true} />
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <TextField
+            label="コメントを入力"
+            type="text"
+            variant="outlined"
+            {...register("text", { required: true})}
+            className={classes.commentForm}
+          />
+          <Button variant="contained" type="submit" color="primary">投稿</Button>
+        </form>
       </Card>
     </>
   )
