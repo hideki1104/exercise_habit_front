@@ -25,5 +25,5 @@ export const connectGetComment = async (postId:number) => {
       return false;
   }
 
-  return responseData;
+  return responseData.data;
 };

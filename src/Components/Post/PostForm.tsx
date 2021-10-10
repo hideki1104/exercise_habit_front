@@ -5,7 +5,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { connectPost } from '../Api/ConnectApi';
+import { connectCreatePost } from '../Api/ConnectPostApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,11 +62,7 @@ export const PostForm: React.FC<PostFormProps> = ({targetTrainingData}) => {
       return;
     }
     requestData.training_id = targetTrainingData ? targetTrainingData.id : 0;
-    const responseData = await connectPost("http://localhost:3000/posts", requestData);
-
-    if (!responseData.isSuccess) {
-      return;
-    }
+    const responseData = await connectCreatePost(requestData);
     history.push("/posts");
   }
 

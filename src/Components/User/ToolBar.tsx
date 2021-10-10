@@ -70,21 +70,6 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
           <li className={classes.item}><Link to={`/user/${userData ? userData['id'] : null}`} className={classes.linkItem}><span className={classes.itemIcon}><PersonIcon/></span>マイページ</Link></li>
         </ul>
       </CardContent>
-      <CardHeader
-        className={classes.userItem}
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            <PersonIcon/>
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={userData ? userData.name : ""}
-        subheader={userData ? userData['email'] : ""}
-      />
     </Card>
   );
 }

@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       marginLeft: 100,
       textAlign: "center",
+      marginTop: 100,
     },
 
     paper: {

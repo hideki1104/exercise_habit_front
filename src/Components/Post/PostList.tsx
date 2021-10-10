@@ -6,7 +6,6 @@ import { connectGet, connectPost } from '../Api/ConnectApi';
 import { PostDetail } from './PostDetail';
 import { PostModal } from './PostModal';
 import Modal from '@material-ui/core/Modal';
-import { colors } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
