@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connectCreateLike, connectDeleteLike } from '../Api/ConnectLikeApi';
+import { connectCreateLike, connectGetLike, connectDeleteLike } from '../Api/ConnectLikeApi';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -65,7 +65,16 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
   const [isLike, setIsLike] = useState<boolean>(false)
 
   useEffect(() => {
-    setIsLike(isLike ? true : false)
+    const connectGetPostLike = async () => {
+      const result:boolean = await connectGetLike(postData!.id, postData!.user_id);
+      setIsLike(result)
+      if (result) {
+        const favoriteIcon = document.getElementById("favorite_icon");
+        favoriteIcon?.classList.add("makeStyles-favorite_icon-23")
+      }
+    }
+
+    connectGetPostLike();
   }, [])
 
   const handleClick = () => {
