@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connectCreateLike, connectDeleteLike } from '../Api/ConnectLikeApi';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -20,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
     postCard: {
       width: "100%",
       textAlign: "left",
+    },
+    favorite_icon: {
+      color: "red",
     },
   }),
 );
@@ -47,30 +51,35 @@ type Post = {
 
 interface PostDetailProps {
   postData: Post|null
-  handleFavoriteClick: Function
   handlePostOpen: Function
   isModalDisplay:boolean
 }
 
-export const PostDetail: React.FC<PostDetailProps> = ({postData, handleFavoriteClick, handlePostOpen, isModalDisplay = false}) => {
+export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen, isModalDisplay = false}) => {
   const classes = useStyles();
-  const ref = useRef(null);
   const convertJst = (date:Date) => {
     const createdAt = new Date(date)
     createdAt.setTime(createdAt.getTime() + 9)
     return createdAt.toLocaleString('ja-JP').slice(0,-3);
   }
   const [isLike, setIsLike] = useState<boolean>(false)
-  const [color, setColor] = useState("")
 
   useEffect(() => {
     setIsLike(isLike ? true : false)
   }, [])
 
   const handleClick = () => {
-    setIsLike(!isLike ? true : false);
-    setColor(color ? "secondary" : "");
-    // handleFavoriteClick(postData!.id, postData!.user_id);
+    const favoriteIcon = document.getElementById("favorite_icon");
+
+    if (!isLike) {
+      favoriteIcon?.classList.add("makeStyles-favorite_icon-23");
+      connectCreateLike(postData!.id, postData!.user_id);
+    } else {
+      favoriteIcon?.classList.remove("makeStyles-favorite_icon-23");
+      connectDeleteLike(postData!.id, postData!.user_id);
+    }
+
+    setIsLike(isLike ? false : true);
   }
 
   const iconContainer: JSX.Element = (

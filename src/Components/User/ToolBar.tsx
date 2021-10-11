@@ -18,7 +18,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     toolbar: {
-      marginTop: 80,
+      width: 350,
+      position: "fixed",
+      top: 120,
     },
     itemList: {
       listStyleType: "none",

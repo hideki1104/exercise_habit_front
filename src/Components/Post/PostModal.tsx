@@ -66,11 +66,10 @@ function getModalStyle() {
 
 interface PostModalProps {
   targetPostData:Post|null
-  handleFavoriteClick:Function
   handlePostOpen:Function
 }
 
-export const PostModal: React.FC<PostModalProps> = ({targetPostData, handleFavoriteClick, handlePostOpen}) => {
+export const PostModal: React.FC<PostModalProps> = ({targetPostData, handlePostOpen}) => {
   const classes = useStyles();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [modalStyle] = useState(getModalStyle);
@@ -149,7 +148,7 @@ export const PostModal: React.FC<PostModalProps> = ({targetPostData, handleFavor
   return (
     <>
       <Card className={classes.paper} style={modalStyle}>
-        <PostDetail postData={targetPostData ? targetPostData : null} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen} isModalDisplay={true} />
+        <PostDetail postData={targetPostData ? targetPostData : null} handlePostOpen={handlePostOpen} isModalDisplay={true} />
         {commentContainer}
       </Card>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={classes.commentForm}>

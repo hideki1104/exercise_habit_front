@@ -51,18 +51,9 @@ export const PostList: React.FC<PostListProps> = () => {
   const loadMore = (page:number) => {
   }
 
-  const connectLike = async (post_id:number, user_id:number) => {
-    const responseLikes = await connectPost(`http://localhost:3000/posts/${post_id}/likes`, {'post_id':post_id, 'user_id':user_id});
-  }
-
-  const handleFavoriteClick = (post_id:number, user_id:number, ref:any) => {
-    ref.current.setAttribute("color", "secondory");
-    // connectLike(post_id, user_id);
-  }
-
   const loader = <div className="loader" key={0}>Loading ...</div>;
   const modalBody = (
-    <PostModal targetPostData={targetPostData ? targetPostData : null} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen}/>
+    <PostModal targetPostData={targetPostData ? targetPostData : null} handlePostOpen={handlePostOpen}/>
   )
 
   return (
@@ -72,7 +63,7 @@ export const PostList: React.FC<PostListProps> = () => {
         hasMore={true}
         loader={loader}>
           {postList.map((post:Post) => (
-            <PostDetail postData={post} handleFavoriteClick={handleFavoriteClick} handlePostOpen={handlePostOpen} isModalDisplay={false}/>
+            <PostDetail postData={post} handlePostOpen={handlePostOpen} isModalDisplay={false}/>
           ))}
       </InfiniteScroll>
       <Modal

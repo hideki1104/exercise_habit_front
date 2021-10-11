@@ -5,14 +5,14 @@ import { Footer } from './Footer';
 import { Home } from './Home';
 import { Registration } from './Auth/Registration';
 import { Login } from './Auth/Login';
-import { Top } from './User/Top';
 import { Detail } from './User/Detail';
 import { UserEdit } from './User/UserEdit';
-import { WeightManagement } from './Weight/WeightManagement';
 import { WeightRegistration } from './Weight/WeightRegistration';
 import { PostIndex } from './pages/user/PostIndex';
 import { TrainingIndex } from './pages/user/TrainingIndex';
 import { TrainingHistory } from './pages/user/TrainingHistory';
+import { UserTop } from './pages/user/UserTop';
+import { WeightIndex } from './pages/user/WeightIndex';
 
 interface UserMainProps {
 
@@ -87,7 +87,7 @@ export const UserMain: React.FC<UserMainProps> = () => {
           <Route
             exact path={"/user/top"}
             render={props => (
-              <Top isSignUp={isSignUp}/>
+              <UserTop isSignUp={isSignUp}/>
             )}
           />
           <Route
@@ -105,7 +105,7 @@ export const UserMain: React.FC<UserMainProps> = () => {
           <Route
             exact path={"/weight_management"}
             render={props => (
-              <WeightManagement/>
+              <WeightIndex/>
             )}
           />
           <Route
