@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -14,12 +13,6 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    title: {
-      fontSize: 30,
-      fontWeight: 'bold',
-      paddingTop: 30,
-    },
-
     userForm: {
       width: 300,
       marginTop: 30,
@@ -108,9 +101,6 @@ export const UserForm: React.FC<UserFormProps> = ({handleUserInfoRegistration, e
 
   return (
     <>
-      <Typography className={classes.title} color="textSecondary" gutterBottom>
-        ユーザー情報登録
-      </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <span className={classes.errorMessage}>{errorMessage}</span><br/>

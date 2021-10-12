@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import { ToolBar } from './ToolBar';
 import { connectGet } from '../Api/ConnectApi';
+import { connectCreateFollow } from '../Api/ConnectFollowApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    main: {
-      backgroundColor: "#F5F5F5"
-    },
-    root: {
-      marginTop: 80,
-      marginLeft: 100,
-    },
     avatar: {
       width: theme.spacing(15),
       height: theme.spacing(15),
@@ -81,7 +72,7 @@ export const Detail: React.FC<DetailProps> = () => {
   const classes = useStyles();
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
-  const [userInfoData, setUserInfoData] = useState(userData);
+  const [userInfoData, setUserInfoData] = useState(userData.data);
   const [userWeightData, setUserWeightData] = useState(userData);
 
   useEffect(() => {
@@ -109,48 +100,44 @@ export const Detail: React.FC<DetailProps> = () => {
     connectGetWeightInfo();
   }, [])
 
+  const handleClick = () => {
+    connectCreateFollow(userInfoData.id);
+  }
+
   return (
     <>
-      <Grid container className={classes.main}>
-        <Grid item xs={3}>
-          <ToolBar/>
-        </Grid>
-        <Grid item xs={8}>
-          <Card className={classes.root}>
-            <CardContent className={classes.cardHeader}>
-              <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avatar}>
-              </Avatar>
-              <div className={classes.cardTitle}>
-                <p className={classes.cardName}>{userInfoData.name}</p>
-                <p className={classes.cardEmail}>{userInfoData.email}</p>
-              </div>
-            </CardContent>
-            <CardContent className={classes.editButton}>
-              <Link to={`/user/edit/${userData.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
-            </CardContent>
-            <table className={classes.table}>
-              <tbody>
-                <tr className={classes.tableRow}>
-                  <th className={classes.tableTitle}>身長</th>
-                  <td className={classes.tableValue}>{userInfoData.height}<span>cm</span></td>
-                </tr>
-                <tr className={classes.tableRow}>
-                  <th className={classes.tableTitle}>体重</th>
-                  <td className={classes.tableValue}>{userWeightData.weight}<span>kg</span></td>
-                </tr>
-                <tr className={classes.tableRow}>
-                  <th className={classes.tableTitle}>性別</th>
-                  <td className={classes.tableValue}>{userInfoData.sex ? "女性" : "男性"}</td>
-                </tr>
-                <tr className={classes.tableRow}>
-                  <th className={classes.tableTitle}>生年月日</th>
-                  <td className={classes.tableValue}>{userInfoData.birthday}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Card>
-        </Grid>
-      </Grid>
+      <CardContent className={classes.cardHeader}>
+        <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avatar}>
+        </Avatar>
+        <div className={classes.cardTitle}>
+          <p className={classes.cardName}>{userInfoData.name}</p>
+          <p className={classes.cardEmail}>{userInfoData.email}</p>
+        </div>
+      </CardContent>
+      <Button variant="outlined" onClick={handleClick}>フォローする</Button>
+      <CardContent className={classes.editButton}>
+        <Link to={`/user/edit/${userData.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
+      </CardContent>
+      <table className={classes.table}>
+        <tbody>
+          <tr className={classes.tableRow}>
+            <th className={classes.tableTitle}>身長</th>
+            <td className={classes.tableValue}>{userInfoData.height}<span>cm</span></td>
+          </tr>
+          <tr className={classes.tableRow}>
+            <th className={classes.tableTitle}>体重</th>
+            <td className={classes.tableValue}>{userWeightData.weight}<span>kg</span></td>
+          </tr>
+          <tr className={classes.tableRow}>
+            <th className={classes.tableTitle}>性別</th>
+            <td className={classes.tableValue}>{userInfoData.sex ? "女性" : "男性"}</td>
+          </tr>
+          <tr className={classes.tableRow}>
+            <th className={classes.tableTitle}>生年月日</th>
+            <td className={classes.tableValue}>{userInfoData.birthday}</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   )
 }

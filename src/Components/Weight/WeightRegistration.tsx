@@ -157,50 +157,42 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
   }
 
   return (
-    <Grid container className={classes.main}>
-      <Grid item xs={3}>
-        <ToolBar/>
-      </Grid>
-      <Grid item xs={8}>
-        <Card className={classes.root}>
-          <div className={classes.weightManagementButton}>
-            <Link to='/weight_management'><Button>{'＜＜'}体重管理へ</Button></Link>
-          </div>
-          <Typography className={classes.title} color="textSecondary" gutterBottom>体重登録</Typography>
-          <form onSubmit={handleSubmit(handleOnSubmit)}>
-            <div className={classes.heightField}>身長 175<span className={classes.unit}>cm</span></div>
-            <TextField id="weight" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
-            pattern: {
-              value: /[0-9]/,
-              message: "半角数字で入力してください" } })} onBlur={e => {onBlur(e.target.value)}}/><br/>
-            <span className={classes.errorMessage}>
-              {errors.weight && errors.weight.type === "required" && "体重を入力してください"}
-              {errors.weight && errors.weight.type === "pattern" && "半角数字で入力してください"}
-            </span><br/>
-            <Grid container>
-              <Grid item xs={4}>
-                <div className={classes.calcWeight}>
-                  <span>BMI</span>
-                  <p className={classes.calcValue}>{bmi != null ? bmi : ''}</p>
-                </div>
-              </Grid>
-              <Grid item xs={4}>
-                <div className={classes.calcWeight}>
-                  <span>肥満度</span>
-                  <p className={classes.calcValue}>{degreeObesity}</p>
-                </div>
-              </Grid>
-              <Grid item xs={4}>
-                <div className={classes.calcWeight}>
-                  <span>適正体重との差</span>
-                  <p className={classes.calcValue}>{appropriateWeight != null && appropriateWeight >= 0 ? '+' : ''}{appropriateWeight}<span className={classes.unit}>kg</span></p>
-                </div>
-              </Grid>
-            </Grid>
-            <Button className={classes.registrationButton} variant="contained" type="submit">登録する</Button><br/>
-          </form>
-        </Card>
-      </Grid>
-    </Grid>
+    <>
+      <div className={classes.weightManagementButton}>
+        <Link to='/weight_management'><Button>{'＜＜'}体重管理へ</Button></Link>
+      </div>
+      <form onSubmit={handleSubmit(handleOnSubmit)}>
+        <div className={classes.heightField}>身長 175<span className={classes.unit}>cm</span></div>
+        <TextField id="weight" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
+        pattern: {
+          value: /[0-9]/,
+          message: "半角数字で入力してください" } })} onBlur={e => {onBlur(e.target.value)}}/><br/>
+        <span className={classes.errorMessage}>
+          {errors.weight && errors.weight.type === "required" && "体重を入力してください"}
+          {errors.weight && errors.weight.type === "pattern" && "半角数字で入力してください"}
+        </span><br/>
+        <Grid container>
+          <Grid item xs={4}>
+            <div className={classes.calcWeight}>
+              <span>BMI</span>
+              <p className={classes.calcValue}>{bmi != null ? bmi : ''}</p>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.calcWeight}>
+              <span>肥満度</span>
+              <p className={classes.calcValue}>{degreeObesity}</p>
+            </div>
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.calcWeight}>
+              <span>適正体重との差</span>
+              <p className={classes.calcValue}>{appropriateWeight != null && appropriateWeight >= 0 ? '+' : ''}{appropriateWeight}<span className={classes.unit}>kg</span></p>
+            </div>
+          </Grid>
+        </Grid>
+        <Button className={classes.registrationButton} variant="contained" type="submit">登録する</Button><br/>
+      </form>
+    </>
   );
 }

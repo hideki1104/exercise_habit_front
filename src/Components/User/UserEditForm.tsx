@@ -14,12 +14,6 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    title: {
-      fontSize: 30,
-      fontWeight: 'bold',
-      paddingTop: 30,
-    },
-
     userForm: {
       width: 300,
       marginTop: 30,
@@ -128,9 +122,6 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
 
   return (
     <>
-      <Typography className={classes.title} color="textSecondary" gutterBottom>
-        ユーザー情報編集
-      </Typography>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <span className={classes.errorMessage}></span><br/>
