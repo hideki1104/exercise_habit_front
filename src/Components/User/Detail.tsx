@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { connectGet } from '../Api/ConnectApi';
-import { connectCreateFollow } from '../Api/ConnectFollowApi';
+import { connectCreateFollow, connectDeleteFollow } from '../Api/ConnectFollowApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,10 +74,11 @@ export const Detail: React.FC<DetailProps> = () => {
   const userData: any = JSON.parse(userDataText);
   const [userInfoData, setUserInfoData] = useState(userData.data);
   const [userWeightData, setUserWeightData] = useState(userData);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   useEffect(() => {
     const connectGetUserInfo = async () => {
-      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
+      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.data.id}`);
       if (!responseUserData.isSuccess ) {
         // エラー処理
         return;
@@ -100,9 +101,25 @@ export const Detail: React.FC<DetailProps> = () => {
     connectGetWeightInfo();
   }, [])
 
-  const handleClick = () => {
+  const handleFollowClick = () => {
     connectCreateFollow(userInfoData.id);
+    setIsFollowing(true);
   }
+
+  const handleUnfollowClick = () => {
+    connectDeleteFollow(userInfoData.id);
+    setIsFollowing(false);
+  }
+
+  const followButton:JSX.Element = (
+    <>
+    {!isFollowing ?
+      <Button variant="outlined" onClick={handleFollowClick} color="primary">フォローする</Button>
+      :
+      <Button variant="outlined" onClick={handleUnfollowClick} color="secondary">フォロー解除</Button>
+    }
+    </>
+  )
 
   return (
     <>
@@ -114,7 +131,7 @@ export const Detail: React.FC<DetailProps> = () => {
           <p className={classes.cardEmail}>{userInfoData.email}</p>
         </div>
       </CardContent>
-      <Button variant="outlined" onClick={handleClick}>フォローする</Button>
+      {followButton}
       <CardContent className={classes.editButton}>
         <Link to={`/user/edit/${userData.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
       </CardContent>
