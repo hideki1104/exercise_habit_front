@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connectCreateLike, connectGetLike, connectDeleteLike } from '../Api/ConnectLikeApi';
+import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -25,6 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
     favorite_icon: {
       color: "red",
     },
+    userPageLink: {
+      textDecoration: "none",
+      color: "#111111",
+    }
   }),
 );
 
@@ -77,15 +82,15 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
     connectGetPostLike();
   }, [])
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const favoriteIcon = document.getElementById("favorite_icon");
 
     if (!isLike) {
+      await connectCreateLike(postData!.id, postData!.user_id);
       favoriteIcon?.classList.add("makeStyles-favorite_icon-23");
-      connectCreateLike(postData!.id, postData!.user_id);
     } else {
+      await connectDeleteLike(postData!.id, postData!.user_id);
       favoriteIcon?.classList.remove("makeStyles-favorite_icon-23");
-      connectDeleteLike(postData!.id, postData!.user_id);
     }
 
     setIsLike(isLike ? false : true);
@@ -112,7 +117,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
 
   return (
     <Card className={classes.postCard}>
-      <div onClick={() => handlePostOpen(postData)}>
+      <Link to={`/user/${postData!.user_id}`} className={classes.userPageLink}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -128,6 +133,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
           title={postData != null ? postData.user_name : ""}
           subheader={postData != null ? convertJst(postData.created_at) : ""}
         />
+      </Link>
+      <div onClick={() => handlePostOpen(postData)}>
         <CardContent>
           <Typography>
             {postData != null ? postData.training_name : ""} × 3セット

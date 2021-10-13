@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import InfiniteScroll  from "react-infinite-scroller"
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { connectGet, connectPost } from '../Api/ConnectApi';
+import { connectGet } from '../Api/ConnectApi';
 import { PostDetail } from './PostDetail';
 import { PostModal } from './PostModal';
 import Modal from '@material-ui/core/Modal';

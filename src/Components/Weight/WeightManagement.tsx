@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, withStyles, Theme, useTheme, createStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import { ToolBar } from '../User/ToolBar';
 import { WeightGraph } from './WeightGraph';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
