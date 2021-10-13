@@ -103,14 +103,20 @@ export const Detail: React.FC<DetailProps> = () => {
   const [userInfoData, setUserInfoData] = useState<UserData>();
   const [userWeightData, setUserWeightData] = useState(userData);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isClickFollowing, setIsClickFollowing] = useState<boolean>(false);
   const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
   const [followingNum, setFollowingNum] = useState<number>();
   const [followerNum, setFollowerNum] = useState<number>();
+  const [followerList, setFollowerList] = useState<UserData[]>([]);
+  const [followingList, setFollowingList] = useState<UserData[]>([]);
   const history = useHistory();
   const pathData = history.location.pathname.split("/");
   const userId = pathData[pathData.length - 1];
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const handleOpen = () => setIsOpen(true);
+  const handleFollowModalOpen = (isFollowing:boolean) => {
+    setIsClickFollowing(isFollowing);
+    setIsOpen(true)
+  };
   const handleClose = () => setIsOpen(false);
 
   type UserData = {
@@ -151,13 +157,15 @@ export const Detail: React.FC<DetailProps> = () => {
     setIsFollowing(responseData.data.some((userData:UserData) => userData.id == parseInt(userId)));
   }
 
-  const followingCount = async () => {
+  const getFollowing = async () => {
     const responseData = await connectGetFollowing(parseInt(userId));
+    setFollowingList(responseData.data);
     setFollowingNum(responseData.data.length);
   }
 
-  const followerCount = async () => {
+  const getFollower = async () => {
     const responseData = await connectGetFollower(parseInt(userId));
+    setFollowerList(responseData.data);
     setFollowerNum(responseData.data.length);
   }
 
@@ -166,19 +174,19 @@ export const Detail: React.FC<DetailProps> = () => {
     connectGetWeightInfo();
     setIsCurrentUser(judgeCurrentUser());
     isFollowingUser();
-    followingCount();
-    followerCount();
+    getFollowing();
+    getFollower();
   }, [userId])
 
   const handleFollowClick = async () => {
     await connectCreateFollow(userInfoData!.id);
-    followerCount();
+    getFollower();
     setIsFollowing(true);
   }
 
   const handleUnfollowClick = async () => {
     await connectDeleteFollow(userInfoData!.id);
-    followerCount();
+    getFollower();
     setIsFollowing(false);
   }
 
@@ -193,7 +201,7 @@ export const Detail: React.FC<DetailProps> = () => {
   )
 
   const modalBody:JSX.Element = (
-    <FollowModal />
+    <FollowModal followingList={followingList} followerList={followerList} select={isClickFollowing ? 0 : 1} handleClose={handleClose}/>
   )
 
   return (
@@ -206,8 +214,8 @@ export const Detail: React.FC<DetailProps> = () => {
           <p className={classes.cardEmail}>{userInfoData ? userInfoData.email : ""}</p>
         </div>
       </CardContent>
-      <span className={classes.followNum} onClick={handleOpen}>{followingNum}フォロー</span>
-      <span className={classes.followerNum} onClick={handleOpen}>{followerNum}フォロワー</span> <br/>
+      <span className={classes.followNum} onClick={() => handleFollowModalOpen(true)}>{followingNum}フォロー</span>
+      <span className={classes.followerNum} onClick={() => handleFollowModalOpen(false)}>{followerNum}フォロワー</span> <br/>
       {!isCurrentUser ?
       followButton
       :

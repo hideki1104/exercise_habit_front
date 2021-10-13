@@ -81,14 +81,26 @@ const StyledTabs = withStyles({
   },
 })((props: StyledTabsProps) => <Tabs {...props} variant="fullWidth" TabIndicatorProps={{ children: <span /> }} />);
 
-interface FollowModalProps {
-
+type UserData = {
+  id:number
+  name:string
+  email:string
+  height:number
+  sex:number
+  birthday:Date
 }
 
-export const FollowModal: React.FC<FollowModalProps> = () => {
+interface FollowModalProps {
+  followingList:UserData[]
+  followerList:UserData[]
+  select:number
+  handleClose:Function
+}
+
+export const FollowModal: React.FC<FollowModalProps> = ({followingList, followerList, select, handleClose}) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(select);
   const theme = useTheme();
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -108,10 +120,10 @@ export const FollowModal: React.FC<FollowModalProps> = () => {
           </StyledTabs>
         </AppBar>
         <AppBar position="static" color="default">
-          {selected !== 0 ? <TabPanel value={selected} index={1} dir={theme.direction}><FollowerIndex/></TabPanel> : ""}
+          {selected !== 0 ? <TabPanel value={selected} index={1} dir={theme.direction}><FollowerIndex followerList={followerList} handleClose={handleClose}/></TabPanel> : ""}
         </AppBar>
         <TabPanel value={selected} index={0} dir={theme.direction}>
-          <FollowingIndex/>
+          <FollowingIndex followingList={followingList} handleClose={handleClose}/>
         </TabPanel>
       </Card>
     </>

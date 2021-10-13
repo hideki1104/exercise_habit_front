@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,19 +15,54 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "center",
     },
+    follower: {
+      marginLeft: "auto",
+      marginRight: "auto",
+      width: 200,
+    },
   }),
 );
 
-interface FollowerIndexProps {
-
+type UserData = {
+  id:number
+  name:string
+  email:string
+  height:number
+  sex:number
+  birthday:Date
 }
 
-export const FollowerIndex: React.FC<FollowerIndexProps> = () => {
+interface FollowerIndexProps {
+  followerList:UserData[]
+  handleClose:Function
+}
+
+export const FollowerIndex: React.FC<FollowerIndexProps> = ({followerList, handleClose}) => {
   const classes = useStyles();
+  const history = useHistory();
+  const handleClick = (userId:number) => {
+    handleClose();
+    history.push(`/user/${userId}`);
+  }
 
   return (
     <>
-      <p>フォロワー一覧</p>
+      {followerList.map((followerData) => (
+        <>
+          <CardHeader
+            className={classes.follower}
+            onClick={() => handleClick(followerData.id)}
+            avatar={
+              <Avatar aria-label="recipe">
+                R
+              </Avatar>
+            }
+            titleTypographyProps={{variant:'h6'}}
+            title={followerData.name}
+            subheader={followerData.email}
+          />
+        </>
+      ))}
     </>
   );
 }
