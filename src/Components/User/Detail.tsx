@@ -126,6 +126,7 @@ export const Detail: React.FC<DetailProps> = () => {
     height:number
     sex:number
     birthday:Date
+    introduction:string
   }
 
   const connectGetUserInfo = async () => {
@@ -221,7 +222,7 @@ export const Detail: React.FC<DetailProps> = () => {
       :
       <>
         <CardContent className={classes.editButton}>
-          <Link to={`/user/edit/${userData.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
+          <Link to={`/user/edit/${userData.data.id}`} className={classes.linkButton}><Button variant="outlined">プロフィールの編集</Button></Link>
         </CardContent>
         <table className={classes.table}>
           <tbody>

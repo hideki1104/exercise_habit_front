@@ -24,12 +24,12 @@ export const UserEdit: React.FC<UserEditProps> = () => {
   const classes = useStyles();
   const userDataText: any = localStorage.getItem("userData");
   const userData: any = JSON.parse(userDataText);
-  const [userInfoData, setUserInfoData] = useState(userData);
+  const [userInfoData, setUserInfoData] = useState<UserData>({} as UserData);
   const [userWeightData, setUserWeightData] = useState<any>("");
 
   useEffect(() => {
     const connectGetUserInfo = async () => {
-      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.id}`);
+      const responseUserData = await connectGet(`http://localhost:3000/users/${userData.data.id}`);
       if (!responseUserData.isSuccess ) {
         // エラー処理
         return;
@@ -50,17 +50,20 @@ export const UserEdit: React.FC<UserEditProps> = () => {
     connectGetWeightInfo();
   }, [])
 
-  type UpdateData = {
-    name:string|null
-    email:string|null
-    height:number|null
-    sex:number|null
-    birthDay:string|null
+  type UserData = {
+    id:number
+    name:string
+    email:string
+    height:number
+    sex:number
+    birthday:Date
+    introduction:string
   }
 
-  const connectUpdateUserInfo = async (updateData:UpdateData, weight:number|null) => {
+  const connectUpdateUserInfo = async (updateData:UserData, weight:number|null) => {
     if (Object.keys(updateData).length) {
-      await connectPatch(`http://localhost:3000/users/${userData.id}`, updateData);
+      console.log(updateData);
+      await connectPatch(`http://localhost:3000/users/${userData.data.id}`, updateData);
     }
 
     if (weight) {
