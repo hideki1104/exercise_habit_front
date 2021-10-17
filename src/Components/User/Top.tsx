@@ -9,7 +9,7 @@ import { TrainingTypeForm } from './TrainingTypeForm';
 import { TrainingDetail } from '../Training/TrainingDetail';
 import { PostForm } from '../Post/PostForm';
 import { connectPost, connectPatch } from '../Api/ConnectApi';
-import { connectGetRecommendedTrainings, connectRecentTrainings } from '../Api/ConnectTrainingApi';
+import { connectGetRecommendedTrainings, connectRecentTrainings, connectFavoriteTrainings } from '../Api/ConnectTrainingApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -81,6 +81,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [recommendedTrainingList, setRecommendedTrainingList] = useState<TrainingData[]>([])
   const [recentTrainingList, setRecentTrainingList] = useState<TrainingData[]>([])
+  const [favoriteTrainingList, setFavoriteTrainingList] = useState<TrainingData[]>([])
   const [targetTrainingData, setTargetTrainingData] = useState<TrainingData>()
 
   useEffect(() => {
@@ -90,6 +91,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
 
     getReccommendedTrainings();
     getRecentTrainings();
+    getFavoriteTrainings();
   },[])
 
   const handleOpen = () => {
@@ -141,6 +143,12 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     const responseData = await connectRecentTrainings();
 
     setRecentTrainingList(responseData);
+  }
+
+  const getFavoriteTrainings = async () => {
+    const responseData = await connectFavoriteTrainings();
+
+    setFavoriteTrainingList(responseData);
   }
 
   const handleUserInfoRegistration = async (userData:UserData, weight:number) => {
@@ -235,6 +243,19 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
         ))}
       </Grid>
       <p className={classes.bodyContainer}>お気に入りトレーニング</p>
+      <Grid container alignItems="center" justify="flex-start">
+        {favoriteTrainingList.map((training, index) => (
+          <Grid item xs={4}>
+            <div className={classes.movieContainer} onClick={() => handleTrainingOpen(recommendedTrainingList[index])}>
+              <div className={classes.movie}>
+                <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+              </div>
+              <span>{training.name}</span><br/>
+              <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
       <button type="button" onClick={handleOpen}>
         Open Modal
       </button>
