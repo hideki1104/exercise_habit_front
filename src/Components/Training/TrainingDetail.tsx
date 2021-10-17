@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { connectPost } from '../Api/ConnectApi';
-import { connectCreateTrainingLike } from '../Api/ConnectTrainingLikeApi';
+import { connectCreateTrainingLike, connectDeleteTrainingLike, connectGetTrainingLike } from '../Api/ConnectTrainingLikeApi';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
@@ -12,9 +12,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import YouTube from 'react-youtube';
-import GradeOutlined from '@material-ui/icons/GradeOutlined';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Favorite } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,13 +76,12 @@ const useStyles = makeStyles((theme: Theme) =>
       }
     },
     favoriteIcon: {
-      paddingTop: 10,
-      width: 30,
-      height: 30,
+      color: "orange",
     },
     iconName: {
       verticalAlign: "super",
-      fontSize: 14,
+      fontSize: 16,
+      fontWeight: "bold",
     },
   }),
 );
@@ -124,6 +122,21 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const [isLike, setIsLike] = useState<boolean>(false);
+
+  const getTrainingLike = async () => {
+    const result:boolean = await connectGetTrainingLike(targetTrainingData!.id);
+    console.log(result);
+    setIsLike(result)
+    if (result) {
+      const favoriteIcon = document.getElementById("favorite_icon");
+      favoriteIcon?.classList.add("makeStyles-favoriteIcon-38")
+    }
+  }
+
+  useEffect(() => {
+    getTrainingLike();
+  }, [])
 
   const opts = {
     width: '800',
@@ -153,7 +166,17 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   }
 
   const FavoriteClick = async (trainingId:number) => {
-    await connectCreateTrainingLike(trainingId)
+    const favoriteIcon = document.getElementById("favorite_icon");
+
+    if (!isLike) {
+      await connectCreateTrainingLike(trainingId);
+      favoriteIcon!.classList.add("makeStyles-favoriteIcon-38");
+    } else {
+      await connectDeleteTrainingLike(trainingId);
+      favoriteIcon!.classList.remove("makeStyles-favoriteIcon-38");
+    }
+
+    setIsLike(isLike ? false : true);
   }
 
   return (
@@ -194,7 +217,7 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
           </form>
           <Button variant="contained" type="submit" color="primary" onClick={handlePostModalOpen}>トレーニングを共有する</Button><br/>
           <div onClick={() => FavoriteClick(targetTrainingData!.id)} className={classes.iconContainer}>
-            <GradeOutlined className={classes.favoriteIcon}/>
+            <BookmarkIcon id="favorite_icon"/>
             <span className={classes.iconName}>お気に入り</span>
           </div>
         </Grid>
