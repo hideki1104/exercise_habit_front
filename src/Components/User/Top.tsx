@@ -3,9 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import { UserForm } from './UserForm';
 import { TrainingTypeForm } from './TrainingTypeForm';
 import { connectPost, connectPatch } from '../Api/ConnectApi';
+import { connectGetRecommendedTrainings } from '../Api/ConnectTrainingApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,8 +19,39 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "center",
     },
+    bodyContainer: {
+      "textAlign": "left",
+      "padding": 20,
+      "fontWeight": "bold",
+      "fontSize" : 20,
+    },
+    movieContainer: {
+      margin: 20,
+      '&:hover': {
+        opacity: 0.6,
+      }
+    },
+    movie: {
+      height: 180,
+      width: "100%",
+      backgroundColor: "#F5F5F5",
+    },
+    difficulyType: {
+      fontSize: 12,
+      color: "#808080",
+    },
+    yt_thumnail: {
+      height: 180,
+      width: "100%",
+    },
   }),
 );
+
+const difficulyTypeList = [
+  '初心者向け',
+  '中級者向け',
+  '上級者向け',
+];
 
 function getModalStyle() {
   const top  = 50;
@@ -42,11 +75,14 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isProceed, setIsProceed] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [recommendedTrainingList, setRecommendedTrainingList] = useState<TrainingData[]>([])
 
   useEffect(() => {
     if (isSignUp) {
       setOpen(true)
     }
+
+    getReccommendedTrainings();
   },[])
 
   const handleOpen = () => {
@@ -64,11 +100,27 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     training_type: number
   }
 
+  type TrainingData = {
+    id: number
+    name: string
+    url: string
+    difficuly_type: number
+    thumbnail_id: number
+    description: string
+    genre_id: number
+  }
+
+  const getReccommendedTrainings = async () => {
+    const responseData = await connectGetRecommendedTrainings();
+
+    setRecommendedTrainingList(responseData);
+  }
+
   const handleUserInfoRegistration = async (userData:UserData, weight:number) => {
     const userInfoText: any = localStorage.getItem("userData");
     const userInfoData: any = JSON.parse(userInfoText);
 
-    const responseUserData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, userData);
+    const responseUserData = await connectPatch(`http://localhost:3000/users/${userInfoData.data.id}`, userData);
 
     if (!responseUserData.isSuccess) {
       // エラー処理
@@ -92,7 +144,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     const userInfoText: any = localStorage.getItem("userData");
     const userInfoData: any = JSON.parse(userInfoText);
 
-    const responseData = await connectPatch(`http://localhost:3000/users/${userInfoData['id']}`, {'training_type': trainingType});
+    const responseData = await connectPatch(`http://localhost:3000/users/${userInfoData.data.id}`, {'training_type': trainingType});
 
     if (!responseData.isSuccess) {
       // エラー処理
@@ -118,7 +170,21 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   )
 
   return (
-    <div>
+    <div className={classes.bodyContainer}>
+      <p>あなたへのおすすめ</p>
+      {recommendedTrainingList.map((training, index) => (
+        <Grid item xs={4}>
+          <div className={classes.movieContainer}>
+            <div className={classes.movie}>
+              <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+            </div>
+            <span>{training.name}</span><br/>
+            <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
+          </div>
+        </Grid>
+      ))}
+      <p>最近のトレーニング履歴</p>
+      <p>お気に入りトレーニング</p>
       <button type="button" onClick={handleOpen}>
         Open Modal
       </button>

@@ -10,7 +10,7 @@ export const UserTop: React.FC<TopProps> = ({isSignUp}) => {
 
   return (
     <>
-      <UserContainer title="トップ" body={<Top isSignUp={isSignUp}/>}/>
+      <UserContainer title="" body={<Top isSignUp={isSignUp}/>}/>
     </>
   )
 }
