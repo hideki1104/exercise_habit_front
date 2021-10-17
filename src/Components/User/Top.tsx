@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { UserForm } from './UserForm';
 import { TrainingTypeForm } from './TrainingTypeForm';
+import { TrainingDetail } from '../Training/TrainingDetail';
+import { PostForm } from '../Post/PostForm';
 import { connectPost, connectPatch } from '../Api/ConnectApi';
 import { connectGetRecommendedTrainings, connectRecentTrainings } from '../Api/ConnectTrainingApi';
 
@@ -73,10 +75,13 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const history = useHistory();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState<boolean>(false);
+  const [isTrainingModalOpen, setIsTrainingModalOpen] = useState<boolean>(false);
+  const [isPostModalOpen, setIsPostModalOpen] = useState<boolean>(false);
   const [isProceed, setIsProceed] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [recommendedTrainingList, setRecommendedTrainingList] = useState<TrainingData[]>([])
   const [recentTrainingList, setRecentTrainingList] = useState<TrainingData[]>([])
+  const [targetTrainingData, setTargetTrainingData] = useState<TrainingData>()
 
   useEffect(() => {
     if (isSignUp) {
@@ -94,6 +99,20 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleTrainingOpen   = (trainingData:TrainingData) => {
+    setIsTrainingModalOpen(true);
+    setTargetTrainingData(trainingData);
+  }
+
+  const handlePostOpen   = (trainingData:TrainingData) => {
+    setIsPostModalOpen(true);
+    setTargetTrainingData(trainingData);
+  }
+
+  const handleTrainingModalClose = () => setIsTrainingModalOpen(false);
+  const handlePostModalClose = () => setIsPostModalOpen(false);
+
 
   type UserData = {
     height: number
@@ -177,13 +196,21 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     </div>)
   )
 
+  const modalBody = (
+    <TrainingDetail targetTrainingData={targetTrainingData ? targetTrainingData : null} setIsOpen={handlePostOpen} setIsPostModalOpen={setIsPostModalOpen}/>
+  )
+
+  const postModalBody = (
+    <PostForm targetTrainingData={targetTrainingData ? targetTrainingData : null}/>
+  );
+
   return (
     <div>
       <p className={classes.bodyContainer}>あなたへのおすすめ</p>
       <Grid container alignItems="center" justify="flex-start">
         {recommendedTrainingList.map((training, index) => (
           <Grid item xs={4}>
-            <div className={classes.movieContainer}>
+            <div className={classes.movieContainer} onClick={() => handleTrainingOpen(recommendedTrainingList[index])}>
               <div className={classes.movie}>
                 <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
               </div>
@@ -197,7 +224,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
       <Grid container alignItems="center" justify="flex-start">
         {recentTrainingList.map((training, index) => (
           <Grid item xs={4}>
-            <div className={classes.movieContainer}>
+            <div className={classes.movieContainer} onClick={() => handleTrainingOpen(recentTrainingList[index])}>
               <div className={classes.movie}>
                 <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
               </div>
@@ -215,6 +242,18 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
         open={open}
       >
         {body}
+      </Modal>
+      <Modal
+        open={isTrainingModalOpen}
+        onClose={handleTrainingModalClose}
+      >
+        {modalBody}
+      </Modal>
+      <Modal
+        open={isPostModalOpen}
+        onClose={handlePostModalClose}
+      >
+        {postModalBody}
       </Modal>
     </div>
   );

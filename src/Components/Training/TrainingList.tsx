@@ -85,7 +85,7 @@ export const TrainingList: React.FC<TrainingListProps> = ({ isAdmin = false }) =
   const [targetTrainingData, setTargetTrainingData] = useState<Training>();
   const [genreList, setGenreList] = useState<GenreData[]>([]);
 
-  const handleOpen   = (index:number) => {
+  const handleOpen = (index:number) => {
     setIsOpen(true);
     setTargetTrainingData(trainingList[index]);
   }
