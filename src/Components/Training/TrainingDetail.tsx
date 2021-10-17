@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { connectPost } from '../Api/ConnectApi';
+import { connectCreateTrainingLike } from '../Api/ConnectTrainingLikeApi';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
@@ -11,7 +12,9 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import YouTube from 'react-youtube';
+import GradeOutlined from '@material-ui/icons/GradeOutlined';
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Favorite } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,6 +70,20 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 10,
       color: "red",
       fontSize: 12,
+    },
+    iconContainer: {
+      '&:hover': {
+        opacity: 0.6,
+      }
+    },
+    favoriteIcon: {
+      paddingTop: 10,
+      width: 30,
+      height: 30,
+    },
+    iconName: {
+      verticalAlign: "super",
+      fontSize: 14,
     },
   }),
 );
@@ -135,6 +152,10 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
     setIsPostModalOpen(true);
   }
 
+  const FavoriteClick = async (trainingId:number) => {
+    await connectCreateTrainingLike(trainingId)
+  }
+
   return (
     <Card style={modalStyle} className={classes.paper}>
       <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -171,7 +192,11 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
             </FormControl><br/>
             <Button variant="contained" type="submit" color="primary">トレーニング登録</Button>
           </form>
-          <Button variant="contained" type="submit" color="primary" onClick={handlePostModalOpen}>トレーニングを共有する</Button>
+          <Button variant="contained" type="submit" color="primary" onClick={handlePostModalOpen}>トレーニングを共有する</Button><br/>
+          <div onClick={() => FavoriteClick(targetTrainingData!.id)} className={classes.iconContainer}>
+            <GradeOutlined className={classes.favoriteIcon}/>
+            <span className={classes.iconName}>お気に入り</span>
+          </div>
         </Grid>
       </Grid>
     </Card>
