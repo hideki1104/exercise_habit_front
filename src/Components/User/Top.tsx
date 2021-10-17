@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import { UserForm } from './UserForm';
 import { TrainingTypeForm } from './TrainingTypeForm';
 import { connectPost, connectPatch } from '../Api/ConnectApi';
-import { connectGetRecommendedTrainings } from '../Api/ConnectTrainingApi';
+import { connectGetRecommendedTrainings, connectRecentTrainings } from '../Api/ConnectTrainingApi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     bodyContainer: {
       "textAlign": "left",
-      "padding": 20,
+      "paddingLeft": 20,
       "fontWeight": "bold",
       "fontSize" : 20,
     },
@@ -76,6 +76,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const [isProceed, setIsProceed] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [recommendedTrainingList, setRecommendedTrainingList] = useState<TrainingData[]>([])
+  const [recentTrainingList, setRecentTrainingList] = useState<TrainingData[]>([])
 
   useEffect(() => {
     if (isSignUp) {
@@ -83,6 +84,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     }
 
     getReccommendedTrainings();
+    getRecentTrainings();
   },[])
 
   const handleOpen = () => {
@@ -114,6 +116,12 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
     const responseData = await connectGetRecommendedTrainings();
 
     setRecommendedTrainingList(responseData);
+  }
+
+  const getRecentTrainings = async () => {
+    const responseData = await connectRecentTrainings();
+
+    setRecentTrainingList(responseData);
   }
 
   const handleUserInfoRegistration = async (userData:UserData, weight:number) => {
@@ -170,21 +178,36 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   )
 
   return (
-    <div className={classes.bodyContainer}>
-      <p>あなたへのおすすめ</p>
-      {recommendedTrainingList.map((training, index) => (
-        <Grid item xs={4}>
-          <div className={classes.movieContainer}>
-            <div className={classes.movie}>
-              <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+    <div>
+      <p className={classes.bodyContainer}>あなたへのおすすめ</p>
+      <Grid container alignItems="center" justify="flex-start">
+        {recommendedTrainingList.map((training, index) => (
+          <Grid item xs={4}>
+            <div className={classes.movieContainer}>
+              <div className={classes.movie}>
+                <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+              </div>
+              <span>{training.name}</span><br/>
+              <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
             </div>
-            <span>{training.name}</span><br/>
-            <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
-          </div>
-        </Grid>
-      ))}
-      <p>最近のトレーニング履歴</p>
-      <p>お気に入りトレーニング</p>
+          </Grid>
+        ))}
+      </Grid>
+      <p className={classes.bodyContainer}>最近のトレーニング履歴</p>
+      <Grid container alignItems="center" justify="flex-start">
+        {recentTrainingList.map((training, index) => (
+          <Grid item xs={4}>
+            <div className={classes.movieContainer}>
+              <div className={classes.movie}>
+                <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
+              </div>
+              <span>{training.name}</span><br/>
+              <span className={classes.difficulyType}>難易度：{difficulyTypeList[training.difficuly_type]}</span><br/>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
+      <p className={classes.bodyContainer}>お気に入りトレーニング</p>
       <button type="button" onClick={handleOpen}>
         Open Modal
       </button>
