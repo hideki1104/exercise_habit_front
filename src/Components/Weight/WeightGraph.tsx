@@ -48,7 +48,7 @@ export const WeightGraph: React.FC<WeightGraphProps> = ({ userWeightData, select
   const convertJst = (date:Date) => {
     const createdAt = new Date(date)
     createdAt.setTime(createdAt.getTime() + 9)
-    return createdAt.toLocaleString('ja-JP').slice(0,-3);
+    return createdAt.toLocaleString('ja-JP').slice(0,-7);
   }
 
   const data = {

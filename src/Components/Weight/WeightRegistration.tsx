@@ -4,10 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { ToolBar } from '../User/ToolBar';
 import { connectPost } from '../Api/ConnectApi';
 import Button from '@material-ui/core/Button';
 
@@ -100,8 +97,8 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
   }
 
   const connectCreateOrUpdateWeight = async (requestData: WeightData) => {
-      await connectPost(`http://localhost:3000/weights`, requestData);
-      history.push('/weight_management');
+    await connectPost(`http://localhost:3000/weights`, requestData);
+    history.push('/weight_management');
   }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();

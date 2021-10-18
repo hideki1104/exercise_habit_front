@@ -246,7 +246,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
       <Grid container alignItems="center" justify="flex-start">
         {favoriteTrainingList.map((training, index) => (
           <Grid item xs={4}>
-            <div className={classes.movieContainer} onClick={() => handleTrainingOpen(recommendedTrainingList[index])}>
+            <div className={classes.movieContainer} onClick={() => handleTrainingOpen(favoriteTrainingList[index])}>
               <div className={classes.movie}>
                 <img id="img" className={classes.yt_thumnail} alt="" src={`https://i.ytimg.com/vi/${training.url}/${training.thumbnail_id}`}></img>
               </div>
@@ -256,9 +256,6 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
           </Grid>
         ))}
       </Grid>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
       <Modal
         open={open}
       >
