@@ -85,6 +85,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
   const [targetTrainingData, setTargetTrainingData] = useState<TrainingData>()
 
   useEffect(() => {
+    console.log(isSignUp);
     if (isSignUp) {
       setOpen(true)
     }
@@ -163,7 +164,7 @@ export const Top: React.FC<TopProps> = ({isSignUp}) => {
       return;
     }
 
-    const reaponseWeightData = await connectPost('http://localhost:3000/weights', {'weight': weight, 'user_id': userInfoData['id']});
+    const reaponseWeightData = await connectPost('http://localhost:3000/weights', {'weight': weight, 'user_id': userInfoData.data.id});
 
     if (!reaponseWeightData.isSuccess) {
       // エラー処理

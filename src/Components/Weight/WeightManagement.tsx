@@ -221,7 +221,6 @@ export const WeightManagement: React.FC<WeightManagementProps> = () => {
           <p>全体</p>
           <WeightGraph userWeightData={userWeightData} selectedMonthText={null}/>
         </TabPanel>
-        <p>{selectedMonthText}</p>
         <TabPanel value={selected} index={1}>
           <TabPanel value={selectedMonth} index={selectedMonth} dir={theme.direction}>
             <WeightGraph userWeightData={monthlyWeightData} selectedMonthText={selectedMonthText}/>

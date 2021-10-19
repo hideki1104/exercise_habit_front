@@ -115,9 +115,9 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
       return;
     }
 
-    const bmi:number               = calcBmi(inputValue, userData.height);
+    const bmi:number               = calcBmi(inputValue, userData.data.height);
     const degreeObesity:string     = decisionDegreeObesity(bmi);
-    const appropriateWeight:number = calcAppropriateWeight(inputValue, userData.height);
+    const appropriateWeight:number = calcAppropriateWeight(inputValue, userData.data.height);
     setBmi(bmi);
     setDegreeObesity(degreeObesity);
     setAppropriateWeight(appropriateWeight);
@@ -159,7 +159,7 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
         <Link to='/weight_management'><Button>{'＜＜'}体重管理へ</Button></Link>
       </div>
       <form onSubmit={handleSubmit(handleOnSubmit)}>
-        <div className={classes.heightField}>身長 175<span className={classes.unit}>cm</span></div>
+        <div className={classes.heightField}>身長 {userData.data.height}<span className={classes.unit}>cm</span></div>
         <TextField id="weight" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
         pattern: {
           value: /[0-9]/,
