@@ -67,9 +67,6 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
               Exercise Habit
             </Link>
           </Typography>
-          <Link to = '/user/detail' className={classes.headerLink}>
-            <Button color="inherit">USER</Button>
-          </Link>
           <><Logout handleLogout={handleLogout} isAdmin={isAdmin}/></>
         </>
         :
