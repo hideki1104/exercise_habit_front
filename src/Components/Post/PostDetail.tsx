@@ -58,9 +58,10 @@ interface PostDetailProps {
   postData: Post|null
   handlePostOpen: Function
   isModalDisplay:boolean
+  index: number|null
 }
 
-export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen, isModalDisplay = false}) => {
+export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen, isModalDisplay = false, index}) => {
   const classes = useStyles();
   const convertJst = (date:Date) => {
     const createdAt = new Date(date)
@@ -74,7 +75,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
       const result:boolean = await connectGetLike(postData!.id, postData!.user_id);
       setIsLike(result)
       if (result) {
-        const favoriteIcon = document.getElementById("favorite_icon");
+        const favoriteIcon = document.getElementById(`favorite_icon_${index}`);
         favoriteIcon?.classList.add("makeStyles-favorite_icon-23")
       }
     }
@@ -83,7 +84,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
   }, [])
 
   const handleClick = async () => {
-    const favoriteIcon = document.getElementById("favorite_icon");
+    const favoriteIcon = document.getElementById(`favorite_icon_${index}`);
 
     if (!isLike) {
       await connectCreateLike(postData!.id, postData!.user_id);
@@ -104,7 +105,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
         <>
           <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon id="favorite_icon" onClick={() => handleClick()}/>
+              <FavoriteIcon id={`favorite_icon_${index}`} onClick={() => handleClick()}/>
             </IconButton>
             <IconButton aria-label="share">
               <CommentIcon />
@@ -121,7 +122,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
-              R
+              {postData != null ? postData.user_name.slice(0, 1) : ""}
             </Avatar>
           }
           action={
@@ -137,7 +138,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
       <div onClick={() => handlePostOpen(postData)}>
         <CardContent>
           <Typography>
-            {postData != null ? postData.training_name : ""} × 3セット
+            {postData != null ? postData.training_name : ""}
           </Typography>
         </CardContent>
         <CardMedia

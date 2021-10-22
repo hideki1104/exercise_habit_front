@@ -74,6 +74,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: 200,
     },
+    upload_img: {
+      display: "none",
+    }
   }),
 );
 
@@ -98,6 +101,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
   const userData: any     = JSON.parse(userDataText);
 
   type UserData = {
+    icon_image: string
     name: string
     email: string
     height: number
@@ -111,8 +115,13 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
   })
   const classes = useStyles();
 
+  const handleFile = (e:any) => {
+    console.log(e.target.files);
+  }
+
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
 
+    console.log(requestData.icon_image);
     let weight = null;
     if (requestData.weight) {
       weight = requestData.weight;
@@ -135,8 +144,19 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
     <>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <label htmlFor="upload-button">
+            <input
+              accept="image/*"
+              id="upload-button"
+              className={classes.upload_img}
+              type="file"
+              onChange={(e) => handleFile(e)}
+            />
+            <Button variant="contained" component="span">
+              画像アップロード
+            </Button>
+          </label>
           <span className={classes.errorMessage}></span><br/>
-
           <TextField className={classes.userForm} id="name" label="お名前" variant="outlined"
           type="text"
           defaultValue={userInfoData.name}

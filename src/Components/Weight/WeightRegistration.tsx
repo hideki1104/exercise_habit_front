@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { connectPost } from '../Api/ConnectApi';
+import { connectGet, connectPost } from '../Api/ConnectApi';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface WeighRegistrationProps {
+
 }
 
 export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
@@ -90,15 +91,39 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
   const userData: any = JSON.parse(userDataText);
   const [bmi, setBmi] = useState<number|null>(null);
   const [degreeObesity, setDegreeObesity] = useState<string>('');
+  const [userInfoData, setUserInfoData] = useState<UserData>();
   const [appropriateWeight, setAppropriateWeight] = useState<number|null>(null);
 
+  type UserData = {
+    id:number
+    name:string
+    email:string
+    height:number
+    sex:number
+    birthday:Date
+    introduction:string
+  }
   type WeightData = {
     weight:number
   }
 
+  useEffect(() => {
+    connectGetUserInfo();
+  }, [])
+
   const connectCreateOrUpdateWeight = async (requestData: WeightData) => {
     await connectPost(`http://localhost:3000/weights`, requestData);
     history.push('/weight_management');
+  }
+
+  const connectGetUserInfo = async () => {
+    const responseUserData = await connectGet(`http://localhost:3000/users/${userData.data.id}`);
+    if (!responseUserData.isSuccess ) {
+      // エラー処理
+      return;
+    }
+
+    setUserInfoData(responseUserData.data);
   }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -115,9 +140,9 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
       return;
     }
 
-    const bmi:number               = calcBmi(inputValue, userData.data.height);
+    const bmi:number               = calcBmi(inputValue, userInfoData!.height);
     const degreeObesity:string     = decisionDegreeObesity(bmi);
-    const appropriateWeight:number = calcAppropriateWeight(inputValue, userData.data.height);
+    const appropriateWeight:number = calcAppropriateWeight(inputValue, userInfoData!.height);
     setBmi(bmi);
     setDegreeObesity(degreeObesity);
     setAppropriateWeight(appropriateWeight);
@@ -159,7 +184,7 @@ export const WeightRegistration: React.FC<WeighRegistrationProps> = () => {
         <Link to='/weight_management'><Button>{'＜＜'}体重管理へ</Button></Link>
       </div>
       <form onSubmit={handleSubmit(handleOnSubmit)}>
-        <div className={classes.heightField}>身長 {userData.data.height}<span className={classes.unit}>cm</span></div>
+        <div className={classes.heightField}>身長 {userInfoData ? userInfoData.height : ""}<span className={classes.unit}>cm</span></div>
         <TextField id="weight" label="体重(kg)" variant="outlined" type="text" {...register("weight", { required: true,
         pattern: {
           value: /[0-9]/,

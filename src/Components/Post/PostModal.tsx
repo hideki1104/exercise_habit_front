@@ -127,7 +127,7 @@ export const PostModal: React.FC<PostModalProps> = ({targetPostData, handlePostO
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe">
-                  R
+                  {commentData.name.slice(0, 1)}
                 </Avatar>
               }
               className={classes.commentHeader}
@@ -148,7 +148,7 @@ export const PostModal: React.FC<PostModalProps> = ({targetPostData, handlePostO
   return (
     <>
       <Card className={classes.paper} style={modalStyle}>
-        <PostDetail postData={targetPostData ? targetPostData : null} handlePostOpen={handlePostOpen} isModalDisplay={true} />
+        <PostDetail postData={targetPostData ? targetPostData : null} handlePostOpen={handlePostOpen} isModalDisplay={true} index={null}/>
         {commentContainer}
       </Card>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={classes.commentForm}>

@@ -40,14 +40,24 @@ export const connectPost = async (url:string, params: object):Promise<connectPos
     try {
       const headers: any    = localStorage.getItem("headers");
       const headerData: any = JSON.parse(headers);
+      const headerList = headerData == null ?
+      {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+      :
+      {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'access-token': headerData["access-token"],
+        'client': headerData["client"],
+        'uid': headerData["uid"],
+      }
+
       const response = await axios.post(url, params,
-        {headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'access-token': headerData["access-token"],
-          'client': headerData["client"],
-          'uid': headerData["uid"],
-        }}
+        {headers:
+          headerList
+        }
       );
       console.log('通信成功', response);
       return { isSuccess: true, data: response.data, headers: response.headers, error: null };

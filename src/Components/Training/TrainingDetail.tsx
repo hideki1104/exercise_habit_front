@@ -71,6 +71,8 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: 12,
     },
     iconContainer: {
+      border: "solid",
+      borderRadius: "8%",
       '&:hover': {
         opacity: 0.6,
       }
@@ -213,9 +215,9 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
                 {errors.set_count && errors.set_count.type === "required" && "セット数を選択してください"}
               </span><br/>
             </FormControl><br/>
-            <Button variant="contained" type="submit" color="primary">トレーニング登録</Button>
+            <Button variant="text" type="submit" className={classes.iconContainer}>トレーニング登録</Button>
           </form>
-          <Button variant="contained" type="submit" color="primary" onClick={handlePostModalOpen}>トレーニングを共有する</Button><br/>
+          <Button variant="text" type="submit" className={classes.iconContainer} onClick={handlePostModalOpen}>トレーニングを共有する</Button><br/>
           <div onClick={() => FavoriteClick(targetTrainingData!.id)} className={classes.iconContainer}>
             <BookmarkIcon id="favorite_icon"/>
             <span className={classes.iconName}>お気に入り</span>

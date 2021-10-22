@@ -209,16 +209,24 @@ export const Detail: React.FC<DetailProps> = () => {
     <>
       <CardContent className={classes.cardHeader}>
         <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avatar}>
+         {userInfoData ? userInfoData.name.slice(0, 1) :""}
         </Avatar>
         <div className={classes.cardTitle}>
           <p className={classes.cardName}>{userInfoData ? userInfoData.name :""}</p>
           <p className={classes.cardEmail}>{userInfoData ? userInfoData.email : ""}</p>
         </div>
       </CardContent>
+      {isCurrentUser ?
+        <></>
+        :
+        <p>{userInfoData ? userInfoData.introduction : ""}</p>
+      }
       <span className={classes.followNum} onClick={() => handleFollowModalOpen(true)}>{followingNum}フォロー</span>
       <span className={classes.followerNum} onClick={() => handleFollowModalOpen(false)}>{followerNum}フォロワー</span> <br/>
       {!isCurrentUser ?
-      followButton
+      <>
+        {followButton}
+      </>
       :
       <>
         <CardContent className={classes.editButton}>
@@ -232,7 +240,7 @@ export const Detail: React.FC<DetailProps> = () => {
             </tr>
             <tr className={classes.tableRow}>
               <th className={classes.tableTitle}>体重</th>
-              <td className={classes.tableValue}>{userWeightData.weight}<span>kg</span></td>
+              <td className={classes.tableValue}>{userWeightData ? userWeightData.weight : ""}<span>kg</span></td>
             </tr>
             <tr className={classes.tableRow}>
               <th className={classes.tableTitle}>性別</th>

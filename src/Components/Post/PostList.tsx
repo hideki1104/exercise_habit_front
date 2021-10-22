@@ -6,16 +6,10 @@ import { PostDetail } from './PostDetail';
 import { PostModal } from './PostModal';
 import Modal from '@material-ui/core/Modal';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-  }),
-);
-
 interface PostListProps {
 }
 
 export const PostList: React.FC<PostListProps> = () => {
-  const classes = useStyles();
   type Post = {
     id: number
     text: string
@@ -61,8 +55,8 @@ export const PostList: React.FC<PostListProps> = () => {
         loadMore={loadMore}
         hasMore={true}
         loader={loader}>
-          {postList.map((post:Post) => (
-            <PostDetail postData={post} handlePostOpen={handlePostOpen} isModalDisplay={false}/>
+          {postList.map((post:Post, index) => (
+            <PostDetail postData={post} handlePostOpen={handlePostOpen} isModalDisplay={false} index={index}/>
           ))}
       </InfiniteScroll>
       <Modal
