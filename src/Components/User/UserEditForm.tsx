@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -11,6 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import clsx from 'clsx';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,13 +76,30 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     upload_img: {
       display: "none",
-    }
+    },
+    avator: {
+      width: 170,
+      height: 170,
+      marginTop: 30,
+      marginBottom: 30,
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      marginRight: "auto",
+      marginLeft: "auto",
+    },
+    iconImage: {
+      width: 170,
+      height: 170,
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+    },
   }),
 );
 
 type UserData = {
   id:number
   name:string
+  image:string
   email:string
   height:number
   sex:number
@@ -99,10 +116,11 @@ interface UserEditFormProps {
 export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo, userInfoData, userWeightData}) => {
   const userDataText: any = localStorage.getItem("userData");
   const userData: any     = JSON.parse(userDataText);
+  const [iconImage, setIconImage] = useState<string>("");
 
   type UserData = {
-    icon_image: string
     name: string
+    image: string
     email: string
     height: number
     weight?: number
@@ -115,13 +133,22 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
   })
   const classes = useStyles();
 
-  const handleFile = (e:any) => {
-    console.log(e.target.files);
+  const handleFile = (e:React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files.length === 0) {
+      return;
+    }
+
+    const file = Object.values(e.target.files);
+
+    if (!["image/gif", "image/jpeg", "image/png",].includes(file[0].type)) {
+      return;
+    }
+
+    setIconImage(URL.createObjectURL(file[0]));
   }
 
   const handleOnSubmit: SubmitHandler<UserData> = (requestData: UserData): void => {
 
-    console.log(requestData.icon_image);
     let weight = null;
     if (requestData.weight) {
       weight = requestData.weight;
@@ -129,6 +156,9 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
     delete requestData.weight;
 
     let updateData:any = {};
+    if (iconImage) {
+      updateData.image = iconImage;
+    }
     Object.entries(requestData).map(([key, value]) => {
       if (value) {
         updateData[key] = value;
@@ -144,6 +174,20 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({connectUpdateUserInfo
     <>
       <CardContent>
         <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <div>
+            {iconImage ?
+              <>
+                <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avator}>
+                  <img src={iconImage} className={classes.iconImage}/><br/>
+                </Avatar>
+              </>
+              :
+              <>
+                <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avator}>
+                </Avatar>
+              </>
+            }
+          </div>
           <label htmlFor="upload-button">
             <input
               accept="image/*"

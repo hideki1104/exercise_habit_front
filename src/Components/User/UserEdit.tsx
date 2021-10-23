@@ -53,6 +53,7 @@ export const UserEdit: React.FC<UserEditProps> = () => {
   type UserData = {
     id:number
     name:string
+    image:string
     email:string
     height:number
     sex:number
@@ -62,7 +63,6 @@ export const UserEdit: React.FC<UserEditProps> = () => {
 
   const connectUpdateUserInfo = async (updateData:UserData, weight:number|null) => {
     if (Object.keys(updateData).length) {
-      console.log(updateData);
       await connectPatch(`http://localhost:3000/users/${userData.data.id}`, updateData);
     }
 

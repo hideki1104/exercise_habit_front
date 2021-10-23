@@ -78,6 +78,12 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 4, 3),
       textAlign: "left",
     },
+    iconImage: {
+      width: 170,
+      height: 170,
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+    },
   }),
 );
 
@@ -122,6 +128,7 @@ export const Detail: React.FC<DetailProps> = () => {
   type UserData = {
     id:number
     name:string
+    image:string
     email:string
     height:number
     sex:number
@@ -209,7 +216,7 @@ export const Detail: React.FC<DetailProps> = () => {
     <>
       <CardContent className={classes.cardHeader}>
         <Avatar aria-label="recipe" src="/broken-image.jpg" className={classes.avatar}>
-         {userInfoData ? userInfoData.name.slice(0, 1) :""}
+         {userInfoData ? <img src={userInfoData.image} className={classes.iconImage}/> : ""}
         </Avatar>
         <div className={classes.cardTitle}>
           <p className={classes.cardName}>{userInfoData ? userInfoData.name :""}</p>
