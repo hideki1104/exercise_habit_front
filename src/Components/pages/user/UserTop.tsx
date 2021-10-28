@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { Top } from '../../User/Top';
+import { Top } from '../../organisms/User/Top';
 
 interface TopProps {
   isSignUp: boolean

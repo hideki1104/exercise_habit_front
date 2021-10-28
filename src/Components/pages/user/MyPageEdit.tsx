@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { UserEdit } from '../../User/UserEdit';
+import { UserEdit } from '../../organisms/User/UserEdit';
 
 interface MyPageEditProps {
 

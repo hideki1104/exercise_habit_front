@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { PostList } from '../../Post/PostList';
+import { PostList } from '../../organisms/Post/PostList';
 
 interface PostIndexProps {
 

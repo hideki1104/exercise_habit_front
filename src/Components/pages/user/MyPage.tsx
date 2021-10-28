@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { Detail } from '../../User/Detail';
+import { Detail } from '../../organisms/User/Detail';
 
 interface MyPageProps {
 

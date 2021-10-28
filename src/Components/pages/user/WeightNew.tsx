@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { WeightRegistration } from '../../Weight/WeightRegistration';
+import { WeightRegistration } from '../../organisms/Weight/WeightRegistration';
 
 interface WeightIndexProps {
 

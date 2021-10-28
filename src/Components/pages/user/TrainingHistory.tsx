@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { HistoryList } from '../../History/HistoryList';
+import { HistoryList } from '../../organisms/History/HistoryList';
 
 interface TrainingHistoryProps {
 

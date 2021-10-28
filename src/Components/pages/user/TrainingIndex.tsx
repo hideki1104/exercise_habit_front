@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrainingList } from '../../Training/TrainingList';
+import { TrainingList } from '../../organisms/Training/TrainingList';
 import { UserContainer } from '../../templates/UserContainer';
 
 interface TrainingIndexProps {

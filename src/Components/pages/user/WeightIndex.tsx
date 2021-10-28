@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContainer } from '../../templates/UserContainer';
-import { WeightManagement } from '../../Weight/WeightManagement';
+import { WeightManagement } from '../../organisms/Weight/WeightManagement';
 
 interface WeightIndexProps {
 

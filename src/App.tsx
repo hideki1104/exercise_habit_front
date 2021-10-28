@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserMain } from './Components/UserMain';
-import { AdminMain } from './Components/AdminMain';
+import { UserMain } from './Components/organisms/UserMain';
+import { AdminMain } from './Components/organisms/AdminMain';
 
 function App() {
   const [ isAdmin, setIsAdmin ] = useState(false);

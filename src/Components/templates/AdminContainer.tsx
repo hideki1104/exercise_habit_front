@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import { GenreForm } from '../Genre/GenreForm';
+import { GenreForm } from '../organisms/Genre/GenreForm';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme: Theme) =>
