@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
         background: "#A9A9A9",
       },
     },
+    linkButton: {
+      fontWeight: "bold",
+    },
   }),
 );
 
@@ -77,13 +80,13 @@ export const Header: React.FC<HeaderProps> = ( {isAdmin, isLogin, handleLogout} 
             </Link>
           </Typography>
           <Link to = '/' className={classes.headerLink}>
-            <Button color="inherit">Home</Button>
+            <Button color="inherit" className={classes.linkButton}>Home</Button>
           </Link>
           <Link to = '/sign_up' className={classes.headerLink}>
-            <Button color="inherit">SignUp</Button>
+            <Button color="inherit" className={classes.linkButton}>SignUp</Button>
           </Link>
           <Link to = '/sign_in' className={classes.headerLink}>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" className={classes.linkButton}>Login</Button>
           </Link>
         </>
       }

@@ -14,6 +14,7 @@ const useStyles = makeStyles(() =>
       appearance: "none",
       color: "#fff",
       padding: 10,
+      fontWeight: "bold",
       '&:hover': {
         background: "#A9A9A9",
       },
