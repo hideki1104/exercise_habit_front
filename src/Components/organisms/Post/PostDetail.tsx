@@ -99,7 +99,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
             <IconButton aria-label="add to favorites">
               <FavoriteIcon style={{color:isLike ? "red" : "gray"}} onClick={() => handleClick()}/>
             </IconButton>
-            <IconButton aria-label="share">
+            <IconButton aria-label="share" onClick={() => handlePostOpen(postData)}>
               <CommentIcon />
             </IconButton>
           </CardActions>
