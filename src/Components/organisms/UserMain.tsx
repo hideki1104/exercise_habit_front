@@ -19,9 +19,13 @@ interface UserMainProps {
 }
 
 export const UserMain: React.FC<UserMainProps> = () => {
-  const [isLogin, setIsLogin]   = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isLogin, setIsLogin]   = useState<boolean>(false);
+  const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const history = useHistory();
+
+  const checkIsLogin = () => {
+    return localStorage.getItem("headers") != null;
+  }
 
   useEffect(() => {
     if (localStorage.getItem("headers") != null) {
@@ -88,49 +92,49 @@ export const UserMain: React.FC<UserMainProps> = () => {
           <Route
             exact path={"/user/top"}
             render={props => (
-              <UserTop isSignUp={isSignUp}/>
+              <UserTop isSignUp={isSignUp} checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/user/:id"}
             render={props => (
-              <MyPage/>
+              <MyPage checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/user/edit/:id"}
             render={props => (
-              <MyPageEdit/>
+              <MyPageEdit checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/weight_management"}
             render={props => (
-              <WeightIndex/>
+              <WeightIndex checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/weight_management/new"}
             render={props => (
-              <WeightNew/>
+              <WeightNew checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/posts"}
             render={props => (
-              <PostIndex/>
+              <PostIndex checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/trainings"}
             render={props => (
-              <TrainingIndex/>
+              <TrainingIndex checkIsLogin={checkIsLogin}/>
             )}
           />
           <Route
             exact path={"/historys"}
             render={props => (
-              <TrainingHistory/>
+              <TrainingHistory checkIsLogin={checkIsLogin}/>
             )}
           />
         </Switch>
