@@ -134,10 +134,6 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
   const getTrainingLike = async () => {
     const result:boolean = await connectGetTrainingLike(targetTrainingData!.id);
     setIsLike(result)
-    if (result) {
-      const favoriteIcon = document.getElementById("favorite_icon");
-      favoriteIcon?.classList.add("makeStyles-favoriteIcon-38")
-    }
   }
 
   useEffect(() => {
@@ -176,10 +172,8 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
 
     if (!isLike) {
       await connectCreateTrainingLike(trainingId);
-      favoriteIcon!.classList.add("makeStyles-favoriteIcon-38");
     } else {
       await connectDeleteTrainingLike(trainingId);
-      favoriteIcon!.classList.remove("makeStyles-favoriteIcon-38");
     }
 
     setIsLike(isLike ? false : true);
@@ -223,7 +217,7 @@ export const TrainingDetail: React.FC<TrainingDetailProps> = ({targetTrainingDat
           </form>
           <Button variant="text" type="submit" className={classes.iconContainer} onClick={handlePostModalOpen}>トレーニングを共有する</Button><br/>
           <div onClick={() => FavoriteClick(targetTrainingData!.id)} className={classes.iconContainer}>
-            <BookmarkIcon id="favorite_icon"/>
+            <BookmarkIcon style={{color:isLike ? "orange" : "black"}}/>
             <span className={classes.iconName}>お気に入り</span>
           </div>
         </Grid>
