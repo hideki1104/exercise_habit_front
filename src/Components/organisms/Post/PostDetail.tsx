@@ -74,24 +74,16 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
     const connectGetPostLike = async () => {
       const result:boolean = await connectGetLike(postData!.id, postData!.user_id);
       setIsLike(result)
-      if (result) {
-        const favoriteIcon = document.getElementById(`favorite_icon_${index}`);
-        favoriteIcon?.classList.add("makeStyles-favorite_icon-23")
-      }
     }
 
     connectGetPostLike();
   }, [])
 
   const handleClick = async () => {
-    const favoriteIcon = document.getElementById(`favorite_icon_${index}`);
-
     if (!isLike) {
       await connectCreateLike(postData!.id, postData!.user_id);
-      favoriteIcon?.classList.add("makeStyles-favorite_icon-23");
     } else {
       await connectDeleteLike(postData!.id, postData!.user_id);
-      favoriteIcon?.classList.remove("makeStyles-favorite_icon-23");
     }
 
     setIsLike(isLike ? false : true);
@@ -105,7 +97,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({postData, handlePostOpen,
         <>
           <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon id={`favorite_icon_${index}`} onClick={() => handleClick()}/>
+              <FavoriteIcon style={{color:isLike ? "red" : "gray"}} onClick={() => handleClick()}/>
             </IconButton>
             <IconButton aria-label="share">
               <CommentIcon />
