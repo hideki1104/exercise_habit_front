@@ -33,7 +33,7 @@ interface connectPostType {
   isSuccess: boolean,
   data: any,
   headers: any,
-  error: string|null,
+  error: any,
 }
 
 export const connectPost = async (url:string, params: object):Promise<connectPostType> => {
@@ -71,7 +71,7 @@ interface connectPatchType {
   isSuccess: boolean,
   data: any,
   headers: any,
-  error: string|null,
+  error: any,
 }
 
 export const connectPatch = async (url:string, params: object):Promise<connectPatchType> => {
@@ -97,7 +97,7 @@ export const connectPatch = async (url:string, params: object):Promise<connectPa
 
 interface connectDeleteType {
   isSuccess: boolean,
-  error: string|null,
+  error: any,
 }
 
 export const connectDelete = async (url:string):Promise<connectDeleteType> => {
