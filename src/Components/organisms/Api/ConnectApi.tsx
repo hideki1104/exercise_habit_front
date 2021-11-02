@@ -4,7 +4,7 @@ interface connectGetType {
   isSuccess: boolean,
   data: any,
   headers: any,
-  error: string|null,
+  error: any,
 }
 
 export const connectGet = async (url:string):Promise<connectGetType> => {
