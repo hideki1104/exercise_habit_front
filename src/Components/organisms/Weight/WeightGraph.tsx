@@ -75,7 +75,7 @@ export const WeightGraph: React.FC<WeightGraphProps> = ({ userWeightData, select
 
   return (
     <>
-      {userWeightData.length ? <Line type="line" data={data}/> : <p>{selectedMonthText}の体重記録がありません</p>}
+
     </>
   );
 }
